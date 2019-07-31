@@ -1,0 +1,611 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css" />
+    <link rel="stylesheet" href="../layui/css/layui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <script src="../js/jquery-3.1.1.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../js/jquery.bootstrap.min.js"></script>
+    <script src="../js/dropdown.js" type="text/javascript"></script>
+    <script src="../js/jquery-3.1.1.min.js" type="text/javascript"></script>
+    <script src="../js/bootstrap.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../js/jquery.bootstrap.min.js"></script>
+    <script src="../js/dropdown.js" type="text/javascript"></script>
+   
+    <script src="../../web/layui/layui.all.js"></script>
+    <title>车报废管理系统</title>
+    <script type="text/javascript">
+        $('.dropdown-toggle').dropdown()
+    </script>
+    <style>
+        .leftbar-nav li {
+            color: #fff;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        .page-header {
+            margin: 0px 0 10px;
+        }
+
+        .tcdPageCode {
+            padding: 15px 20px;
+            text-align: left;
+            color: #ccc;
+            text-align: center;
+        }
+
+            .tcdPageCode a {
+                display: inline-block;
+                color: #428bca;
+                display: inline-block;
+                height: 25px;
+                line-height: 25px;
+                padding: 0 10px;
+                border: 1px solid #ddd;
+                margin: 0 2px;
+                border-radius: 4px;
+                vertical-align: middle;
+            }
+
+                .tcdPageCode a:hover {
+                    text-decoration: none;
+                    border: 1px solid #428bca;
+                }
+
+            .tcdPageCode span.current {
+                display: inline-block;
+                height: 25px;
+                line-height: 25px;
+                padding: 0 10px;
+                margin: 0 2px;
+                color: #fff;
+                background-color: #428bca;
+                border: 1px solid #428bca;
+                border-radius: 4px;
+                vertical-align: middle;
+            }
+
+            .tcdPageCode span.disabled {
+                display: inline-block;
+                height: 25px;
+                line-height: 25px;
+                padding: 0 10px;
+                margin: 0 2px;
+                color: #bfbfbf;
+                background: #f2f2f2;
+                border: 1px solid #bfbfbf;
+                border-radius: 4px;
+                vertical-align: middle;
+            }
+    </style>
+</head>
+<body class="bg">
+    <div class="topbar">
+        <div class="pull-right text-primary" id="loginout" style="margin-left:20px;cursor:pointer;" onclick="loginout()">退出</div>
+        <div class="pull-right text-primary" id="loginusername" style="margin-left:20px;"></div>
+        <div class="pull-right text-primary" id="loginphonenum"></div>
+        <div class="logo"><img src="../img/logo.png" title="" /></div>
+        <div class="topcity pull-left">
+            <div class="m-b-20">
+                <span class="text-primary firstcity pull-left m-r-10 m-l-15"></span>
+                <input type="hidden" value="" id="firstcityid" />
+                <div class="dropdown pull-left">
+                    <div id="changecity" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        [ 切换城市 <span class="caret"></span> ]
+                    </div>
+                    <ul class="dropdown-menu" aria-labelledby="changecity"></ul>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <ul class="nav nav-pills topnav">
+                <li role="presentation"><a href="index.html">首页</a></li>
+                <li role="presentation" class="kzper1" style="display:none;"><a href="scraplist.html">整车报废</a></li>
+                <li role="presentation" class="kzper2" style="display:none;"><a href="reclaimlist.html">旧件回收</a></li>
+                <li role="presentation"><a href="partstrading.html">配件交易</a></li>
+                <li role="presentation"><a href="auctionhouse.html">拍卖大厅</a></li>
+                <li role="presentation"><a href="questions.html">常见问题</a></li>
+                <li role="presentation"><a href="aboutus.html">关于我们</a></li>
+                <li role="presentation" class="active"><a href="mycenter.html">个人中心</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <br />
+    <div class="tablebox">
+        <div style="position:relative;">
+            <div class="leftbar" style="background:none">
+                <ul class="leftbar-nav">
+                    <li id="li1" style="background-color:#337ab7;display:none;"><a href="javascript:LiClick(1);" style="color:white">我的交易</a></li>
+                    <li id="li2" style="display:none;"><a href="javascript:LiClick(2);">实名认证</a></li>
+                    <li id="li3" style="display:none;"><a href="javascript:LiClick(3);">银行卡管理</a></li>
+                    <li id="li4"><a href="javascript:LiClick(4);">修改密码</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="rightbar" id="TransactionID" style="display:none;">
+            <ol class="breadcrumb">
+                <li>我的交易</li>
+            </ol>
+            <div class="searchbox">
+                <div class="row">
+                    <!--车辆信息-->
+                    <div class="col-md-6">
+                        <h4 class="page-header"><span class="glyphicon glyphicon-list-alt m-l-15"></span> 个人信息</h4>
+                        <table class="tablelist">
+                            <tr>
+                                <th width="120" class="text-right">姓名：</th>
+                                <td><span id="S_NameID"></span></td>
+                            </tr>
+                            <tr><td colspan="2"></td></tr>
+                            <tr>
+                                <th width="120" class="text-right">电话：</th>
+                                <td><span id="S_PhoneID"></span></td>
+                            </tr>
+                            <tr><td colspan="2"></td></tr>
+                            <tr>
+                                <th width="120" class="text-right">公司：</th>
+                                <td><span id="S_CorporationID"></span></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <h4 class="page-header"><span class="glyphicon glyphicon-list-alt m-l-15"></span> 我的交易</h4>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>累计数量</th>
+                                    <th>累计金额</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>旧件</td>
+                                    <td><span id="J_NumberID"></span></td>
+                                    <td><span id="J_AmountID"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>报废车</td>
+                                    <td><span id="B_NumberID"></span></td>
+                                    <td><span id="B_AmountID"></span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12">
+                        <h4 class="page-header"><span class="glyphicon glyphicon-list-alt m-l-15"></span> 交易明细</h4>
+                        <table class="table table-striped tdmain">
+                            <thead>
+                                <tr>
+                                    <th>日期</th>
+                                    <th>订单类型</th>
+                                    <th>车牌号</th>
+                                    <th>金额</th>
+                                </tr>
+                            </thead>
+                            <tbody id="list-body"></tbody>
+                        </table>
+                        <div class="page" style="background:#fff;">
+                            <div class="tcdPageCode"></div>
+                        </div>
+                    </div>
+                    <!--end 手续邮寄信息-->
+                </div>
+            </div>
+        </div>
+        <div class="rightbar" id="AutonymID" style="display:none;">
+            <ol class="breadcrumb">
+                <li>实名认证</li>
+            </ol>
+            <div class="searchbox">
+                <div style="margin-bottom:20px;font-size:16px;font-weight:bold">
+                    请通过手机APP进行实名认证
+                </div>
+                <div>
+                    <img src="../img/code1.png" style="width:200px;" />
+                </div>
+            </div>
+        </div>
+        <div class="rightbar" id="BankcardID" style="display:none;">
+            <ol class="breadcrumb">
+                <li>银行卡管理</li>
+            </ol>
+            <div class="searchbox">
+                <div class="row">
+                    <!--车辆信息-->
+                    <div class="col-md-12">
+                        <table class="tablelist">
+                            <tr>
+                                <th width="120" class="text-right">开户行：</th>
+                                <td><span id="B_BankID"></span></td>
+                            </tr>
+                            <tr><td colspan="2"></td></tr>
+                            <tr>
+                                <th width="120" class="text-right">支行：</th>
+                                <td><span id="B_BranchID"></span></td>
+                            </tr>
+                            <tr><td colspan="2"></td></tr>
+                            <tr>
+                                <th width="120" class="text-right">银行卡号：</th>
+                                <td><span id="S_CardNoID"></span></td>
+                            </tr>
+                            <tr><td colspan="2"></td></tr>
+                            <tr>
+                                <th width="120" class="text-right">姓名：</th>
+                                <td><span id="B_NameID"></span></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="pull-left" style="padding:50px;"><button type="button" class="btn btn-info addBank">+添加银行卡</button></div>
+                </div>
+            </div>
+        </div>
+        <div class="rightbar" id="ChangePwdID" style="display:none;">
+            <ol class="breadcrumb">
+                <li>修改密码</li>
+            </ol>
+            <div class="searchbox">
+                <div class="row">
+                    <!--车辆信息-->
+                    <div class="col-md-12">
+                        <table class="tablelist">
+                            <tr>
+                                <th width="120" class="text-right">姓名：</th>
+                                <td><span id="X_NameID"></span></td>
+                            </tr>
+                            <tr><td colspan="2"></td></tr>
+                            <tr>
+                                <th width="120" class="text-right">电话：</th>
+                                <td><span id="X_PhoneID"></span></td>
+                            </tr>
+                            <tr><td colspan="2"></td></tr>
+                            <tr>
+                                <th width="120" class="text-right">公司：</th>
+                                <td><span id="X_CorporationID"></span></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="pull-left" style="padding:50px;"><button type="button" class="btn btn-info updatepwd">修改密码</button></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="hide">
+        <div id="bian">
+            <div class="form-group form-inline clearfix">
+                &#12288;&#12288;<span style="color:red;">*</span> 姓名
+                <input type="text" value="" style="width:400px;" class="form-control checkLogs" id="xingming" placeholder="请输入姓名" autocomplete="off" />
+            </div>
+            <div class="form-group form-inline clearfix">
+                <span style="color:red;">*</span>银行卡号
+                <input type="text" value="" style="width:400px;" class="form-control checkLogs" id="yinhangkahao" placeholder="请输入银行卡号" autocomplete="off" />
+            </div>
+            <div class="form-group form-inline clearfix">
+                &#12288;<span style="color:red;">*</span>开户行
+                <select class="form-control" id="kaihuhang" style="width:400px;">
+                    <option value="中国工商银行">中国工商银行</option>
+                    <option value="中国农业银行">中国农业银行</option>
+                    <option value="中国银行">中国银行</option>
+                    <option value="中国建设银行">中国建设银行</option>
+                    <option value="交通银行">交通银行</option>
+                </select>
+            </div>
+            <div class="form-group form-inline clearfix">
+                &#12288;&#12288;<span style="color:red;">*</span>支行
+                <input type="text" value="" style="width:400px;" class="form-control checkLogs" id="zhihang" placeholder="请输入支行" autocomplete="off" />
+            </div>
+        </div>
+    </div>
+    <div class="hide">
+        <div id="bian2">
+            <div class="form-group form-inline clearfix">
+                &#12288;&#12288;<span style="color:red;">*</span> 原密码
+                <input type="password" style="width:400px;" class="form-control" id="PassWordID" placeholder="请输入原密码" autocomplete="off" />
+            </div>
+            <div class="form-group form-inline clearfix">
+                &#12288;&#12288;<span style="color:red;">*</span>新密码
+                <input type="password" style="width:400px;" class="form-control" id="NewPassWordID" placeholder="请输入新密码" autocomplete="off" />
+            </div>
+            <div class="form-group form-inline clearfix">
+                <span style="color:red;">*</span>确认新密码
+                <input type="password" style="width:400px;" class="form-control" id="NewPassWordID2" placeholder="请输入新密码" autocomplete="off" />
+            </div>
+        </div>
+    </div>
+    <script src="../js/modal.js"></script>
+    <script src="../js/jquery.page.js"></script>
+    <script src="../js/comm.js"></script>
+    <script>
+        (function ($) {
+            $("#S_NameID").text(localStorage.username);
+            $("#S_PhoneID").text(localStorage.phone);
+            $("#S_CorporationID").text(localStorage.customername);
+            $("#X_NameID").text(localStorage.username);
+            $("#X_PhoneID").text(localStorage.phone);
+            $("#X_CorporationID").text(localStorage.customername);
+            if (localStorage.userType == 1) {
+                $("#li1").show();
+                $("#li2").show();
+                $("#li3").show();
+                $("#TransactionID").show();
+            }
+            else {
+                $("#ChangePwdID").show();
+            }
+            LoadmyTrade();
+            LoadmyTradeInfo();
+            LoadBank();
+        })(jQuery);
+        function LiClick(types) {
+            $(".leftbar li").css("background-color", "white");
+            $(".leftbar li a").css("color", "#333");
+            $("#li" + types).css("background-color", "#337ab7");
+            $("#li" + types + " a").css("color", "white");
+            $(".rightbar").hide();
+            if (types == 1) {
+                $("#TransactionID").show();
+            }
+            else if (types == 2) {
+                $("#AutonymID").show();
+            }
+            else if (types == 3) {
+                $("#BankcardID").show();
+            }
+            else if (types == 4) {
+                $("#ChangePwdID").show();
+            }
+        }
+        function LoadmyTradeInfo() {
+            $.ajax({
+                type: "get",
+                url: href + 'user/myTradeInfo',
+                data: {
+                    page: 1,
+                    rows: 10,
+                },
+                dataType: "json",
+                success: function (data) {
+                    if (data.msg == "success") {
+                        var otr = "";
+                        var d = data.data.rows;
+                        if (d.length) {
+                            for (var i = 0; i < d.length; i++) {
+                                otr += '<tr>'
+                                otr += '<td title=' + d[i].orderTime + '>' + d[i].orderTime + '</td>';
+                                if (d[i].orderType == 1) {
+                                    otr += '<td title="整车报废">整车报废</td>';
+                                } else {
+                                    otr += '<td title="旧件回收">旧件回收</td>';
+                                }
+                                otr += '<td title=' + d[i].carNumber + '>' + d[i].carNumber + '</td>';
+                                otr += '<td title=' + d[i].orderAmount + '>' + d[i].orderAmount + '</td>';
+                                otr += '</td></tr>'
+                            }
+                        } else {
+                            otr = '<tr><td colspan=' + $(".tdmain th").length + ' style="text-align:center">无数据</td></tr>'
+                        }
+                        $("#list-body").html(otr);
+                        for (var i = 0; i < $(".tdmain td").length; i++) {
+                            if ($(".tdmain td").eq(i).text() == null || $(".tdmain td").eq(i).text() == "null") {
+                                $(".tdmain td").eq(i).html("")
+                            }
+                        }
+                        $(".page").html("");
+                        $(".page").html('<div class="tcdPageCode"></div>');
+                        $(".tcdPageCode").createPage({
+                            pageCount: Math.ceil(data.data.total / 10),
+                            current: 1,
+                            backFn: function (p) {
+                                showdata2(p)
+                            }
+                        });
+                    }
+                }
+            })
+        }
+        function LoadmyTrade() {
+            $.ajax({
+                type: "get",
+                url: href + 'user/myTrade',
+                dataType: "json",
+                async: false,
+                success: function (obj) {
+                    if (obj.msg == "success") {
+                        var info = obj.data;
+                        $("#J_NumberID").html(info.partTotalCount);
+                        $("#J_AmountID").html(info.partTotalAmount);
+                        $("#B_NumberID").html(info.scrapCarTotalCount);
+                        $("#B_AmountID").html(info.scrapCarTotalAmount);
+                    }
+                }
+            })
+        }
+        function LoadBank() {
+            $.ajax({
+                type: "get",
+                url: href + 'user/getBankCard',
+                dataType: "json",
+                async: false,
+                success: function (obj) {
+                    console.log(obj);
+                    if (obj.msg == "success" && obj.data!=null) {
+                        var info = obj.data;
+                        $("#xingming").html(info.payeeName);
+                        $("#yinhangkahao").html(info.bankAccount);
+                        $("#kaihuhang").html(info.bank);
+                        $("#zhihang").html(info.openingBank);
+                    }
+                }
+            })
+        }
+        function showdata2(x) {
+            $.ajax({
+                type: "get",
+                url: href + 'user/myTradeInfo',
+                data: {
+                    page: x,
+                    rows: 10,
+                },
+                contentType: "application/json",
+                dataType: "json",
+                success: function (data) {
+                    if (data.msg == "success") {
+                        var otr = "";
+                        var d = data.data.rows;
+                        if (d.length) {
+                            for (var i = 0; i < d.length; i++) {
+                                otr += '<tr>'
+                                otr += '<td title=' + d[i].orderTime + '>' + d[i].orderTime + '</td>';
+                                if (d[i].orderType == 1) {
+                                    otr += '<td title="整车报废">整车报废</td>';
+                                } else {
+                                    otr += '<td title="旧件回收">旧件回收</td>';
+                                }
+                                otr += '<td title=' + d[i].carNumber + '>' + d[i].carNumber + '</td>';
+                                otr += '<td title=' + d[i].orderAmount + '>' + d[i].orderAmount + '</td>';
+                                otr += '</td></tr>'
+                            }
+                        } else {
+                            otr = '<tr><td colspan=' + $(".tdmain th").length + ' style="text-align:center">无数据</td></tr>'
+                        }
+                        $("#list-body").html(otr);
+                        for (var i = 0; i < $(".tdmain td").length; i++) {
+                            if ($(".tdmain td").eq(i).text() == null || $(".tdmain td").eq(i).text() == "null") {
+                                $(".tdmain td").eq(i).html("")
+                            }
+                        }
+                        $(".page").html("");
+                        $(".page").html('<div class="tcdPageCode"></div>');
+                        $(".tcdPageCode").createPage({
+                            pageCount: Math.ceil(data.data.total / 10),
+                            current: x,
+                            backFn: function (p) {
+                                showdata2(p)
+                            }
+                        });
+                    }
+                }
+
+            });
+        }
+        //添加客户
+        $(document).delegate('.addBank', 'click', function (event) {
+            event.preventDefault();
+            $('#bian').dialog({
+                title: '编辑银行卡',
+                onClose: function () {
+                    $(this).dialog('close');
+                },
+                buttons: [{
+                    text: '取消',
+                    'click': function () {
+                        $(this).dialog('close');
+                    }
+                }, {
+                    text: '确定',
+                    'class': 'btn-primary',
+                    'click': function () {
+                        var xingming = $("#xingming").val();
+                        var yinhangkahao = $("#yinhangkahao").val();
+                        var kaihuhang = $("#kaihuhang").val();
+                        var zhihang = $("#zhihang").val();
+                        if (xingming == "" || yinhangkahao == "" || kaihuhang == "" || zhihang == "") {
+                            layer.msg('请输入必填项！');
+                        }
+                        else {
+                            //alert(href + "user/addBankCard");
+                            $.ajax({
+                                type: "put",
+                                url: href + "user/addBankCard",
+                                data: {
+                                    payeeName: xingming,
+                                    bankAccount: yinhangkahao,
+                                    bank: kaihuhang,
+                                    openingBank: zhihang
+                                },
+                                dataType: 'json',
+                                success: function (data) {
+                                    console.log(data);
+                                    if (data.msg == "success") {
+                                        layer.msg('<span style="font-size:20px">添加成功</span>', {
+                                            time: 1000, //2s后自动关闭
+                                        }, function () {
+                                            window.location.reload()
+                                        });
+                                    }
+                                    else {
+                                        layer.msg(data.msg, {time: 2000, //2s后自动关闭
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }]
+            })
+        });
+        //添加客户
+        $(document).delegate('.updatepwd', 'click', function (event) {
+            event.preventDefault();
+            $('#bian2').dialog({
+                title: '修改密码',
+                onClose: function () {
+                    $(this).dialog('close');
+                },
+                buttons: [{
+                    text: '取消',
+                    'click': function () {
+                        $(this).dialog('close');
+                    }
+                }, {
+                    text: '确定',
+                    'class': 'btn-primary',
+                    'click': function () {
+                        var _PassWord = $("#PassWordID").val();
+                        var _NewPassWord = $("#NewPassWordID").val();
+                        var _NewPassWordID = $("#NewPassWordID2").val();
+                        if (_PassWord == "" || _NewPassWord == "" || _NewPassWordID == "") {
+                            layer.msg('请输入必填项！');
+                        }
+                        else {
+                            if (_NewPassWord == _NewPassWordID) {
+                                $.ajax({
+                                    type: "put",
+                                    url: href + "user/changePwd/" + id,
+                                    data: {
+                                        newPassword: $("#jiaomi1").val(),
+                                    },
+                                    dataType: 'json',
+                                    success: function (data) {
+                                        if (data.msg == "success") {
+                                            layer.msg('<span style="font-size:20px">重置密码成功</span>', {
+                                                time: 1000, //2s后自动关闭
+                                            }, function () {
+                                                window.location.reload()
+                                            });
+                                        }
+                                        else {
+                                            layer.msg('<span style="font-size:20px">' + data.msg + '</span>', {
+                                                time: 2000, //2s后自动关闭
+                                            }, function () {
+                                            });
+                                        }
+                                    }
+
+                                });
+                            }
+                            else {
+                                layer.msg('两次密码不一致！');
+                            }
+                        }
+                    }
+                }]
+            })
+        });
+    </script>
+</body>
+</html>

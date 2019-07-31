@@ -1,0 +1,346 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css" />
+    <link rel="stylesheet" href="../layui/css/layui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" href="../lookpic/css/bootstrap-grid.min.css" />
+    <link rel="stylesheet" href="../lookpic/dist/zoomify.min.css" />
+    <link rel="stylesheet" href="../lookpic/css/style.css" />
+    <script src="../js/jquery-3.1.1.min.js" type="text/javascript"></script>
+    <script src="../js/bootstrap.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../js/jquery.bootstrap.min.js"></script>
+    <script src="../js/dropdown.js" type="text/javascript"></script>
+    <script src="../js/modal.js" type="text/javascript"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=3LSsiAvyTOStAaAc4Nwb2EDyZcUc9lx8"></script>
+    <script src="../layui/layui.all.js" type="text/javascript"></script>
+    <script src="../lookpic/dist/zoomify.min.js"></script>
+    <style>
+        .datetimepicker {
+            margin-top: 50px !important;
+        }
+
+        #allmap {
+            width: 100%;
+            height: 400px;
+        }
+
+        .thumbnail img {
+            width: 133px;
+            height: 77px;
+        }
+    </style>
+    <title>车报废管理后台</title>
+</head>
+<body>
+    <div class="back-stage-top">
+        <h1 class="pull-left">车报废管理后台</h1>
+        <h1 class="pull-right text-primary" id="loginout" style="margin-left:20px;cursor:pointer;font-size:18px;margin-right:50px;" onclick="loginout()">退出</h1>
+        <h1 class="pull-right text-primary" id="loginusername" style="margin-left:20px;font-size:18px;">用户名：张三</h1>
+    </div>
+    <div class="backnav">
+        <ul class="backnav" id="backnavper">
+           
+            <li class="displaynone"><a href="index.html">首页</a></li>
+            <li class=""><a href="Inquiry.html">询价管理</a></li>
+            <li class="cur displaynone"><a href="orderquotelist.html">报价管理</a></li>
+            <li class="displaynone"><a href="orderlist.html">订单管理</a></li>
+            <li class="displaynone"><a href="scraplist.html">整车报废</a></li>
+            <li class="displaynone"><a href="jiulist.html">旧件回收</a></li>
+            <li class="displaynone"><a href="moneymanage.html">财务管理</a></li>
+            <li class="displaynone"><a href="system.html">系统管理</a></li>
+        </ul>
+    </div>
+    <div class="tablebox">
+        <ol class="breadcrumb m-t-10">
+            <li><a href="index.html">首页</a></li>
+            <li><a href="orderquotelist.html">报价管理</a></li>
+            <li>处理订单</li>
+        </ol>
+        <!--车辆信息-->
+        <h2 class="text-center ordnum"></h2>
+        <div class="col-md-6">
+            <h4 class="page-header"><span class="glyphicon glyphicon-list-alt m-l-15"></span> 车辆信息</h4>
+            <table class="tablelist">
+                <tr>
+                    <th width="120" class="text-right"><span class="redcolor">*</span>车牌号：</th>
+                    <td><span class="carnum"></span></td>
+                </tr>
+                <tr height="50">
+                    <th width="120" class="text-right"><span class="redcolor">*</span>车架号：</th>
+                    <td><span class="carjia"></span></td>
+                </tr>
+                <tr height="40">
+                    <th width="120" class="text-right"><span class="redcolor">*</span>车辆型号：</th>
+                    <td><span class="carxing"></span></td>
+                </tr>
+                <tr height="50">
+                    <th width="120" class="text-right"><span class="redcolor">*</span>报案号：</th>
+                    <td><span class="carbao"></span></td>
+                </tr>
+            </table>
+        </div>
+        <!--end 车辆信息-->
+        <!--取车信息-->
+        <div class="col-md-6">
+            <h4 class="page-header"><span class="glyphicon glyphicon-list-alt m-l-15"></span> 取车信息</h4>
+            <table class="tablelist">
+                <tr>
+                    <th width="120" class="text-right"><span class="redcolor">*</span>取车联系人：</th>
+                    <td>
+                        <div class="input-group">
+                            常用联系人
+                            <span id="changren"></span>
+                        </div>
+                    </td>
+                </tr>
+                <tr height="50">
+                    <th width="120" class="text-right"><span class="redcolor">*</span>联系人电话：</th>
+                    <td><span class="perphone"></span></td>
+                </tr>
+
+                <tr height="40">
+                    <th width="120" class="text-right"><span class="redcolor">*</span>取车时间：</th>
+                    <td>
+                        <div class="input-group">
+                            <span id="checktime"></span>
+                            <!--<span role="button"  class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>-->
+                        </div>
+                    </td>
+                </tr>
+                <tr height="50">
+                    <th width="120" class="text-right"><span class="redcolor">*</span>取车地址：</th>
+                    <td><span class="setmap"></span></td>
+                </tr>
+                <!--<tr >
+                    <td></td>
+                    <td>您当前选择的城市为<i class="text-primary">北京</i>，取车地址只能为北京。</td>
+                </tr>-->
+                <tr>
+                    <td></td>
+                    <td>
+                        <label>
+                            <!--  <input type="checkbox"> 将该联系人设置为常用联系人-->
+                        </label>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <!--end 取车信息-->
+        <div class="clearfix"></div>
+        <!--配件信息-->
+        <div class="clearfix"></div>
+        <div>
+            <div class="page-header">
+                <h4 class="pull-left"><span class="glyphicon glyphicon-list-alt m-l-15"></span> 配件信息</h4>
+                <!--<button type="button" class="btn btn-primary pull-right peibtn" >+ 添加配件</button>-->
+                <div class="clearfix"></div>
+            </div>
+            <table class="table table-striped addtab">
+                <thead>
+                    <tr id="TrQuoteID">
+                        <th width="120px;">配件分类</th>
+                        <th width="120px">配件名称</th>
+                        <th width="120px;">零件编号</th>
+                        <th width="120px;">备注</th>
+                        <th>配件照片</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="text-center">
+            <a href="javascript:SubQuote();" id="SubQuoteID" class="btn btn-default" style="width:89px;background-color:#3598dc;color:white">提交</a>
+        <a href="orderquotelist.html" class="btn btn-default goback"  style="width:89px;">返回</a></div>
+   <p></p>
+     </div>
+
+    <script src="../js/bootstrap-datetimepicker.min.js"></script>
+    <script src="../js/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="../js/comm.js"></script>
+    <script src="../layui/layui.all.js"></script>
+    <script>
+        var _cityname = localStorage.getItem("cityname");
+        (function ($) {
+            $.getUrlParam = function (name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if (r != null) return unescape(r[2]);
+                return null;
+            }
+        })(jQuery);
+        var id = $.getUrlParam('id');
+        layui.use('layer', function () {
+
+        });
+        $.ajax({
+            type: "get",
+            url: href + 'order/' + id,
+            dataType: "json",
+            success: function (data) {
+
+                if (data.code == "201") {
+                    layer.msg('<span style="font-size:20px">登录时效，请重新登录</span>', {
+                        time: 1000, //2s后自动关闭
+                    }, function () {
+                        window.location.href = "login.html";
+                    });
+                    return false;
+                }
+                if (data.msg == "success") {
+                    var d = data.data;
+                    if (!d) {
+                        return;
+                    }
+                    $(".ordnum").html("订单信息：" + d.orderNo);
+                    $(".carnum").html(d.carNumber);
+                    $(".ordnum").html(d.orderId);
+                    $(".carjia").html(d.carFrameNumber);
+                    $(".carxing").html(d.carModelNumber);
+                    $(".carbao").html(d.reportNo);
+                    $("#changren").html(d.takeCarContacts);
+                    $(".perphone").html(d.takeCarContactNumber);
+                    $("#checktime").html(d.takeCarTime);
+                    $(".setmap").html(d.takeCarAddress);
+                    if (d.orderStatus == 11) {
+                        $("#TrQuoteID").append('<th width="120px;">价格</th>');
+                    }
+                    else if (d.orderStatus == 12) {
+                        if (_cityname.indexOf("总部") >= 0) {
+                            $("#TrQuoteID").append('<th width="120px;">分公司价格</th><th width="120px;">价格</th>');
+                        }
+                        else {
+                            $("#TrQuoteID").append('<th width="120px;">分公司价格</th>');
+                        }
+                    }
+                    else {
+                        $("#TrQuoteID").append('<th width="120px;">分公司价格</th><th width="120px;">价格</th>');
+                    }
+                    //pai(d.orderAreasId,"");
+                    var dd = d.carScrapOrderAutopartsList;
+                    if (dd.length) {
+                        var otr = "";
+                        for (var i = 0; i < dd.length; i++) {
+                            otr += '<tr class="tramount">'
+                            otr += '<td  style="vertical-align:middle;"><input type="hidden" class="hiddenid" value="' + dd[i].id + '" />' + dd[i].partsCaregoryName + '</td>'
+                            otr += '<td  style="vertical-align:middle;">' + dd[i].partsTypeName + '</td>'
+                            otr += '<td  style="vertical-align:middle;">' + StrNull(dd[i].partsNum) + '</td>'
+                            otr += '<td  style="vertical-align:middle;">' + StrNull(dd[i].remark) + '</td>';
+                            var pics = dd[i].autoPartsPictures;
+                            var obj = "";
+                            var urls = [], ids = [];
+                            if (pics.length) {
+                                for (var j = 0; j < pics.length; j++) {
+                                    urls.push(pics[j].url);
+                                    ids.push(pics[j].id)
+                                    obj += '<div class="col-md-3 col-xs-6">'
+                                    obj += '<div class="thumbnail"><img class="img-rounded" src="' + pics[j].url + '" /></div>'
+                                    obj += '</div>'
+                                }
+                            };
+                            var urrs = urls.join();
+                            var idss = ids.join();
+                            otr += '<td  style="vertical-align:middle;"> <div class="row">' + obj + '</div></td>'
+                            debugger
+                            if (d.orderStatus == 11) {
+                               
+                                otr += '<td  style="vertical-align:middle;"><input class="form-control Amount" onkeyup="VerifyAmount(this)"  placeholder="请输入价格"  type="text" /></td>'
+                            }
+                            else if (d.orderStatus == 12) {
+                                if (_cityname.indexOf("总部") >= 0) {
+                                   
+                                    otr += '<td  style="vertical-align:middle;">' + dd[i].subQuote + '</td>'
+                                    otr += '<td  style="vertical-align:middle;"><input class="form-control Amount" onkeyup="VerifyAmount(this)"  placeholder="请输入价格"  type="text" /></td>'
+                                }
+                                else {
+                                   
+                                    otr += '<td  style="vertical-align:middle;">' + dd[i].subQuote + '</td>'
+                                }
+                            }
+                            else {
+                                $("#SubQuoteID").hide();
+                                otr += '<td  style="vertical-align:middle;">' + dd[i].subQuote + '</td>'
+                                otr += '<td  style="vertical-align:middle;">' + dd[i].amount + '</td>'
+                            }
+                            otr += '</td></tr>'
+
+                        };
+                        $(".addtab tbody").html(otr);
+                        //初始化话图片
+                        $(".addtab tbody  img").zoomify();
+                    }
+                }
+            }
+        });
+
+        //返回
+        $(".goback").on("click", function (event) {
+            event.preventDefault();
+            window.history.go(-1)
+        });
+        clearnull();
+        ///提交报价
+        function SubQuote() {
+            var trs = $(".tramount");
+            if (trs.length > 0) {
+                var Str = "id=" + id + "&orderType=2";
+                for (var i = 0; i < trs.length; i++) {
+                    var Current = $(trs[i]);
+                    var Amount = Current.find(".Amount").eq(0).val();
+                    var _id= Current.find(".hiddenid").eq(0).val();
+                    if (Amount == "")
+                    {
+                        layer.msg("请输入价格！");
+                        return false;
+                    }
+                    Str = Str + "&carScrapOrderAutopartsList[" + i + "].id=" + _id;
+                    Str = Str + "&carScrapOrderAutopartsList[" + i + "].amount=" + Amount;
+                }
+                console.log(Str);
+                $.ajax({
+                    type: "put",
+                    url: href + "order/quote",
+                    data: Str,
+                    dataType: "json",
+                    success: function (data) {
+
+                        if (data.code == "201") {
+                            layer.msg('<span style="font-size:20px">登录时效，请重新登录</span>', {
+                                time: 1000, //2s后自动关闭
+                            }, function () {
+                                window.location.href = "login.html";
+                            });
+                            return false;
+                        }
+                        if (data.code == "200") {
+                            if (data.data) {
+                                layer.msg("报价成功！", { time: 700 }, function () {
+                                    window.location.href = "orderquotelist.html";
+                                });
+                            }
+                            else {
+                                layer.msg("报价失败！");
+                            }
+                        }
+                        else {
+                            layer.msg("数据异常！");
+                        }
+                    }
+                });
+            }
+            else {
+                layer.msg("没有数据！");
+            }
+        }
+        function StrNull(str)
+        {
+            if (str == null || str == "null")
+                return "";
+            else
+                return str;
+        }
+    </script>
+</body>
+</html>

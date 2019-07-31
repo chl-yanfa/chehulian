@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css" />
+    <link rel="stylesheet" href="../layui/css/layui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <script src="../js/jquery-3.1.1.min.js" type="text/javascript"></script>
+    <script src="../js/bootstrap.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../js/jquery.bootstrap.min.js"></script>
+    <script src="../js/dropdown.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../layui/layui.js"></script>    
+    <script type="text/javascript">
+        $('.dropdown-toggle').dropdown()
+    </script>
+    <title>车互联</title>
+    <style>
+      .input-tips {
+    margin-top: 10px;
+    width: 50px;
+    height: 42px;
+    font-size: 18px;
+    line-height: 42px;
+    font-family: hiragino sans gb,microsoft yahei;
+}
+        .inputstyle {
+    width: 200px;
+    height: 38px;
+    padding-left: 5px;
+    line-height: 30px;
+    line-height: 38px;
+    border: 1px solid #d7d7d7;
+    background: #fff;
+    color: #333;
+    border-radius: 2px;
+    font-family: Verdana,Tahoma,Arial;
+    font-size: 16px;
+    ime-mode: disabled;
+}
+        .button_blue {
+    display: inline-block;
+    height: 41px;
+    border-radius: 4px;
+    background: #2795dc;
+    border: 0;
+    cursor: pointer;
+    border-bottom: 3px solid #0078b3;
+    color: #fff;
+    font-size: 16px;
+    padding: 0 10px;
+    text-align: center;
+    outline: 0;
+    font-family: microsoft yahei,Arial,Helvetica,sans-serif;
+}input.button_blue:hover {
+    background: #0081c1;
+    border-bottom: 3px solid #006698;
+    color: #fff;
+    text-decoration: none;
+}
+    </style>
+</head>
+<body class="bg">
+    <div class="topbar">
+        <div class="pull-right text-primary" id="loginout" style="margin-left:20px;cursor:pointer;" onclick="loginout()">退出</div>
+        <div class="pull-right text-primary" id="loginusername" style="margin-left:20px;"></div>
+        <div class="pull-right text-primary" id="loginphonenum"></div>
+        <div class="logo"><img src="../img/logo.png" title="" /></div>
+        <div class="topcity pull-left">
+            <div class="m-b-20">
+                <span class="text-primary firstcity pull-left m-r-10 m-l-15">请选择</span>
+                <input type="hidden" value="" id="firstcityid" />
+                <div class="dropdown pull-left">
+                    <div id="changecity" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        [ 切换城市 <span class="caret"></span> ]
+                    </div>
+                    <ul class="dropdown-menu" aria-labelledby="changecity"></ul>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <!--<ul class="nav nav-pills topnav">
+                <li role="presentation" class="active"><a href="index.html">首页</a></li>
+                <li role="presentation"><a href="scraplist.html">整车报废</a></li>
+                <li role="presentation"><a href="reclaimlist.html">旧件回收</a></li>
+                <li role="presentation"><a href="partstrading.html">配件交易</a></li>
+                <li role="presentation"><a href="auctionhouse.html">拍卖大厅</a></li>
+                <li role="presentation"><a href="questions.html">常见问题</a></li>
+                <li role="presentation"><a href="aboutus.html">关于我们</a></li>
+            </ul>-->
+        </div>
+    </div>
+    <div class="con-box">
+        <div class="car-process"><img src="../img/process.png" /></div>
+        <div class="leftbox">
+            <div class="text-center">
+                <h1 class="text-primary" style="padding-top:10%;">欢迎使用车报废管理系统</h1>
+                <div><label class="input-tips">账号:</label><input type="text" value=""autocomplete="off"  class="inputstyle"/></div>
+                <div><label class="input-tips">密码:</label><input type="password" autocomplete="off" value="" class="inputstyle" /></div>
+                <div><input type="submit" value="登 录" style="width:200px;margin-left:50px;" class="button_blue" /></div>
+                <div style="margin-top:20px;"><a class="" style="margin-left:140px;cursor:pointer;" >注册</a><a class="" style="margin-left:20px;cursor:pointer;">忘记密码?</a></div>
+                <!--<div class="m-b-20"><img src="../img/code1.png" /></div>
+                <p>请使用微信扫码二维码登录系统</p>-->
+            </div>
+        </div>
+    </div>
+    <script src="../js/modal.js" type="text/javascript"></script>
+    <script src="../js/comm.js" type="text/javascript"></script>
+    <script>
+      (function ($) {
+          var username = window.localStorage.getItem("userName");
+          if (username) {
+              $("#loginusername").text("用户名：" + username)
+          } else {
+              $("#loginusername").hide();
+              $("#loginout").hide();
+          }
+          console.log("TT_TICKET:" + getCookie("TT_TICKET"));
+          
+          //localStorage.clear();
+      })(jQuery);
+        function loginout() {
+            window.localStorage.setItem("userName", "");
+            localStorage.clear();
+            console.log(window.localStorage.getItem("userName"));
+            window.location.href = "index.html"
+        }
+    </script>
+</body>
+</html>

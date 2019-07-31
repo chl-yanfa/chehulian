@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.car.app.carscraporder.mapper.CarScrapOrderDealMapper">
+	<resultMap id="BaseResultMap" type="com.car.app.carscraporder.bo.CarScrapOrderDealBO">
+		<id column="id" 						property="id" />
+	    <result column="order_no" 				property="orderNo" />
+	    <result column="order_type" 			property="orderType" />
+	    <result column="oe" 					property="oe" />
+	    <result column="car_brand" 				property="carBrand" />
+	    <result column="car_model_number" 		property="carModelNumber" />
+	    <result column="car_frame_number" 		property="carFrameNumber" />
+	    <result column="car_number" 			property="carNumber" />
+	    <result column="parts_name" 			property="partsName" />
+	    <result column="parts_standard_name" 	property="partsStandardName" />
+	    <result column="quality" 				property="quality" />
+	    <result column="condition" 				property="condition" />
+	    <result column="car_owner" 				property="carOwner" />
+	    <result column="address" 				property="address" />
+	    <result column="driving_mileage" 		property="drivingMileage" />
+	    <result column="car_age" 				property="carAge" />
+	    <result column="description" 			property="description" />
+	    <result column="head_img_url" 			property="headImgUrl" />
+	</resultMap>
+	<resultMap id="carScrapOrderDealBO" type="com.car.app.carscraporder.bo.CarScrapOrderDealBO">
+		<id column="id" 						property="id" />
+	    <result column="order_no" 				property="orderNo" />
+	    <result column="order_type" 			property="orderType" />
+	    <result column="oe" 					property="oe" />
+	    <result column="car_brand" 				property="carBrand" />
+	    <result column="car_model_number" 		property="carModelNumber" />
+	    <result column="car_frame_number" 		property="carFrameNumber" />
+	    <result column="car_number" 			property="carNumber" />
+	    <result column="parts_name" 			property="partsName" />
+	    <result column="parts_standard_name" 	property="partsStandardName" />
+	    <result column="quality" 				property="quality" />
+	    <result column="condition" 				property="condition" />
+	    <result column="car_owner" 				property="carOwner" />
+	    <result column="address" 				property="address" />
+	    <result column="driving_mileage" 		property="drivingMileage" />
+	    <result column="car_age" 				property="carAge" />
+	    <result column="description" 			property="description" />
+	    <result column="head_img_url" 			property="headImgUrl" />
+	    
+	    <collection property="attachmentList" 
+	    	ofType="com.car.app.carscraporder.bo.CarScrapOrderDealAttachmentBO" 
+	    	column="order_deal_id=id"
+			select="getAttachmentList">
+		</collection>
+	</resultMap>
+
+	<select id="queryList" resultMap="BaseResultMap">
+		select
+			csod.*,ta.storage_path head_img_url
+		from 
+			car_scrap_order_deal csod left join tb_attachment ta on csod.head_img_id = ta.id
+		order by 
+			csod.createtime desc
+		limit 5
+	</select>
+	<select id="queryBOById" resultMap="carScrapOrderDealBO">
+		select
+			csod.*,ta.storage_path head_img_url
+		from 
+			car_scrap_order_deal csod left join tb_attachment ta on csod.head_img_id = ta.id
+		where 
+			csod.id = #{id}
+	</select>
+	<select id="getAttachmentList" resultType="com.car.app.carscraporder.bo.CarScrapOrderDealAttachmentBO">
+		select
+			csoda.id,csoda.order_deal_id orderDealId,
+			ta.storage_path url
+		from 
+			car_scrap_order_deal_attachment csoda left join tb_attachment ta on csoda.attachment_id = ta.id
+		where 
+			csoda.order_deal_id = #{order_deal_id}
+			and csoda.isremove = 0
+		order by 
+			csoda.sort
+	</select>
+
+
+
+
+
+
+</mapper>

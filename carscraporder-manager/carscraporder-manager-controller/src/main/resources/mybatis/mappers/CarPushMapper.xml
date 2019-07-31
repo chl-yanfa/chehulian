@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.car.app.carscraporder.mapper.CarPushMapper">
+	<resultMap id="BaseResultMap" type="com.car.app.carscraporder.pojo.CarPush">
+		<id column="id" property="id" />
+		<result column="push_type" property="pushType" />
+		<result column="notification_title" property="notificationTitle" />
+		<result column="msg_title" property="msgTitle" />
+		<result column="msg_content" property="msgContent" />
+		<result column="create_time" property="createTime" />
+	</resultMap>
+
+	<select id="getAllCarPush" resultMap="BaseResultMap">
+		select
+			*
+		from 
+			car_push
+	</select>
+
+	<select id="getOneCarPush" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+			*
+		from
+			car_push
+		where
+		   id = #{id}
+	</select>
+
+	<update id="updateByCarPush" parameterType="com.car.app.carscraporder.pojo.CarPush">
+		update
+			car_push
+		<set>
+			<if test="pushType!=null and pushType!=''">
+				push_type = #{pushType},
+			</if>
+			<if test="notificationTitle!=null and notificationTitle!=''">
+				notification_title = #{notificationTitle},
+			</if>
+			<if test="msgTitle!=null and msgTitle!=''">
+				msg_title = #{msgTitle},
+			</if>
+			<if test="msgContent!=null and msgContent!=''">
+				msg_content = #{msgContent},
+			</if>
+			<if test="createTime!=null and createTime!=''">
+				create_time = #{createTime}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

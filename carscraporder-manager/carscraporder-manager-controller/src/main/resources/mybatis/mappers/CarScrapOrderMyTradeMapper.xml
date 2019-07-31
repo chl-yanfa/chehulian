@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.car.app.carscraporder.mapper.CarScrapOrderMyTradeMapper">
+	
+	<select id="queryMyTrade" resultType="com.car.app.carscraporder.bo.CarScrapOrderMyTradeBO" parameterType="java.lang.String">
+		SELECT 
+			A.*,B.*
+		FROM 
+			(	SELECT 
+					SUM(O.order_amount) scrapCarTotalAmount,COUNT(1) scrapCarTotalCount 
+				FROM 
+					car_scrap_order O 
+				WHERE 
+					O.isremove = 0
+				AND
+					O.order_type = '1'
+				AND
+					O.order_status = 7
+				AND
+					O.client_id = #{clientId}
+			) A,	
+			(	SELECT 
+					SUM(amount) partTotalAmount,COUNT(1) partTotalCount 
+				FROM 
+					car_scrap_order_autoparts AA JOIN car_scrap_order O 
+				ON 
+					AA.order_id=O.id AND AA.order_autoparts_status = 8
+				AND
+					O.isremove = 0
+				AND 
+					O.order_type = '2'
+				AND
+					O.order_status = 8
+				AND
+					O.client_id = #{clientId}
+			) B
+	</select>
+
+	<select id="queryPageMyTradeInfo" resultType="com.car.app.carscraporder.bo.CarScrapOrderMyTradeInfoBO" parameterType="java.lang.String">
+		SELECT
+			O.id,
+			O.order_time orderTime,
+			O.order_type orderType,
+			case O.order_type when '1' then '整车回收' else '旧件回收' end as orderTypeS,
+			case O.order_type when '1' then O.order_amount else 
+				(select sum(AA.amount) from car_scrap_order_autoparts AA where AA.order_id=O.id AND AA.order_autoparts_status = 8) end as orderAmount,
+			O.car_number carNumber,
+			case O.order_type when '1' then 0 else 
+				(select count(1) from car_scrap_order_autoparts AA where AA.order_id=O.id AND AA.order_autoparts_status = 8) end as partsNum
+		FROM 
+			car_scrap_order O
+		WHERE 
+			O.isremove = 0
+		AND 
+			((O.order_type = '1' and O.order_status = 7) or (O.order_type = '2' and O.order_status = 8))
+		AND 
+			O.client_id = #{clientId}
+
+	</select>
+
+</mapper>

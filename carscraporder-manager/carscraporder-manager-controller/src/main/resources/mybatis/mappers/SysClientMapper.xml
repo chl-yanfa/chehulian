@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.car.app.carscraporder.mapper.ClientMapper" >
+  <resultMap id="BaseResultMap" type="com.car.app.carscraporder.pojo.Client" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="user_type" property="userType" jdbcType="CHAR" />
+    <result column="weixincode" property="weixincode" jdbcType="VARCHAR" />
+    <result column="login_name" property="loginName" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="password_salt" property="passwordSalt" jdbcType="VARCHAR" />
+    <result column="companyid" property="companyid" jdbcType="INTEGER" />
+    <result column="business_type" property="businessType" jdbcType="CHAR" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="creater" property="creater" jdbcType="VARCHAR" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="operatortime" property="operatortime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="clientCertificationBO" type="com.car.app.carscraporder.bo.ClientCertificationBO" >
+    <id 	column="id" 						property="id"/>
+    <result column="user_name" 					property="userName"/>
+    <result column="phone" 						property="phone"/>
+    <result column="id_card" 					property="idCard"/>
+    <result column="certification_submit_time" 	property="certificationSubmitTime"/>
+    <result column="certification_state" 		property="certificationState"/>
+    <result column="certification_memo" 		property="certificationMemo"/>
+    <association property="frontIdCard" column="p_id=front_id_card" javaType="string" 
+    	select="getPhotoUrl"/>
+    <association property="backIdCard" column="p_id=back_id_card" javaType="string" 
+    	select="getPhotoUrl"/>
+    <association property="handIdCard" column="p_id=hand_id_card" javaType="string" 
+    	select="getPhotoUrl"/>
+  </resultMap>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, user_name, user_type, weixincode, login_name, password, password_salt, companyid, 
+    business_type, status, creater, operator, createtime, operatortime
+  </sql>
+ 
+ 
+  <select id="queryClientBOByName"  resultType="com.car.app.carscraporder.bo.ClientBO" parameterType="java.lang.String" >
+     select t.*,u.* from sys_client u left join(
+      select c.id as companyid,c.customer_name,c.areaid,c.payee_name,c.bank_account,c.opening_bank ,a.areas_name as areaName from sys_company c 
+      left join (select ua.*,a.areas_name from sys_user_area ua, sys_areas a where ua.areaid=a.id) a on c.areaid = a.id 
+      where c.isvalid='1') t on u.companyid= t.companyid where u.status='1' and u.login_name = #{loginname,jdbcType=VARCHAR}
+  </select>
+  
+  
+  	<insert id="insertVerificationCode"  parameterType="java.util.Map">
+        INSERT INTO tb_verification_code (
+               id
+             <if test="code != null and code != ''">
+             , VERIFICATION_CODE
+             </if>
+             <if test="type != null and type != ''">
+             , TYPE
+             </if>
+             <if test="phone != null and phone != ''">
+             , PHONE
+             </if>
+      ) values (
+      		  #{id}
+            <if test="code != null and code != ''">
+             ,  #{code}
+             </if>
+             <if test="type != null and type != ''">
+             ,  #{type}
+             </if>
+              <if test="phone != null and phone != ''">
+             ,  #{phone}
+             </if>
+        )
+	</insert>
+  
+  
+  <select id="getValidateCode"  resultType="java.lang.String" parameterType="java.util.Map" >
+  	SELECT 
+    	VERIFICATION_CODE
+    FROM 
+      	tb_verification_code
+    WHERE 
+      	PHONE = #{phone}
+	AND
+		TS BETWEEN date_add(now(), interval - #{validLong} minute) and now()
+	ORDER BY 
+		TS DESC
+	LIMIT 1
+  </select>
+  
+  <select id="getClientById"  resultType="com.car.app.carscraporder.bo.ClientBO" parameterType="java.lang.String" >
+     select 
+     	t.*,u.*,cpcm.wallet_pledge,cpcm.wallet_pledge_freeze 
+     from 
+     	sys_client u left join(
+     		select c.id as companyid,c.customer_name,c.areaid,c.payee_name,c.bank_account,c.opening_bank ,a.areas_name as areaName from sys_company c 
+	      	left join (select ua.*,a.areas_name from sys_user_area ua, sys_areas a where ua.areaid=a.id) a on c.areaid = a.id 
+	      	where c.isvalid='1') t on u.companyid= t.companyid 
+      	left join car_pm_customer_margin cpcm on u.id= cpcm.id and cpcm.is_delete = 0
+     where u.status='1' and u.id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getClientByPhone"  resultType="com.car.app.carscraporder.bo.ClientBO" parameterType="java.lang.String" >
+     select t.*,u.* from sys_client u left join(
+      select c.id as companyid,c.customer_name,c.areaid,c.payee_name,c.bank_account,c.opening_bank ,a.areas_name as areaName from sys_company c 
+      left join (select ua.*,a.areas_name from sys_user_area ua, sys_areas a where ua.areaid=a.id) a on c.areaid = a.id 
+      where c.isvalid='1') t on u.companyid= t.companyid where u.status='1' and u.phone = #{phone,jdbcType=VARCHAR}
+  </select>
+  <select id="queryClientBOByNameOrPhone"  resultType="com.car.app.carscraporder.bo.ClientBO" parameterType="java.lang.String" >
+	select 
+		t.*,u.*,
+		case (select count(1) from car_scrap_order where order_type = '1' and client_id = u.id and isremove = 0) when 0 then 0 else 1 end as isScrapOrde,
+		case (select count(1) from car_scrap_order where order_type = '2' and client_id = u.id and isremove = 0) when 0 then 0 else 1 end as isPartsOrde
+	from 
+		sys_client u left join(
+			select 
+				c.id as companyid,c.customer_name,c.areaid,c.payee_name,c.bank_account,c.opening_bank,
+				a.areas_name as areaName from sys_company c left join (
+					select 
+						ua.*,a.areas_name 
+					from 
+						sys_user_area ua, sys_areas a
+					where 
+						ua.areaid=a.id
+				) a on c.areaid = a.id
+			where 
+				c.isvalid='1'
+		) t on u.companyid= t.companyid 
+	where 
+		u.status='1' 
+	and
+		(u.login_name = #{nameOrPhone,jdbcType=VARCHAR} or u.phone = #{nameOrPhone,jdbcType=VARCHAR})
+  </select>
+  
+  <select id="queryPageUserCertification" resultType="com.car.app.carscraporder.bo.ClientCertificationBO"  
+  		parameterType="com.car.app.carscraporder.vo.ClientVO">
+
+		select u.* from sys_client u 
+		
+		where u.status='1'
+	
+		<if test="keyWord != null and keyWord != ''">
+			and (u.user_name like CONCAT('%',#{keyWord},'%')
+			or u.phone like CONCAT('%',#{keyWord},'%'))
+		</if>
+		<if test="certificationState != null">
+			and u.certification_state = #{certificationState}
+		</if>
+        <if test="certificationState == null">
+			and u.certification_state in (1,2,-1)
+		</if>
+        
+	</select>
+	<select id="queryUserCertification" resultMap="clientCertificationBO" parameterType="com.car.app.carscraporder.vo.ClientVO">
+		select 
+			u.* 
+		from 
+			sys_client u 
+		where 
+			u.status='1'
+		and 
+			u.id = #{id}
+	</select>
+
+	<select id="getPhotoUrl" resultType="string">
+		select 
+			storage_path
+		from 
+			tb_attachment
+		where 
+			id = #{p_id}
+	</select>
+	
+</mapper>

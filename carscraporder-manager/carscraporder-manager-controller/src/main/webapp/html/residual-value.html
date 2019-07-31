@@ -1,0 +1,665 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css" />
+    <link rel="stylesheet" href="../layui/css/layui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/pagination.css" />
+    <script src="../js/jquery-3.1.1.min.js" type="text/javascript"></script>
+    <script src="../js/bootstrap.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../js/jquery.bootstrap.min.js"></script>
+    <script src="../js/dropdown.js" type="text/javascript"></script>
+    <script src="../js/modal.js" type="text/javascript"></script>
+    <script src="../layui/layui.all.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../js/pagination.js"></script>
+    <script src="../js/template-web.js"></script>
+    <title>车报废管理后台</title>
+    <style>
+        #listinfo td, th {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        #wrapper a {
+            border-radius: 5px;
+        }
+
+        .paginationjs-pages {
+            margin-left: 35%;
+        }
+
+        #bianjidiv label {
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="back-stage-top">
+        <h1 class="pull-left">车报废管理后台</h1>
+        <h1 class="pull-right text-primary" id="loginout" style="margin-left:20px;cursor:pointer;font-size:18px;margin-right:50px;" onclick="loginout()">退出</h1>
+        <h1 class="pull-right text-primary" id="loginusername" style="margin-left:20px;font-size:18px;">用户名：张三</h1>
+    </div>
+    <div class="backnav">
+        <ul class="backnav" id="backnavper">
+            <li class="displaynone"><a href="index.html">首页</a></li>
+            <li class=""><a href="Inquiry.html">询价管理</a></li>
+            <li class="displaynone"><a href="orderquotelist.html">报价管理</a></li>
+            <li class="displaynone"><a href="orderlist.html">订单管理</a></li>
+            <li class="displaynone"><a href="scraplist.html">整车报废</a></li>
+            <li class="displaynone"><a href="jiulist.html">旧件回收</a></li>
+            <li class="displaynone"><a href="moneymanage.html">财务管理</a></li>
+            <li class="cur displaynone"><a href="system.html">系统管理</a></li>
+        </ul>
+    </div>
+    <div class="tablebox">
+        <div style="position:relative;">
+            <div class="leftbar">
+                <ul class="leftbar-nav">
+                    <li role="presentation"><a href="role.html">角色管理</a></li>
+                    <li role="presentation"><a href="user.html">业务员管理</a></li>
+                    <li role="presentation"><a href="autonym.html">实名认证</a></li>
+                    <li role="presentation"><a href="customer.html">客户管理</a></li>
+                    <li role="presentation"><a href="area.html">区域管理</a></li>
+                    <li role="presentation"><a href="warning.html">预警管理</a></li>
+                    <li role="presentation"><a href="parts.html">配件数据管理</a></li>
+                    <li role="presentation" class="active"><a href="residual-value.html">整车残值评估管理</a></li>
+                    <li role="presentation"><a href="appinstall.html">APP安装</a></li>
+                    <li role="presentation"><a href="pushset.html">推送设置</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="rightbar">
+            <ol class="breadcrumb">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="system.html">系统管理</a></li>
+                <li>整车残值估价管理</li>
+            </ol>
+            <div class="searchbox">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" id="keyword" class="form-control" placeholder="请输入关键字" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" id="searbtn" type="button">查询</button>
+                        </span>
+                    </div>
+                </div>
+                <div class="pull-right">
+                    <button type="button" class="btn btn-primary m-r-10 export">导出Excel</button>
+                    <button type="button" class="btn btn-primary m-r-10 import">导入Excel</button>
+                    <button type="button" class="btn btn-info addinfo">+ 添加</button>
+                </div>
+                <form enctype="multipart/form-data" method="post">
+                    <input style="display: none;" type="file" multiple="multiple" accept=".xls,.xlsx,.XLS,.XLSX" name="upload" class="upload2" onchange="doUpload2(0)" />
+                </form>
+                <div class="clearfix"></div>
+            </div>
+            <table class="table table-striped tdmain" id="listinfo">
+                <thead>
+                    <tr>
+                        <th>关键字1</th>
+                        <th>关键字2</th>
+                        <th>关键字3</th>
+                        <th>出厂日期</th>
+                        <th>排量</th>
+                        <th>变速箱</th>
+                        <th>燃油</th>
+                        <th>地区</th>
+                        <th>价格</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <script id="listorder" type="text/html">
+                {{each rows value i}}
+                <tr>
+                    <td title="{{value.keyword1}}">{{value.keyword1}}</td>
+                    <td title="{{value.keyword2}}">{{value.keyword2}}</td>
+                    <td title="{{value.keyword3}}">{{value.keyword3}}</td>
+                    <td title="{{value.datesofproduction}}">{{value.datesofproduction}}</td>
+                    <td title="{{value.displacement}}">{{value.displacement}}</td>
+                    <td title="{{value.gearbox}}">{{value.gearbox}}</td>
+                    <td title="{{value.fueltype}}">{{value.fueltype}}</td>
+                    <td title="{{value.region}}">{{value.region}}</td>
+                    <td title="{{value.price}}">{{value.price}}</td>
+                    <td>
+                        <button role="button" class="btn btn-default btn-sm bianji" data-id="{{value.id}}">
+                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>编辑
+                        </button>
+                        <button role="button" class="btn btn-default btn-sm shan" data-id="{{value.id}}">
+                            <span class="glyphicon glyphicon-remove"></span>删除
+                        </button>
+                    </td>
+                </tr>
+                {{/each}}
+            </script>
+            <div id="wrapper">
+
+            </div>
+        </div>
+        <div class="page-header"></div>
+    </div>
+    <!--编辑-->
+    <div class="hide">
+        <div id="bianjidiv">
+            <div class="modal-body">
+                <table class="tablelist">
+                    <tr>
+                        <th width="120" class="text-right">关键字1：</th>
+                        <td><input class="form-control" id="keyword1" placeholder="" required="" autofocus="" type="text" /></td>
+                    </tr>
+                    <tr>
+                        <th width="120" class="text-right">关键字2：</th>
+                        <td><input class="form-control" id="keyword2" placeholder="" required="" autofocus="" type="text" /></td>
+                    </tr>
+                    <tr>
+                        <th width="120" class="text-right">关键字3：</th>
+                        <td><input class="form-control" id="keyword3" placeholder="" required="" autofocus="" type="text" /></td>
+                    </tr>
+                    <tr>
+                        <th width="120" class="text-right">出厂日期：</th>
+                        <td><input class="form-control" id="datesofproduction" placeholder="" required="" autofocus="" type="text" /></td>
+                    </tr>
+                    <tr>
+                        <th width="120" class="text-right">排量：</th>
+                        <td><input class="form-control" id="displacement" placeholder="" required="" autofocus="" type="text" /></td>
+                    </tr>
+                    <tr>
+                        <th width="120" class="text-right">变速箱：</th>
+                        <td style="padding-left:30px;">
+                            <label class="checkbox-inline">
+                                <input type="checkbox" name="gearbox" value="不限" /> 不限
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" name="gearbox" value="手动" /> 手动
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" name="gearbox" value="自动" /> 自动
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th width="120" class="text-right">燃油：</th>
+                        <td style="padding-left:30px;">
+                            <label class="checkbox-inline">
+                                <input type="checkbox" name="fueltype" value="不限" /> 不限
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" name="fueltype" value="汽油" /> 汽油
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" name="fueltype" value="柴油" /> 柴油
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" name="fueltype" value="电动" /> 电动
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" id="" value="" /> 混动
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th width="120" class="text-right">区域：</th>
+                        <td style="padding-left:30px;">
+                            <label class="checkbox-inline">
+                                <input type="checkbox" name="region" value="不限" /> 不限
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" name="region" value="总部" /> 总部
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" name="region" value="北京" /> 北京
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" name="region" value="长春" /> 长春
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" name="region" value="上海" /> 上海
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th width="120" class="text-right">估值：</th>
+                        <td><input class="form-control" id="price" placeholder="" required="" autofocus="" type="text" /></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!--删除-->
+    <div class="hide">
+        <div id="shan">
+            确定删除吗？
+        </div>
+    </div>
+    <script src="../js/comm.js" type="text/javascript"></script>
+    <script>
+        layui.use('layer', function () {
+
+        })
+
+        //查询按钮事件
+        $("#searbtn").click(function () {
+            var keyword = $("#keyword").val();
+            paginationFunc(1, 10, keyword);
+        })
+
+        //默认初始化页面加载
+        paginationFunc(1, 10, "");
+        //页面加载列表
+        function paginationFunc(x, y, z) {
+            var arr = [];
+            $.ajax({
+                type: "get",
+                url: href + "carAssessment?page=" + x + "&rows=" + y + "&keyword=" + z,
+                dataType: "json",
+                success: function (obj) {
+                    if (obj.code == "201") {
+                        layer.msg('<span style="font-size:20px">登录时效，请重新登录</span>', {
+                            time: 1000, //2s后自动关闭
+                        }, function () {
+                            window.location.href = "login.html";
+                        });
+                        return false;
+                    }
+                    if (obj.msg == "success") {
+                        var count = obj.data.total;
+                        for (var i = 0; i < count; i++) {
+                            arr.push(i)
+                        }
+                        $('#wrapper').pagination({
+                            dataSource: arr,
+                            pageNumber: x,
+                            pageSize: y,
+                            prevText: "上一页",
+                            nextText: "下一页",
+                            callback: function (data, pagination) { //回调函数 当我们点击页数执行的方法
+                                LoadList(pagination.pageNumber, y, z);
+                            }
+                        })
+                    }
+                }
+            });
+        }
+        //分页详情方法
+        function LoadList(x, y, z) {
+            $.ajax({
+                type: "get",
+                url: href + "carAssessment?page=" + x + "&rows=" + y + "&keyword=" + z,
+                dataType: "json",
+                success: function (obj) {
+                    if (obj.code == "201") {
+                        layer.msg('<span style="font-size:20px">登录时效，请重新登录</span>', {
+                            time: 1000, //2s后自动关闭
+                        }, function () {
+                            window.location.href = "login.html";
+                        });
+                        return false;
+                    }
+                    if (obj.msg == "success") {
+                        var showlist = [];
+                        if (obj.data.total == 0) {
+                            showlist.push('<tr><td colspan=' + $("#listinfo th").length + ' style="text-align:center">无数据</td></tr>');
+                            $("#listinfo tbody").html(showlist.join(''));
+                        }
+                        else {
+                            var html = template('listorder', obj.data);
+                            $("#listinfo tbody").html(html);
+                        }
+                    }
+                },
+                error: function (ex) {
+                    console.log(ex);
+                }
+            });
+        }
+
+        //添加整车残值评估
+        $(document).delegate('.addinfo', 'click', function (event) {
+            $("#keyword1").val("");
+            $("#keyword2").val("");
+            $("#keyword3").val("");
+            $("#datesofproduction").val("");
+            $("#displacement").val("");
+            $("#price").val("");
+            for (var i = 0; i < $("input[name='gearbox']").length; i++) {
+                $("input[name='gearbox']").eq(i).prop("checked", false);
+            }
+            for (var i = 0; i < $("input[name='fueltype']").length; i++) {
+                $("input[name='fueltype']").eq(i).prop("checked", false);
+            }
+            for (var i = 0; i < $("input[name='region']").length; i++) {
+                $("input[name='region']").eq(i).prop("checked", false);
+            }
+
+            event.preventDefault();
+            $('#bianjidiv').dialog({
+                title: '添加整车残值评估',
+                onClose: function () {
+                    $(this).dialog('close');
+                },
+                buttons: [{
+                    text: '取消',
+                    'click': function () {
+                        $(this).dialog('close');
+                    }
+                }, {
+                    text: '确定',
+                    'class': 'btn-primary',
+                    'click': function () {
+                        var arrids1 = [];
+                        for (var i = 0; i < $("input[name='gearbox']").length; i++) {
+                            if ($("input[name='gearbox']").eq(i).prop("checked") == true) {
+                                arrids1.push($("input[name='gearbox']").eq(i).val())
+                            }
+                        };
+                        var ids1 = arrids1.join(";");
+                        var arrids2 = [];
+                        for (var i = 0; i < $("input[name='fueltype']").length; i++) {
+                            if ($("input[name='fueltype']").eq(i).prop("checked") == true) {
+                                arrids2.push($("input[name='fueltype']").eq(i).val())
+                            }
+                        };
+                        var ids2 = arrids2.join(";");
+                        var arrids3 = [];
+                        for (var i = 0; i < $("input[name='region']").length; i++) {
+                            if ($("input[name='region']").eq(i).prop("checked") == true) {
+                                arrids3.push($("input[name='region']").eq(i).val())
+                            }
+                        };
+                        var ids3 = arrids3.join(";");
+                        $.ajax({
+                            type: "post",
+                            url: href + "carAssessment",
+                            data: {
+                                keyword1: $("#keyword1").val(),
+                                keyword2: $("#keyword2").val(),
+                                keyword3: $("#keyword3").val(),
+                                datesofproduction: $("#datesofproduction").val(),
+                                displacement: $("#displacement").val(),
+                                gearbox: ids1,
+                                fueltype: ids2,
+                                region: ids3,
+                                price: $("#price").val()
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.code == "201") {
+                                    layer.msg('<span style="font-size:20px">登录时效，请重新登录</span>', {
+                                        time: 1000, //2s后自动关闭
+                                    }, function () {
+                                        window.location.href = "login.html";
+                                    });
+                                    return false;
+                                }
+                                if (data.msg == "success") {
+                                    layer.msg('<span style="font-size:20px">添加成功</span>', {
+                                        time: 1000, //2s后自动关闭
+                                    }, function () {
+                                        window.location.reload()
+                                    });
+                                }
+                                else {
+                                    layer.msg('<span style="font-size:20px">' + data.msg + '</span>', {
+                                        time: 2000, //2s后自动关闭
+                                    }, function () {
+                                    });
+                                }
+                            }
+                        });
+                    }
+                }]
+            })
+        });
+
+        //删除整车残值评估
+        $(document).delegate('.shan', 'click', function (event) {
+            event.preventDefault();
+            var id = $(this).attr("data-id");
+            $('#shan').dialog({
+                title: '删除',
+                onClose: function () {
+                    $(this).dialog('close');
+                },
+                buttons: [{
+                    text: '取消',
+                    'click': function () {
+                        $(this).dialog('close');
+                    }
+                }, {
+                    text: '确定',
+                    'class': 'btn-primary',
+                    'click': function () {
+                        $.ajax({
+                            type: "DELETE",
+                            url: href + "carAssessment/" + id,
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.code == "201") {
+                                    layer.msg('<span style="font-size:20px">登录时效，请重新登录</span>', {
+                                        time: 1000, //2s后自动关闭
+                                    }, function () {
+                                        window.location.href = "login.html";
+                                    });
+                                    return false;
+                                }
+                                if (data.msg == "success") {
+                                    if (data.data) {
+                                        layer.msg('<span style="font-size:20px">删除成功</span>', {
+                                            time: 1000, //2s后自动关闭
+                                        }, function () {
+                                            window.location.reload()
+                                        });
+                                    }
+                                }
+                                else {
+                                    layer.msg('<span style="font-size:20px">' + data.msg + '</span>', {
+                                        time: 2000, //2s后自动关闭
+                                    }, function () {
+                                    });
+                                }
+                            }
+                        });
+                    }
+                }]
+            })
+        });
+
+        //编辑整车残值评估
+        $(document).delegate('.bianji', 'click', function (event) {
+            event.preventDefault();
+            var id = $(this).attr("data-id");
+            $.ajax({
+                type: "GET",
+                url: href + "carAssessment/" + id,
+                dataType: 'json',
+                success: function (obj) {
+                    if (obj.msg == "success") {
+                        $("#keyword1").val(obj.data.keyword1);
+                        $("#keyword2").val(obj.data.keyword2);
+                        $("#keyword3").val(obj.data.keyword3);
+                        $("#datesofproduction").val(obj.data.datesofproduction);
+                        $("#displacement").val(obj.data.displacement);
+                        $("#price").val(obj.data.price);
+                        var gearbox = obj.data.gearbox;
+                        if (gearbox) {
+                            var gearboxlist = gearbox.split(";");
+                            for (var j = 0; j < gearboxlist.length; j++) {
+                                for (var i = 0; i < $("input[name='gearbox']").length; i++) {
+                                    if ($("input[name='gearbox']").eq(i).val() == gearboxlist[j]) {
+                                        $("input[name='gearbox']").eq(i).prop("checked", true);
+                                    }
+                                }
+                            }
+                        }
+                        var fueltype = obj.data.fueltype;
+                        if (fueltype) {
+                            var fueltypelist = fueltype.split(";");
+                            for (var j = 0; j < fueltypelist.length; j++) {
+                                for (var i = 0; i < $("input[name='fueltype']").length; i++) {
+                                    if ($("input[name='fueltype']").eq(i).val() == fueltypelist[j]) {
+                                        $("input[name='fueltype']").eq(i).prop("checked", true);
+                                    }
+                                }
+                            }
+                        }
+                        var region = obj.data.region;
+                        if (region) {
+                            var regionlist = region.split(";");
+                            for (var j = 0; j < regionlist.length; j++) {
+                                for (var i = 0; i < $("input[name='region']").length; i++) {
+                                    if ($("input[name='region']").eq(i).val() == regionlist[j]) {
+                                        $("input[name='region']").eq(i).prop("checked", true);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            $('#bianjidiv').dialog({
+                title: '编辑整车残值评估',
+                onClose: function () {
+                    $(this).dialog('close');
+                },
+                buttons: [{
+                    text: '取消',
+                    'click': function () {
+                        $(this).dialog('close');
+                    }
+                }, {
+                    text: '确定',
+                    'class': 'btn-primary',
+                    'click': function () {
+                        var arrids1 = [];
+                        for (var i = 0; i < $("input[name='gearbox']").length; i++) {
+                            if ($("input[name='gearbox']").eq(i).prop("checked") == true) {
+                                arrids1.push($("input[name='gearbox']").eq(i).val())
+                            }
+                        };
+                        var ids1 = arrids1.join(";");
+                        var arrids2 = [];
+                        for (var i = 0; i < $("input[name='fueltype']").length; i++) {
+                            if ($("input[name='fueltype']").eq(i).prop("checked") == true) {
+                                arrids2.push($("input[name='fueltype']").eq(i).val())
+                            }
+                        };
+                        var ids2 = arrids2.join(";");
+                        var arrids3 = [];
+                        for (var i = 0; i < $("input[name='region']").length; i++) {
+                            if ($("input[name='region']").eq(i).prop("checked") == true) {
+                                arrids3.push($("input[name='region']").eq(i).val())
+                            }
+                        };
+                        var ids3 = arrids3.join(";");
+                        $.ajax({
+                            type: "PUT",
+                            url: href + "carAssessment/" + id,
+                            data: {
+                                keyword1: $("#keyword1").val(),
+                                keyword2: $("#keyword2").val(),
+                                keyword3: $("#keyword3").val(),
+                                datesofproduction: $("#datesofproduction").val(),
+                                displacement: $("#displacement").val(),
+                                gearbox: ids1,
+                                fueltype: ids2,
+                                region: ids3,
+                                price: $("#price").val()
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.code == "201") {
+                                    layer.msg('<span style="font-size:20px">登录时效，请重新登录</span>', {
+                                        time: 1000, //2s后自动关闭
+                                    }, function () {
+                                        window.location.href = "login.html";
+                                    });
+                                    return false;
+                                }
+                                if (data.msg == "success") {
+                                    layer.msg('<span style="font-size:20px">编辑成功</span>', {
+                                        time: 1000, //2s后自动关闭
+                                    }, function () {
+                                        window.location.reload()
+                                    });
+                                }
+                                else {
+                                    layer.msg('<span style="font-size:20px">' + data.msg + '</span>', {
+                                        time: 2000, //2s后自动关闭
+                                    }, function () {
+                                    });
+                                }
+                            }
+                        });
+                    }
+                }]
+            })
+        });
+
+        //导出Excel
+        $(".export").click(function () {
+            window.location.href = href + "exportExcel/exportData";
+        })
+
+        //导入Excel
+        $(".import").click(function () {
+            $(".upload2").get(0).click();
+        })
+        function doUpload2(a) {
+            var formData = new FormData();
+            if ($(".upload2")[a].files.length == 0) {
+                alert("请选择pc母版！");
+                return false;
+            };
+            var pics = $(".upload2")[a].files[0].name;
+            if (!/\.(XLS|XLSX|xls|xlsx)$/.test(pics)) {
+                alert("请上传正确表格格式");
+                $(".upload2").val("");
+                return;
+            };
+            var sizes = $(".upload2")[a].files[0].size;
+            var pan = Math.round(sizes / 1024 * 100) / 100;
+            if (pan > 20480) {
+                alert("所传表格不能大于20M");
+                //$(".upload2").val("");
+                return;
+            };
+            var newfile = $(".upload2")[a].files[0];
+            formData.append("file", newfile);
+            $.ajax({
+                url: href + "excel/importData",
+                type: "POST",
+                data: formData,
+                dataType: "json",
+                async: false,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (obj) {
+                    if (obj.msg == "success") {
+                        if (obj.data.state) {
+                            layer.msg('<span style="font-size:20px">' + obj.data.msg + '</span>', {
+                                time: 1000, //2s后自动关闭
+                            }, function () {
+                                window.location.reload()
+                            });
+                        }
+                    }
+                    else {
+                        layer.msg('<span style="font-size:20px">' + data.msg + '</span>', {
+                            time: 2000, //2s后自动关闭
+                        }, function () {
+                        });
+                    }
+                },
+                error: function (returndata) {
+                    alert("操作失败");
+                }
+            });
+        };
+
+    </script>
+</body>
+</html>

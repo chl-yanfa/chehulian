@@ -1,0 +1,519 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css" />
+    <link rel="stylesheet" href="../layui/css/layui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" href="../lookpic/css/bootstrap-grid.min.css" />
+    <link rel="stylesheet" href="../lookpic/dist/zoomify.min.css" />
+    <link rel="stylesheet" href="../lookpic/css/style.css" />
+    <script src="../js/jquery-3.1.1.min.js" type="text/javascript"></script>
+    <script src="../js/bootstrap.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../js/jquery.bootstrap.min.js"></script>
+    <script src="../js/dropdown.js" type="text/javascript"></script>
+    <script src="../js/modal.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../layui/layui.js"></script>
+    <script src="../lookpic/dist/zoomify.min.js"></script>
+    <title>车互联-整车报废</title>
+</head>
+<body class="bg">
+    <div class="topbar">
+        <div class="pull-right text-primary" id="loginout" style="margin-left:20px;cursor:pointer;" onclick="loginout()">退出</div>
+        <div class="pull-right text-primary" id="loginusername" style="margin-left:20px;"></div>
+        <div class="pull-right text-primary" id="loginphonenum"></div>
+        <div class="logo"><img src="../img/logo.png" title="" /></div>
+        <div class="topcity pull-left">
+            <div class="m-b-20">
+                <span class="text-primary firstcity pull-left m-r-10 m-l-15"></span>
+                <input type="hidden" value="" id="firstcityid" />
+                <div class="dropdown pull-left">
+                    <div id="changecity" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        [ 切换城市 <span class="caret"></span> ]
+                    </div>
+                    <ul class="dropdown-menu" aria-labelledby="changecity"></ul>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <ul class="nav nav-pills topnav">
+                <li role="presentation"><a href="index.html">首页</a></li>
+                <li role="presentation" class="kzper1" style="display:none;"><a href="scraplist.html">整车报废</a></li>
+                <li role="presentation" class="active kzper2" style="display:none;"><a href="reclaimlist.html">旧件回收</a></li>
+                <li role="presentation"><a href="partstrading.html">配件交易</a></li>
+                <li role="presentation"><a href="auctionhouse.html">拍卖大厅</a></li>
+                <li role="presentation"><a href="questions.html" >常见问题</a></li>
+                <li role="presentation"><a href="aboutus.html">关于我们</a></li>
+                <li role="presentation"><a href="mycenter.html">个人中心</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="formbox">
+        <div class="tablebox">
+            <ol class="breadcrumb">
+                <li><a href="reclaimlist.html">旧件回收</a></li>
+                <li class="active">配件详情</li>
+            </ol>
+            <div class="row">
+                <!--配件信息-->
+                <div class="col-md-3">
+                    <h4 class="page-header"><span class="glyphicon glyphicon-list-alt m-l-15"></span> 配件信息</h4>
+                    <table class="tablelist">
+                        <tr>
+                            <th width="120" class="text-right">配件分类：</th>
+                            <td><span class="peitype"></span></td>
+                        </tr>
+                        <tr>
+                            <th width="120" class="text-right">配件名称：</th>
+                            <td><span class="peiname"></span></td>
+                        </tr>
+                        <tr>
+                            <th width="120" class="text-right">零件编号：</th>
+                            <td><span class="peinum"></span></td>
+                        </tr>
+                        <tr>
+                            <th width="120" class="text-right">状态：</th>
+                            <td><span class="peistate"></span></td>
+                        </tr>
+                        <tr>
+                            <th width="120" class="text-right">描述：</th>
+                            <td><span class="miaoshu"></span></td>
+                        </tr>
+                        <tr>
+                            <th width="120" class="text-right">备注：</th>
+                            <td><span class="beizhu"></span></td>
+                        </tr>
+                        <tr>
+                            <th width="120" class="text-right">残值金额：</th>
+                            <td><span class="canmoney"></span></td>
+                        </tr>
+                    </table>
+                </div>
+                <!--取件信息-->
+                <div class="col-md-3">
+                    <h4 class="page-header"><span class="glyphicon glyphicon-list-alt m-l-15"></span> 取件信息</h4>
+                    <table class="tablelist">
+                        <tr>
+                            <th width="120" class="text-right">取件联系人：</th>
+                            <td><span class="quman"></span></td>
+                        </tr>
+                        <tr>
+                            <th width="120" class="text-right">联系人电话：</th>
+                            <td><span class="quphone"></span></td>
+                        </tr>
+
+                        <tr>
+                            <th width="120" class="text-right">取件时间：</th>
+                            <td><span class="qutime"></span></td>
+                        </tr>
+                        <tr>
+                            <th width="120" class="text-right">取件地址：</th>
+                            <td><span class="quaddress"></span></td>
+                        </tr>
+                    </table>
+                </div>
+                <!--车辆信息-->
+                <div class="col-md-3">
+                    <h4 class="page-header"><span class="glyphicon glyphicon-list-alt m-l-15"></span> 车辆信息</h4>
+                    <table class="tablelist">
+                        <tr>
+                            <th width="120" class="text-right">订单编号：</th>
+                            <td><span class="quorder"></span></td>
+                        </tr>
+                        <tr id="trcarnumid">
+                            <th width="120" class="text-right">车牌号：</th>
+                            <td><span class="qupai"></span></td>
+                        </tr>
+
+                        <tr>
+                            <th width="120" class="text-right">车架号：</th>
+                            <td><span class="carjia"></span></td>
+                        </tr>
+                        <tr>
+                            <th width="120" class="text-right">车辆型号：</th>
+                            <td><span class="caraddress"></span></td>
+                        </tr>
+                        <tr id="trcarbaoid">
+                            <th width="120" class="text-right">报案号：</th>
+                            <td><span class="baonum"></span></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="clearfix"></div>
+                <div class="col-md-12">
+                    <h4 class="page-header"><span class="glyphicon glyphicon-list-alt m-l-15"></span> 配件照片</h4>
+                    <table class="tablelist" style="width:80%;">
+                        <tr>
+
+                            <td rowspan="4" class="peipics"></td>
+                            <td style="width:300px">
+                                <p>接收日期：<span class="jietime"></span></p>
+                                <p>出库日期：<span class="chutime"></span></p>
+                                <p>结算日期：<span class="fantime"></span></p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <!--end 取车信息-->
+            </div>
+            <div class="page-header"></div>
+            <div class="text-center m-b-20"><button class="btn btn-default btn-lg goback">返回</button></div>
+        </div>
+    </div>
+    <script src="../js/comm.js"></script>
+    <script type="text/javascript">
+        (function ($) {
+            if (localStorage.userType == 1) {
+                $("#trcarnumid").hide();
+                $("#trcarbaoid").hide();
+            }
+            $.getUrlParam = function (name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if (r != null) return unescape(r[2]);
+                return null;
+            }
+        })(jQuery);
+        var id = $.getUrlParam('id');
+        function st(x) {
+            //1：未接单 2：已接单 3：已接收 4：已入场 5：已出厂 6：结算中 7：结束
+            if (x == 1) {
+                x = "未接单"
+            };
+            if (x == 2) {
+                x = "已接单"
+            }
+            if (x == 3) {
+                x = "已接收"
+            }
+            if (x == 4) {
+                x = "已入场"
+            }
+            if (x == 5) {
+                x = "已出厂"
+            }
+            if (x == 6) {
+                x = "结算中"
+            }
+            if (x == 7) {
+                x = "结束"
+            };
+            return x;
+        };
+        $.ajax({
+            type: "get",
+            url: href + 'autoparts/' + id + '/detail',
+            dataType: "json",
+            success: function (data) {
+                if (data.code == "201") {
+                    layer.msg('<span style="font-size:20px">登录时效，请重新登录</span>', {
+                        time: 1000, //2s后自动关闭
+                    }, function () {
+                        window.location.href = "login.html";
+                    });
+                    return false;
+                }
+                if (data.msg == "success") {
+                    var d = data.data;
+                    $(".peitype").html(d.partsCaregoryName);
+                    $(".peiname").html(d.partsTypeName);
+                    $(".peinum").html(d.partsNum);
+                    $(".peistate").html(st(d.orderAutopartsStatus));
+                    $(".beizhu").html(d.remark);
+                    var _miaoshu = "";
+                    if (d.isDismantle == "Y"){
+                        _miaoshu = _miaoshu + "、纯拆";
+                    }
+                    if (d.isCollision == "Y") {
+                        _miaoshu = _miaoshu + "、碰撞";
+                    }
+                    if (d.isWear == "Y") {
+                        _miaoshu = _miaoshu + "、自然磨损";
+                    }
+                    if (d.isFlood == "Y") {
+                        _miaoshu = _miaoshu + "、水淹";
+                    }
+                    if (_miaoshu != "")
+                        _miaoshu = _miaoshu.substring(1);
+                    $(".miaoshu").html(_miaoshu);
+                    $(".canmoney").html(d.amount);
+                    $(".quman").html(st(d.takeCarContacts));
+                    $(".quphone").html(d.takeCarContactNumber);
+                    $(".qutime").html(d.takeCarTime);
+                    $(".quaddress").html(d.takeCarAddress);
+                    $(".quorder").html(d.orderNo);
+
+                    $(".qupai").html(d.carNumber);
+                    $(".carjia").html(d.carFrameNumber);
+                    $(".caraddress").html(d.carModelNumberName);
+                    $(".baonum").html(d.reportNo);
+                    $(".jietime").html(d.acceptTime);
+                    $(".chutime").html(d.outageTime);
+                    $(".fantime").html(d.repaymentTime);
+                    var dd = d.autoPartsPictures;
+                    var amount = 0;
+                    if (dd.length) {
+                        var obj = "";
+                        for (var i = 0; i < dd.length; i++) {
+                            obj += '<div class="col-md-3 col-xs-6">'
+                            obj += '<div class="thumbnail"><img class="img-rounded" src="' + dd[i].url + '" /></div>'
+                            obj += '</div>'
+                        };
+                        $(".peipics").html(obj);
+                        //初始化话图片
+                        $(".peipics img").zoomify();
+                    }
+                }
+            }
+        });
+        //编辑配件
+        $(document).delegate('.bian', 'click', function (event) {
+            event.preventDefault();
+            var num = $(this).attr("data-num");
+            var bei = $(this).attr("data-bei");
+            var leis = $(this).attr("data-lei");
+            var name = $(this).attr("data-name");
+            var urls = $(this).attr("data-url");
+            var ids = $(this).attr("data-ids");
+            var oid = $(this).attr("data-id")
+            var arrpic = urls.split(",");
+            var idjoins = ids.split(",");
+            var tt = $(this).parent().parent();
+            lei(leis);
+            qibie(leis, name);
+            $(".num").val(num);
+            $(".bei").val(bei);
+            var otr = "";
+            if (arrpic.length) {
+                for (var i = 0; i < arrpic.length; i++) {
+                    otr += '<div class="col-xs-4 col-md-4 addpic" data-id="' + idjoins[i] + '" data-url="' + arrpic[i] + '">'
+                    otr += '<div class="thumbnail">'
+                    otr += '<img src="' + arrpic[i] + '" alt="" />'
+                    otr += '<button type="button" class="del-btn"><span onclick="del(this)" class="glyphicon glyphicon-remove"></span></button>'
+                    otr += '</div></div>'
+                }
+            };
+            $(".cunpic").html(otr)
+            $('#peijian').dialog({
+                title: '编辑配件',
+                onClose: function () {
+                    $(this).dialog('close');
+                },
+                buttons: [{
+                    text: '取消',
+                    'click': function () {
+                        $(this).dialog('close');
+                    }
+                }, {
+                    text: '确定',
+                    'class': 'btn-primary',
+                    'click': function () {
+                        var otr = ""
+                        otr += '<td>' + $('#m-lei option:selected').val() + '</td>'
+                        otr += '<td>' + $('#m-name option:selected').val() + '</td>'
+                        otr += '<td>' + $(".num").val() + '</td>'
+                        otr += '<td>' + $(".bei").val() + '</td>'
+                        if ($(".addpic").length) {
+                            var obj = "";
+                            var urls = [], idss = [];
+                            for (var i = 0; i < $(".addpic").length; i++) {
+                                urls.push($(".addpic").eq(i).attr("data-url"));
+                                idss.push($(".addpic").eq(i).attr("data-id"))
+                                obj += '<div class="col-md-3 col-xs-6">'
+                                obj += '<div class="thumbnail"><img src="' + $(".addpic").eq(i).attr("data-url") + '" /></div>'
+                                obj += '</div>'
+                            }
+                        }
+                        otr += '<td> <div class="row">' + obj + '</div></td>'
+                        otr += '<td><a data-id="' + oid + '" data-ids="' + idss.join() + '" data-url="' + urls.join() + '" data-bei="' + $(".bei").val() + '" data-num="' + $(".num").val() + '" data-name="' + $('#m-name option:selected').data('type') + '" data-lei="' + $('#m-lei option:selected').data('type') + '" role="button" class="btn btn-default btn-sm bian"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>编辑 </a>'
+                        otr += '<button type="button" onclick="deldata(this)" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除 </button></td>'
+                        tt.html(otr);
+                        $('#peijian').dialog('close');
+                    }
+                }]
+            })
+        });
+        //配件分类
+        function lei(x) {
+            $.ajax({
+                type: "get",
+                url: href + "dictionary/getAll",
+                data: {
+                    sessionid: ""
+                },
+                dataType: "json",
+                success: function (data) {
+                    var otr = '';
+                    var d = data.data;
+                    if (d.length) {
+                        for (var i = 0; i < d.length; i++) {
+                            otr += '<option data-type="' + d[i].id + '">' + d[i].partsCategoryName + '</option>'
+                        };
+                        $("#m-lei").html('<option data-type="">请选择配件分类</option>' + otr);
+                        //						$("#m-name").html('<option data-type="">请选择配件名称</option>');
+                        $("#m-lei option[data-type='" + x + "']").prop("selected", true);
+                    } else {
+                        $("#m-lei").html('<option data-type="">请选择配件分类</option>');
+                        $("#m-name").html('<option data-type="">请选择配件名称</option>');
+                    }
+                }
+            });
+        }
+        //配件名称变化
+        function qibie(id, y) {
+            $.ajax({
+                type: "get",
+                url: href + "dictionary/getByCategoryId",
+                data: {
+                    categoryId: id
+                },
+                dataType: "json",
+                success: function (data) {
+                    var otr = '';
+                    var d = data.data;
+                    if (d.length) {
+                        for (var i = 0; i < d.length; i++) {
+                            otr += '<option data-type="' + d[i].id + '">' + d[i].partsName + '</option>'
+                        };
+                        console.log(otr)
+                        $("#m-name").html(otr);
+                        $("#m-name option[data-type='" + y + "']").prop("selected", true);
+                    } else {
+                        $("#m-name").html('<option data-type="">请选择配件名称</option>');
+                    }
+                }
+            });
+        };
+        //监听配件类型的变化
+        $('#m-lei').on('change', function (event) {
+            event.preventDefault();
+            var id = $('#m-lei option:selected').data('type');
+            if (id == "") {
+                $("#m-lei").html('<option data-type="">请选择配件分类</option>');
+                $("#m-name").html('<option data-type="">请选择配件名称</option>');
+            } else {
+                qibie(id, "")
+            }
+        })
+
+        //上传图片
+        function doUpload2() {
+            var formData = new FormData();
+            if ($(".upload2")[0].files.length == 0) {
+                alert("请选择pc母版！");
+                return false;
+            };
+            formData.append("files", $(".upload2")[0].files[0]);
+            $.ajax({
+                url: href2 + "/upload/attachmet",
+                type: "POST",
+                data: formData,
+                dataType: "json",
+                async: false,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    if (data.code == "201") {
+                        layer.msg('<span style="font-size:20px">登录时效，请重新登录</span>', {
+                            time: 1000, //2s后自动关闭
+                        }, function () {
+                            window.location.href = "login.html";
+                        });
+                        return false;
+                    }
+                    var otr = ""
+                    if (data.msg == "success") {
+                        if (data.data.length) {
+                            for (var i = 0; i < data.data.length; i++) {
+                                otr += '<div class="col-xs-4 col-md-4 addpic" data-id="' + data.data[i].id + '" data-url="' + data.data[i].url + '">'
+                                otr += '<div class="thumbnail">'
+                                otr += '<img src="' + data.data[i].url + '" alt="" />'
+                                otr += '<button type="button" class="del-btn"><span onclick="del(this)" class="glyphicon glyphicon-remove"></span></button>'
+                                otr += '</div></div>'
+                            }
+                        }
+
+                    };
+                    $(".cunpic").append(otr)
+                },
+                error: function (returndata) {
+                    alert("操作失败");
+                }
+            });
+        };
+        //点击添加图片
+        function addactpic() {
+            $(".upload2").get(0).click();
+        }
+        //删除图片
+        function del(x) {
+            $(x).parent().parent().parent().remove()
+        }
+        //删除列表数据
+        function deldata(x) {
+            var id = $(this).attr("data-id");
+            var t = $(x).parent().parent();
+            $.ajax({
+                type: "DELETE",
+                url: href + "autoparts/" + id,
+                dataType: 'json',
+                success: function (data) {
+                    if (data.code == "201") {
+                        layer.msg('<span style="font-size:20px">登录时效，请重新登录</span>', {
+                            time: 1000, //2s后自动关闭
+                        }, function () {
+                            window.location.href = "login.html";
+                        });
+                        return false;
+                    }
+                    if (data.msg == "success") {
+                        layer.msg('<span style="font-size:20px">删除成功</span>', {
+                            time: 1000, //2s后自动关闭
+                        }, function () {
+                            window.location.reload()
+                        });
+                    }
+                }
+
+            });
+
+        }
+        //返回
+        $(".goback").on("click", function (event) {
+            event.preventDefault();
+            window.history.go(-1)
+        })
+        function st(x) {
+            if (x == 1) {
+                x = "待接单"
+            };
+            if (x == 2) {
+                x = "待回收"
+            };
+            if (x == 3) {
+                x = "待入库"
+            };
+            if (x == 4) {
+                x = "无法接收"
+            };
+            if (x == 5) {
+                x = "待结算"
+            };
+            if (x == 6) {
+                x = "待结算"
+            };
+            if (x == 7) {
+                x = "部分结算"
+            };
+            if (x == 8) {
+                x = "已完成"
+            };
+            if (x == 9) {
+                x = "异常"
+            };
+            return x;
+        };
+    </script>
+</body>
+</html>

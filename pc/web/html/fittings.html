@@ -1,0 +1,589 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css" />
+    <link rel="stylesheet" href="../layui/css/layui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" href="../lookpic/dist/zoomify.min.css" />
+    <script src="../js/jquery-3.1.1.min.js" type="text/javascript"></script>
+    <script src="../js/bootstrap.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../js/jquery.bootstrap.min.js"></script>
+    <script src="../js/dropdown.js" type="text/javascript"></script>
+    <script src="../js/modal.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../layui/layui.js"></script>
+    <script src="../lookpic/dist/zoomify.min.js"></script>
+
+    <link href="../video/src/css/videoplayer.css" rel="stylesheet" />
+    <style>
+        .displaynone {
+            display: none;
+        }
+        .thumbnail img {
+            width: 133px;
+            height: 77px;
+        }
+    </style>
+    <title>车互联-整车报废</title>
+</head>
+<body class="bg">
+    <div class="topbar">
+        <div class="pull-right text-primary" id="loginout" style="margin-left:20px;cursor:pointer;" onclick="loginout()">退出</div>
+        <div class="pull-right text-primary" id="loginusername" style="margin-left:20px;"></div>
+        <div class="pull-right text-primary" id="loginphonenum"></div>
+        <div class="logo"><img src="../img/logo.png" title="" /></div>
+        <div class="topcity pull-left">
+            <div class="m-b-20">
+                <span class="text-primary pull-left m-r-10 m-l-15">北京</span>
+                <div class="dropdown pull-left">
+                    <div id="changecity" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        [ 切换城市 <span class="caret"></span> ]
+                    </div>
+                    <ul class="dropdown-menu" aria-labelledby="changecity">
+                        <li><a href="">长春</a></li>
+                        <li><a href="">济南</a></li>
+                        <li><a href="">上海</a></li>
+                    </ul>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <ul class="nav nav-pills topnav">
+                <li role="presentation"><a href="index.html">首页</a></li>
+                <li role="presentation" class="kzper1" style="display:none;"><a href="scraplist.html">整车报废</a></li>
+                <li role="presentation" class="active kzper2" style="display:none;"><a href="reclaimlist.html">旧件回收</a></li>
+                <li role="presentation"><a href="partstrading.html">配件交易</a></li>
+                <li role="presentation"><a href="auctionhouse.html">拍卖大厅</a></li>
+                <li role="presentation"><a href="questions.html" >常见问题</a></li>
+                <li role="presentation"><a href="aboutus.html">关于我们</a></li>
+                <li role="presentation"><a href="mycenter.html">个人中心</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="formbox">
+        <div class="tablebox">
+            <ol class="breadcrumb">
+                <li><a href="reclaimlist.html">旧件回收</a></li>
+                <li class="active">配件详情</li>
+            </ol>
+            <div class="row">
+
+
+                <div class="col-md-6" style="min-height:300px;">
+                    <h4 class="page-header"><span class="glyphicon glyphicon-list-alt m-l-15"></span> 报废照片</h4>
+                    <table class="tablelist">
+                        <tr>
+                            <td class="baofeipics">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="col-md-6" style="min-height:300px;">
+                    <h4 class="page-header"><span class="glyphicon glyphicon-list-alt m-l-15"></span> 报废视频</h4>
+                    <table class="tablelist">
+                        <tr>
+                            <td><b>上传视频：</b></td>
+                            <td class="videourl" style="height:220px;width: 490px;">
+                                <div class="thumbnail" style="height:230px;width: 490px;">
+                                    <div class="thumbnail img-input-box" id="addvideodiv" style="width: 100%;height:100px;border:none;">
+                                        <img src="../img/addimg-bg.png" alt="" onclick="addVideo()" style="height:200px;" />
+                                        <form enctype="multipart/form-data" method="post">
+                                            <input style="display: none;" type="file" accept=".MOV,.ASF,.RM,.NAVI,.DivX,.MP4,.MPEG,.WMV" name="doUploadVideo" class="doUploadVideo" onchange="doUploadVideoFunc()" />
+                                        </form>
+                                    </div>
+                                    <div class="mod-yivideo-warp zoomify displaynone" style="width: 100%;height:280px;" id="mod_player"></div>
+                                </div>
+
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!--配件信息-->
+                <div class="col-md-3">
+                    <h4 class="page-header"><span class="glyphicon glyphicon-list-alt m-l-15"></span> 配件信息</h4>
+                    <table class="tablelist">
+                        <tr>
+                            <th width="120" class="text-right">配件分类：</th>
+                            <td><span class="peitype"></span></td>
+                        </tr>
+                        <tr>
+                            <th width="120" class="text-right">配件名称：</th>
+                            <td><span class="peiname"></span></td>
+                        </tr>
+                        <tr>
+                            <th width="120" class="text-right">零件编号：</th>
+                            <td><span class="peinum"></span></td>
+                        </tr>
+                        <tr>
+                            <th width="120" class="text-right">备注：</th>
+                            <td><span class="beizhu"></span></td>
+                        </tr>
+                        <tr>
+                            <th width="120" class="text-right">残值金额：</th>
+                            <td><span class="canmoney"></span></td>
+                        </tr>
+                    </table>
+                </div>
+                <!--取件信息-->
+                <div class="col-md-4">
+                    <h4 class="page-header"><span class="glyphicon glyphicon-list-alt m-l-15"></span> 取件信息</h4>
+                    <table class="tablelist">
+                        <tr>
+                            <th width="120" class="text-right">取件联系人：</th>
+                            <td><span class="quman"></span></td>
+                        </tr>
+                        <tr>
+                            <th width="120" class="text-right">联系人电话：</th>
+                            <td><span class="quphone"></span></td>
+                        </tr>
+
+                        <tr>
+                            <th width="120" class="text-right">取件时间：</th>
+                            <td><span class="qutime"></span></td>
+                        </tr>
+                        <tr>
+                            <th width="120" class="text-right">取件地址：</th>
+                            <td><span class="quaddress"></span></td>
+                        </tr>
+                    </table>
+                </div>
+                <!--车辆信息-->
+                <div class="col-md-3">
+                    <h4 class="page-header"><span class="glyphicon glyphicon-list-alt m-l-15"></span> 车辆信息</h4>
+                    <table class="tablelist">
+                        <tr>
+                            <th width="120" class="text-right">订单编号：</th>
+                            <td><span class="quorder"></span></td>
+                        </tr>
+                        <tr>
+                            <th width="120" class="text-right">车牌号：</th>
+                            <td><span class="qupai"></span></td>
+                        </tr>
+
+                        <tr>
+                            <th width="120" class="text-right">车架号：</th>
+                            <td><span class="carjia"></span></td>
+                        </tr>
+                        <tr>
+                            <th width="120" class="text-right">车辆型号：</th>
+                            <td><span class="caraddress"></span></td>
+                        </tr>
+                        <tr>
+                            <th width="120" class="text-right">报案号：</th>
+                            <td><span class="baonum"></span></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="clearfix"></div>
+                <div class="col-md-12">
+                    <h4 class="page-header"><span class="glyphicon glyphicon-list-alt m-l-15"></span> 配件照片</h4>
+                    <table class="tablelist" style="width:80%;">
+                        <tr>
+                            <td rowspan="4" class="peipics"></td>
+                            <td style="width:300px">
+                                <p>接收日期：<span class="jietime"></span></p>
+                                <p>出库日期：<span class="chutime"></span></p>
+                                <p>结算日期：<span class="fantime"></span></p>
+                            </td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+                <!--end 取车信息-->
+
+            </div>
+            <div class="page-header"></div>
+            <div class="text-center m-b-20"><button class="btn btn-default btn-lg goback">返回</button></div>
+        </div>
+    </div>
+
+    <script src="../js/comm.js"></script>
+    <script src="../video/build/videoplayer.min.js"></script>
+    <script type="text/javascript">
+        (function ($) {
+
+            layui.use('layer', function () {
+
+            })
+
+            $.getUrlParam = function (name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if (r != null) return unescape(r[2]);
+                return null;
+            }
+        })(jQuery);
+
+
+        //上传视频
+        function addVideo() {
+            $(".doUploadVideo").get(0).click();
+        };
+        //上传视频
+        function doUploadVideoFunc() {
+            var formData = new FormData();
+            if ($(".doUploadVideo")[0].files.length == 0) {
+                alert("请选择pc母版！");
+                return false;
+            };
+            var pics = $(".doUploadVideo")[0].files[0].name.toUpperCase();
+            if (!/\.(MOV|ASF|RM|NAVI|DivX|MP4|MPEG|WMV)$/.test(pics)) {
+                alert("请上传正确视频格式");
+                $(".upload2").val("");
+                return;
+            };
+            var sizes = $(".doUploadVideo")[0].files[0].size;
+            var pan = Math.round(sizes / 1024 * 100) / 100;
+            if (pan > 40960) {
+                alert("所传视频不能大于40M");
+                return;
+            };
+            formData.append("files", $(".doUploadVideo")[0].files[0]);
+            $.ajax({
+                type: "get",
+                url: href3+"/autoparts/importFile",
+                data: { id: id, file: $(".doUploadVideo")[0].files[0] },
+                dataType: "json",
+                async: false,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (obj) {
+                    if (obj.msg == "success") {
+                        console.log("视频信息:");
+                        console.log(obj);
+                        $("#mod_player").removeClass("displaynone");
+                        $("#addvideodiv").addClass("displaynone");
+                        //obj.data = "http://yyd-erp-test2.oss-cn-qingdao.aliyuncs.com/2018120610201158807745.mp4?Expires=1859422888&OSSAccessKeyId=DdlZrWpapbesLTDD&Signature=l7vCqNyogE%2FsErLplFcA8JfNsg8%3D";
+                        displayVideo(obj.data);
+                    }
+                    if (obj.code == "206") {
+                        layer.msg('<span style="font-size:20px">上传失败。原因是：附件过大</span>', {
+                            time: 2000, //2s后自动关闭
+                        });
+                        return;
+                    }
+                }
+            });
+        }
+        function displayVideo(urlstr) {
+            var videoplayer = videoPlayer('mod_player', {
+                continuousPlay: false,
+                autoPlay: false,
+                canfast: true,
+                width: '100%',
+                height: '220px',
+                virtualFullScreen: false,
+                setSource: function (canplayTypes) {
+                    //console.log(canplayTypes);
+                    return urlstr;
+                },
+                nextSource: function (canplayType) {
+
+                },
+                success: function (video, node, videoObj) {
+                    // videoObj.fullScreen();
+                    videoObj.timeupdate(function (currentTime) {
+                        console.log(currentTime)
+                    });
+                }
+
+            });
+        }
+
+        var id = $.getUrlParam('id');
+        function st(x) {
+            //1：未接单 2：已接单 3：已接收 4：已入场 5：已出厂 6：结算中 7：结束
+            if (x == 1) {
+                x = "未接单"
+            };
+            if (x == 2) {
+                x = "已接单"
+            }
+            if (x == 3) {
+                x = "已接收"
+            }
+            if (x == 4) {
+                x = "已入场"
+            }
+            if (x == 5) {
+                x = "已出厂"
+            }
+            if (x == 6) {
+                x = "结算中"
+            }
+            if (x == 7) {
+                x = "结束"
+            };
+            return x;
+        };
+        $.ajax({
+            type: "get",
+            url: href + 'autoparts/' + id + '/detail',
+            dataType: "json",
+            success: function (data) {
+                if (data.msg == "success") {
+                    var d = data.data;
+                    $(".peitype").html(d.partsCaregoryName);
+                    $(".peiname").html(d.partsTypeName);
+                    $(".peinum").html(d.partsNum);
+                    $(".beizhu").html(d.remark);
+                    $(".canmoney").html(d.amount);
+                    $(".quman").html(st(d.takeCarContacts));
+                    $(".quphone").html(d.takeCarContactNumber);
+                    $(".qutime").html(d.takeCarTime);
+                    $(".quaddress").html(d.takeCarAddress);
+                    $(".quorder").html(d.orderNo);
+
+                    $(".qupai").html(d.carNumber);
+                    $(".carjia").html(d.carFrameNumber);
+                    $(".caraddress").html(d.carModelNumberName);
+                    $(".baonum").html(d.reportNo);
+                    $(".jietime").html(d.acceptTime);
+                    $(".chutime").html(d.outageTime);
+                    $(".fantime").html(d.repaymentTime);
+                    var dd = d.autoPartsPictures;
+                    var amount = 0;
+                    if (dd.length) {
+                        var obj = "";
+                        for (var i = 0; i < dd.length; i++) {
+                            obj += '<div class="col-md-3 col-xs-6">'
+                            obj += '<div class="thumbnail"  style=""><img  class="img-rounded" src="' + dd[i].url + '" /></div>'
+                            obj += '</div>'
+                        };
+                        $(".peipics").html(obj);
+                        //初始化话图片
+                        $(".peipics img").zoomify();
+                        //初始化话图片
+                        $(".baofeipics img").zoomify();
+                    }
+                    //显示报废照片
+                    var baofeipic = d.autoPartsScrapPictures;
+                    if (baofeipic.length) {
+                        var otr = "";
+                        for (var i = 0; i < baofeipic.length; i++) {
+                            otr += '<div class="col- md-4 col-xs-4" data-id="' + baofeipic[i].id + '">';
+                            otr += '<div class="thumbnail">';
+                            otr += '<img class="img-rounded zoomify"  src="' + baofeipic[i].url + '" alt="" />';
+                            otr += '</div>';
+                            otr += '</div>';
+                        }
+                        $(".baofeipics").html(otr);
+                        $(".baofeipics img").zoomify();
+                    }
+                    $("#mod_player").removeClass("displaynone");
+                    $("#addvideodiv").addClass("displaynone");
+                    if (d.autoPartsVideo[0]) {
+                        displayVideo(d.autoPartsVideo[0].url)
+                    }
+                }
+            }
+        });
+        //编辑配件
+        $(document).delegate('.bian', 'click', function (event) {
+            event.preventDefault();
+            var num = $(this).attr("data-num");
+            var bei = $(this).attr("data-bei");
+            var leis = $(this).attr("data-lei");
+            var name = $(this).attr("data-name");
+            var urls = $(this).attr("data-url");
+            var ids = $(this).attr("data-ids");
+            var oid = $(this).attr("data-id")
+            var arrpic = urls.split(",");
+            var idjoins = ids.split(",");
+            var tt = $(this).parent().parent();
+            lei(leis);
+            qibie(leis, name);
+            $(".num").val(num);
+            $(".bei").val(bei);
+            var otr = "";
+            if (arrpic.length) {
+                for (var i = 0; i < arrpic.length; i++) {
+                    otr += '<div class="col-xs-4 col-md-4 addpic" data-id="' + idjoins[i] + '" data-url="' + arrpic[i] + '">'
+                    otr += '<div class="thumbnail">'
+                    otr += '<img src="' + arrpic[i] + '" alt="" />'
+                    otr += '<button type="button" class="del-btn"><span onclick="del(this)" class="glyphicon glyphicon-remove"></span></button>'
+                    otr += '</div></div>'
+                }
+            };
+            $(".cunpic").html(otr)
+            $('#peijian').dialog({
+                title: '编辑配件',
+                onClose: function () {
+                    $(this).dialog('close');
+                },
+                buttons: [{
+                    text: '取消',
+                    'click': function () {
+                        $(this).dialog('close');
+                    }
+                }, {
+                    text: '确定',
+                    'class': 'btn-primary',
+                    'click': function () {
+                        var otr = ""
+                        otr += '<td>' + $('#m-lei option:selected').val() + '</td>'
+                        otr += '<td>' + $('#m-name option:selected').val() + '</td>'
+                        otr += '<td>' + $(".num").val() + '</td>'
+                        otr += '<td>' + $(".bei").val() + '</td>'
+                        if ($(".addpic").length) {
+                            var obj = "";
+                            var urls = [], idss = [];
+                            for (var i = 0; i < $(".addpic").length; i++) {
+                                urls.push($(".addpic").eq(i).attr("data-url"));
+                                idss.push($(".addpic").eq(i).attr("data-id"))
+                                obj += '<div class="col-md-3 col-xs-6">'
+                                obj += '<div class="thumbnail"><img src="' + $(".addpic").eq(i).attr("data-url") + '" /></div>'
+                                obj += '</div>'
+                            }
+                        }
+                        otr += '<td> <div class="row">' + obj + '</div></td>'
+                        otr += '<td><a data-id="' + oid + '" data-ids="' + idss.join() + '" data-url="' + urls.join() + '" data-bei="' + $(".bei").val() + '" data-num="' + $(".num").val() + '" data-name="' + $('#m-name option:selected').data('type') + '" data-lei="' + $('#m-lei option:selected').data('type') + '" role="button" class="btn btn-default btn-sm bian"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>编辑 </a>'
+                        otr += '<button type="button" onclick="deldata(this)" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除 </button></td>'
+                        tt.html(otr);
+                        $('#peijian').dialog('close');
+                    }
+                }]
+            })
+        });
+        //配件分类
+        function lei(x) {
+            $.ajax({
+                type: "get",
+                url: href + "dictionary/getAll",
+                data: {
+                    sessionid: ""
+                },
+                dataType: "json",
+                success: function (data) {
+                    var otr = '';
+                    var d = data.data;
+                    if (d.length) {
+                        for (var i = 0; i < d.length; i++) {
+                            otr += '<option data-type="' + d[i].id + '">' + d[i].partsCategoryName + '</option>'
+                        };
+                        $("#m-lei").html('<option data-type="">请选择配件分类</option>' + otr);
+                        //						$("#m-name").html('<option data-type="">请选择配件名称</option>');
+                        $("#m-lei option[data-type='" + x + "']").prop("selected", true);
+                    } else {
+                        $("#m-lei").html('<option data-type="">请选择配件分类</option>');
+                        $("#m-name").html('<option data-type="">请选择配件名称</option>');
+                    }
+                }
+            });
+        }
+        //配件名称变化
+        function qibie(id, y) {
+            $.ajax({
+                type: "get",
+                url: href + "dictionary/getByCategoryId",
+                data: {
+                    categoryId: id
+                },
+                dataType: "json",
+                success: function (data) {
+                    var otr = '';
+                    var d = data.data;
+                    if (d.length) {
+                        for (var i = 0; i < d.length; i++) {
+                            otr += '<option data-type="' + d[i].id + '">' + d[i].partsName + '</option>'
+                        };
+                        console.log(otr)
+                        $("#m-name").html(otr);
+                        $("#m-name option[data-type='" + y + "']").prop("selected", true);
+                    } else {
+                        $("#m-name").html('<option data-type="">请选择配件名称</option>');
+                    }
+                }
+            });
+        };
+        //监听配件类型的变化
+        $('#m-lei').on('change', function (event) {
+            event.preventDefault();
+            var id = $('#m-lei option:selected').data('type');
+            if (id == "") {
+                $("#m-lei").html('<option data-type="">请选择配件分类</option>');
+                $("#m-name").html('<option data-type="">请选择配件名称</option>');
+            } else {
+                qibie(id, "")
+            }
+        })
+
+        //上传图片
+        function doUpload2() {
+            var formData = new FormData();
+            if ($(".upload2")[0].files.length == 0) {
+                alert("请选择pc母版！");
+                return false;
+            };
+            formData.append("files", $(".upload2")[0].files[0]);
+            $.ajax({
+                url: href2 + "/upload/attachmet",
+                type: "POST",
+                data: formData,
+                dataType: "json",
+                async: false,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    var otr = ""
+                    if (data.msg == "success") {
+                        if (data.data.length) {
+                            for (var i = 0; i < data.data.length; i++) {
+                                otr += '<div class="col-xs-4 col-md-4 addpic" data-id="' + data.data[i].id + '" data-url="' + data.data[i].url + '">'
+                                otr += '<div class="thumbnail">'
+                                otr += '<img src="' + data.data[i].url + '" alt="" />'
+                                otr += '<button type="button" class="del-btn"><span onclick="del(this)" class="glyphicon glyphicon-remove"></span></button>'
+                                otr += '</div></div>'
+                            }
+                        }
+
+                    };
+                    $(".cunpic").append(otr)
+                },
+                error: function (returndata) {
+                    alert("操作失败");
+                }
+            });
+        };
+        //点击添加图片
+        function addactpic() {
+            $(".upload2").get(0).click();
+        }
+        //删除图片
+        function del(x) {
+            $(x).parent().parent().parent().remove()
+        }
+        //删除列表数据
+        function deldata(x) {
+            var id = $(this).attr("data-id");
+            var t = $(x).parent().parent();
+            $.ajax({
+                type: "DELETE",
+                url: href + "autoparts/" + id,
+                dataType: 'json',
+                success: function (data) {
+                    if (data.msg == "success") {
+                        layer.msg('<span style="font-size:20px">删除成功</span>', {
+                            time: 1000, //2s后自动关闭
+                        }, function () {
+                            window.location.reload()
+                        });
+                    }
+                }
+
+            });
+
+        }
+        //返回
+        $(".goback").on("click", function (event) {
+            event.preventDefault();
+            window.history.go(-1)
+        })
+    </script>
+</body>
+</html>

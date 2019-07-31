@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.car.app.carscraporder.mapper.PaimaiMapper">
+	<resultMap id="BaseResultMap" type="com.car.app.carscraporder.bo.PaimaiBO">
+		<id 	column="id"  						property="id" />
+		<result column="pmh_id"  					property="pmhId" />
+		<result column="auction_type"  				property="auctionType" />
+		<result column="paimai_name"  				property="paimaiName" />
+		<result column="paimai_start_time"  		property="paimaiStartTime" />
+		<result column="paimai_finish_time"  		property="paimaiFinishTime" />
+		<result column="paimai_state"  				property="paimaiState" />
+		<result column="system_time"  				property="systemTime" />
+	</resultMap>
+
+	<select id="queryList" resultMap="BaseResultMap">
+		select * from (
+			(select * from (
+				select
+					id, pmh_id, auction_type, paimai_name, paimai_start_time,
+					paimai_finish_time, paimai_state,sysdate() system_time
+				from 
+					car_pm_paimai
+				where
+					paimai_state = 1 and is_delete = 0
+				order by 
+					create_time desc) as list1)
+			union
+			(select * from (
+				select
+					id, pmh_id, auction_type, paimai_name, paimai_start_time,
+					paimai_finish_time, paimai_state,sysdate() system_time
+				from 
+					car_pm_paimai
+				where
+					paimai_state = 2 and is_delete = 0
+				order by 
+					create_time desc) as list2)
+		) as list3
+		limit 3
+	</select>
+	
+</mapper>

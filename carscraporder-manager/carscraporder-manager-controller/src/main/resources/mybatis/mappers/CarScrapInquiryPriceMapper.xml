@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.car.app.carscraporder.mapper.CarScrapInquiryPriceMapper">
+	<resultMap id="BaseResultMap" type="com.car.app.carscraporder.bo.CarScrapInquiryPriceBO">
+		<id 	column="id" property="id" />
+		<result column="scrap_type" property="scrapType" />
+		<result column="car_model" property="carModel" />
+		<result column="car_age" property="carAge" />
+		<result column="driving_mileage" property="drivingMileage" />
+		<result column="parts_name" property="partsName" />
+		<result column="contact_number" property="contactNumber" />
+		<result column="status" property="status" />
+		<result column="createtime" property="createtime" />
+		<collection property="partsUrls" ofType="java.lang.String" column="id"
+			select="getListByInquiryPriceId">
+		</collection>
+	</resultMap>
+
+	<select id="queryPageListByWhere" resultMap="BaseResultMap">
+		select
+			CSIP.*
+		from 
+			car_scrap_inquiry_price CSIP
+		where
+			CSIP.id is not null
+			<if test="status != null">
+				AND CSIP.status = #{status}
+			</if>
+			<if test="scrapType != null and scrapType !=''">
+				AND CSIP.scrap_type = #{scrapType}
+			</if>
+			<if test="carModel != null and carModel !=''">
+				AND CSIP.car_model like CONCAT(CONCAT('%', #{carModel}),'%') 
+			</if>
+			<if test="keywords != null and keywords != ''">
+				AND CSIP.contact_number like CONCAT(CONCAT('%', #{keywords}),'%') 
+        	</if>
+        	<if test="startTime != null">
+				AND CSIP.createtime <![CDATA[>=]]> #{startTime}
+			</if>
+			<if test="endTime != null">
+				AND CSIP.createtime <![CDATA[<=]]> #{endTime}
+			</if>
+        order by CSIP.status,CSIP.operatortime desc
+	</select>
+	<select id="getListByInquiryPriceId" resultType="java.lang.String">
+		select 
+			TA.storage_path parts_url
+		from 
+			car_scrap_inquiry_price_attachment CSIPA left join tb_attachment TA on CSIPA.attachment_id = TA.id
+		where 
+			CSIPA.inquiry_price_id = #{id}
+		and
+			CSIPA.isremove = 0
+	</select>
+
+</mapper>

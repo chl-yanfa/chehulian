@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.car.app.carscraporder.mapper.FactoryMapper">
+	<resultMap id="BaseResultMap" type="com.car.app.carscraporder.pojo.Factory" >
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="factory_name" property="factoryName" jdbcType="VARCHAR" />
+		<result column="factory_phone" property="factoryPhone" jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap id="FactoryBO" type="com.car.app.carscraporder.bo.FactoryQueryBO" extends="BaseResultMap">
+		<result column="id" jdbcType="VARCHAR" property="id" />
+		<result column="factoryName" jdbcType="VARCHAR" property="factoryName" />
+		<result column="factoryPhone" jdbcType="VARCHAR" property="factoryPhone" />
+	</resultMap>
+
+	<select id="getAllFactory" resultMap="FactoryBO" >
+        SELECT
+        	id,
+            factory_name,
+            factory_phone
+        FROM
+            car_scrap_factory
+        group by factory_name,factory_phone
+        order by id
+  </select>
+</mapper>

@@ -1,0 +1,416 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css" />
+    <link rel="stylesheet" href="../layui/css/layui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" href="../lookpic/css/bootstrap-grid.min.css" />
+    <link rel="stylesheet" href="../lookpic/dist/zoomify.min.css" />
+    <link rel="stylesheet" href="../lookpic/css/style.css" />
+    <script src="../js/jquery-3.1.1.min.js" type="text/javascript"></script>
+    <script src="../js/bootstrap.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../js/jquery.bootstrap.min.js"></script>
+    <script src="../js/dropdown.js" type="text/javascript"></script>
+    <script src="../js/modal.js" type="text/javascript"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=3LSsiAvyTOStAaAc4Nwb2EDyZcUc9lx8"></script>
+    <script src="../layui/layui.all.js" type="text/javascript"></script>
+    <script src="../lookpic/dist/zoomify.min.js"></script>
+    <style>
+        .datetimepicker {
+            margin-top: 50px !important;
+        }
+
+        #allmap {
+            width: 100%;
+            height: 400px;
+        }
+
+        .tablelist tr {
+            height: 40px;
+        }
+
+        .modal-dialog {
+            width: 750px;
+        }
+    </style>
+    <title>车报废管理后台</title>
+    <script type="text/javascript">
+//$('.dropdown-toggle').dropdown()
+    </script>
+</head>
+<body>
+    <div class="back-stage-top">
+        <h1 class="pull-left">车报废管理后台</h1>
+        <h1 class="pull-right text-primary" id="loginout" style="margin-left:20px;cursor:pointer;font-size:18px;margin-right:50px;" onclick="loginout()">退出</h1>
+        <h1 class="pull-right text-primary" id="loginusername" style="margin-left:20px;font-size:18px;">用户名：张三</h1>
+    </div>
+    <div class="backnav">
+        <ul class="backnav" id="backnavper">
+            <li class="displaynone"><a href="index.html">首页</a></li>
+            <li class=""><a href="Inquiry.html">询价管理</a></li>
+            <li class="displaynone"><a href="orderquotelist.html">报价管理</a></li>
+            <li class="displaynone"><a href="orderlist.html">订单管理</a></li>
+            <li class="displaynone"><a href="scraplist.html">整车报废</a></li>
+            <li class="displaynone"><a href="jiulist.html">旧件回收</a></li>
+            <li class="cur displaynone"><a href="moneymanage.html">财务管理</a></li>
+            <li class="displaynone"><a href="system.html">系统管理</a></li>
+        </ul>
+    </div>
+    <div class="tablebox">
+        <ol class="breadcrumb m-t-10">
+            <li><a href="index.html">首页</a></li>
+            <li><a href="moneymanage.html">财务管理</a></li>
+            <li>结算</li>
+        </ol>
+        <!--车辆信息-->
+        <h2 class="text-center">订单信息：<span class="ordnum"></span></h2>
+        <div class="col-md-6">
+            <h4 class="page-header"><span class="glyphicon glyphicon-list-alt m-l-15"></span> 车辆信息</h4>
+            <table class="tablelist">
+                <tr>
+                    <th width="120" class="text-right"><span class="redcolor">*</span>订单编号：</th>
+                    <td><span class="ordernum"></span></td>
+                </tr>
+                <tr>
+                    <th width="120" class="text-right"><span class="redcolor">*</span>车牌号：</th>
+                    <td><span class="carnum"></span></td>
+                </tr>
+                <tr>
+                    <th width="120" class="text-right"><span class="redcolor">*</span>车架号：</th>
+                    <td><span class="carjia"></span></td>
+                </tr>
+                <tr>
+                    <th width="120" class="text-right"><span class="redcolor">*</span>车辆型号：</th>
+                    <td><span class="carxing"></span></td>
+                </tr>
+                <tr>
+                    <th width="120" class="text-right"><span class="redcolor">*</span>能否行驶：</th>
+                    <td><span class="forxing"></span></td>
+                </tr>
+                <tr>
+                    <th width="120" class="text-right"><span class="redcolor">*</span>报案号：</th>
+                    <td><span class="carbao"></span></td>
+                </tr>
+                <tr>
+                    <th width="120" class="text-right"><span class="redcolor">*</span>车主姓名：</th>
+                    <td><span class="chezhu"></span></td>
+                </tr>
+            </table>
+        </div>
+        <!--end 车辆信息-->
+        <!--取车信息-->
+        <div class="col-md-6">
+            <h4 class="page-header"><span class="glyphicon glyphicon-list-alt m-l-15"></span> 取车信息</h4>
+            <table class="tablelist">
+                <tr>
+                    <th width="120" class="text-right"><span class="redcolor">*</span>取车联系人：</th>
+                    <td>
+                        <div class="input-group">
+                            <!--常用联系人-->
+                            <span id="changren"></span>
+                            <!--<input type="text" id="changren" class="form-control" placeholder="">
+                            <span class="input-group-btn">
+                              <button class="btn btn-default quan" type="button" >常用联系人</button>
+                            </span>-->
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th width="120" class="text-right"><span class="redcolor">*</span>联系人电话：</th>
+                    <td><span class="perphone"></span></td>
+                </tr>
+
+                <tr>
+                    <th width="120" class="text-right"><span class="redcolor">*</span>取车时间：</th>
+                    <td>
+                        <div class="input-group">
+                            <span id="checktime"></span>
+                            <!--<span role="button"  class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>-->
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th width="120" class="text-right"><span class="redcolor">*</span>取车地址：</th>
+                    <td><span class="setmap"></span></td>
+                </tr>
+            </table>
+        </div>
+        
+        <!--报废图片-->
+        <div class="clearfix"></div>
+        <h4 class="page-header"><span class="glyphicon glyphicon-list-alt m-l-15"></span> 车辆与手续照片</h4>
+        <div class="col-md-12">
+            <div class="displaypics">
+            </div>
+        </div>
+        <!--end 取车信息-->
+        <div class="clearfix"></div>
+        <div class="col-md-6">
+            <h4><span class="glyphicon glyphicon-list-alt m-l-15"></span> 财务结算</h4>
+            <table class="tablelist" style="text-align: left;">
+                <tr>
+                    <th width="80" style="text-align: right;">残值金额：</th>
+                    <td>
+                        <span class="canjimoney"></span>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary pull-left peijie">结算</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <!--配件信息-->
+        <div class="clearfix"></div>
+        <div class="col-md-8">
+            <div class="page-header">
+                <h4 class="pull-left"><span class="glyphicon glyphicon-list-alt m-l-15"></span> 结算历史</h4>
+                <!--<button type="button" class="btn btn-primary pull-right peibtn" >+ 添加配件</button>-->
+                <div class="clearfix"></div>
+            </div>
+            <table class="table table-striped addtab2">
+                <thead>
+                    <tr>
+                        <th>结算日期</th>
+                        <th>结算金额</th>
+                        <th>操作人</th>
+                        <th>备注</th>
+                        <th width="50%">操作</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="hide">
+            <div id="detailState">
+                <div class="form-group form-inline clearfix">
+                    <div style="width:33%;float:left;">残值金额：<span id="canzhijine"></span></div>
+                    <div style="width:33%;float:left;"> 已结算金额：<span id="yijiesuanjine"></span></div>
+                    <div style="width:33%;float:left;"> 剩余金额：<span id="shengyujine"></span></div>
+                </div>
+                <div class="form-group form-inline clearfix">
+                    本次结算金额：
+                    <input type="text" style="width:300px;" class="form-control checkLogs" id="jiesuan" onkeyup="VerifyAmount(this)" placeholder="请输入结算金额" autocomplete="off" />
+                </div>
+                <div class="form-group form-inline clearfix">
+                    转账流水单号：
+                    <input type="text" style="width:300px;" class="form-control checkLogs" id="liudan" placeholder="请输入转账流水单号" autocomplete="off" />
+                </div>
+                <div class="form-group form-inline clearfix">
+                    &#12288;&#12288;&#12288;&#12288;备注：
+                    <textarea class="form-control bei" rows="3" style="width:300px;"  placeholder="请输入备注" id="beizhu"></textarea>
+                </div>
+            </div>
+        </div>
+        <script src="../js/bootstrap-datetimepicker.min.js"></script>
+        <script src="../js/bootstrap-datetimepicker.zh-CN.js"></script>
+        <script src="../js/comm.js"></script>
+        <script>
+            (function ($) {
+                $.getUrlParam = function (name) {
+                    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                    var r = window.location.search.substr(1).match(reg);
+                    if (r != null) return unescape(r[2]);
+                    return null;
+                }
+            })(jQuery);
+            var id = $.getUrlParam('id');
+            layui.use('layer', function () {
+
+            });
+            var jiemoney = 0;
+            $.ajax({
+                type: "get",
+                url: href + 'order/' + id,
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    if (data.code == "201") {
+                        layer.msg('<span style="font-size:20px">登录时效，请重新登录</span>', {
+                            time: 1000, //2s后自动关闭
+                        }, function () {
+                            window.location.href = "login.html";
+                        });
+                        return false;
+                    }
+                    if (data.msg == "success") {
+                        var d = data.data;
+                        $(".ordernum").html(d.orderNo);
+                        $(".carnum").html(d.custormName);
+                        $(".carjia").html(d.carFrameNumber);
+                        $(".carxing").html(d.carModelNumber);
+                        $(".carbao").html(d.reportNo);
+                        $(".canjimoney").html(d.orderAmount);
+                        $("#changren").html(d.takeCarContacts);
+                        $(".perphone").html(d.takeCarContactNumber);
+                        $("#checktime").html(d.takeCarTime);
+                        $(".setmap").html(d.takeCarAddress);
+                        $(".chezhu").html(d.carOwner);
+                        $(".forxing").html(d.isdrive == "1" ? "可以行驶" : (d.isdrive == "2" ? "不可以行驶" : "严重事故"));
+                        $("#canzhijine").html(d.orderAmount);
+                        var pics = d.vehiclePictures;
+                        var picinfo = "";
+                        for (i = 0; i < pics.length; i++) {
+                            if (pics[i].carPictureType) {
+                                picinfo += '<div class="col-xs-2 col-md-2">';
+                                picinfo += '<div class="thumbnail">';
+                                picinfo += '<img src="' + pics[i].url + '" alt="" />';
+                                picinfo += '<p class="m-t-10 text-center text-primary">' + GetPicCategory(pics[i].carPictureType) + '</p>';
+                                picinfo += '</div>';
+                                picinfo += '</div>';
+                            }
+                        }
+                        pics = d.formalitiesPictures;
+                        for (i = 0; i < pics.length; i++) {
+                            if (pics[i].carPictureType) {
+                                picinfo += '<div class="col-xs-2 col-md-2">';
+                                picinfo += '<div class="thumbnail">';
+                                picinfo += '<img src="' + pics[i].url + '" alt="" />';
+                                picinfo += '<p class="m-t-10 text-center text-primary">' + GetPicCategory(pics[i].carPictureType) + '</p>';
+                                picinfo += '</div>';
+                                picinfo += '</div>';
+                            }
+                        }
+                        //加载图片
+                        $(".displaypics").html(picinfo);
+                        //初始化话图片
+                        $(".thumbnail img").zoomify();
+                        var f = d.settlementList;
+                        if (f.length) {
+                            var objs = "";
+                            var t1 = 0;
+                            for (var i = 0; i < f.length; i++) {
+                                objs += '<tr>'
+                                objs += '<td>' + f[i].settlementTime + '</td>'
+                                objs += '<td>' + f[i].settlementAmount + '</td>'
+                                objs += '<td>' + f[i].settlementerName + '</td>'
+                                objs += '<td>' + f[i].settlementRemarks + '</td>'
+                                objs += '<td>更多详情</td>'
+                                objs += '</tr>'
+                                t1 += f[i].settlementAmount;
+                            };
+                            $("#yijiesuanjine").html(t1);
+                            $("#shengyujine").html(d.orderAmount - t1);
+                            $(".addtab2 tbody").html(objs);
+                            for (var i = 0; i < $(".addtab2 td").length; i++) {
+                                if ($(".addtab2 td").eq(i).text() == null || $(".addtab2 td").eq(i).text() == "null") {
+                                    $(".addtab2 td").eq(i).html("")
+                                }
+                            }
+                        } else {
+                            $("#yijiesuanjine").html(0);
+                            $("#shengyujine").html(d.orderAmount);
+                        }
+                    }
+                }
+            });
+
+            //结算
+            $(document).delegate('.peijie', 'click', function (event) {
+                event.preventDefault();
+                if ($("#canzhijine").html() == "")
+                {
+                    layer.msg('<span style="font-size:20px">请输入残值金额</span>');
+                    return false;
+                }
+                $('#detailState').dialog({
+                    title: '结算',
+                    width:500,
+                    onClose: function () {
+                        $(this).dialog('close');
+                    },
+                    buttons: [{
+                        text: '取消',
+                        'click': function () {
+                            $(this).dialog('close');
+                        }
+                    }, {
+                        text: '确定',
+                        'class': 'btn-primary',
+                        'click': function () {
+                            var _Amount = $("#jiesuan").val();
+                            var _Remark = $("#beizhu").val();
+                            var _flow = $("#liudan").val();
+                            //if (_Amount == "" || _flow=="")
+                            //{
+
+                            //}
+                            var arr = [];
+                            arr.push({
+                                settlementAmount: _Amount,
+                                settlementRemarks: _Remark,
+                            })
+                            var senddata = {
+                                flow: _flow,
+                                orderid: id,
+                                settlementInfos: arr
+                            }
+                            $.ajax({
+                                type: "post",
+                                url: href + "settlementFlow",
+                                data: JSON.stringify(senddata),
+                                contentType: "application/json;charset=utf-8",
+                                dataType: "json",
+                                success: function (data) {
+                                    if (data.code == "201") {
+                                        layer.msg('<span style="font-size:20px">登录时效，请重新登录</span>', {
+                                            time: 1000, //2s后自动关闭
+                                        }, function () {
+                                            window.location.href = "login.html";
+                                        });
+                                        return false;
+                                    }
+                                    if (data.msg == "success") {
+                                        layer.msg('<span style="font-size:20px">结算成功</span>', {
+                                            time: 1000, //2s后自动关闭
+                                        }, function () {
+                                            window.location.reload()
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    }]
+                })
+            });
+            //监听结算金额的bianhua
+            $(".addren").on("keyup", '.benmoney', function () {
+                var allnum = 0;
+                if ($(".benmoney").length) {
+                    for (var i = 0; i < $(".benmoney").length; i++) {
+                        if ($(".benmoney").eq(i).val() == "") {
+                            allnum += 0;
+                        } else {
+                            allnum += parseFloat($(".benmoney").eq(i).val());
+                        }
+                    }
+
+                };
+                $(".allmoney").html(allnum)
+            })
+            //加载图片所属类型
+            function GetPicCategory(a) {
+                var result = "";
+                switch (a) {
+                    case "1": result = "左前45度"; break;
+                    case "2": result = "正前"; break;
+                    case "3": result = "右前45度 "; break;
+                    case "4": result = "左后45度"; break;
+                    case "5": result = "正后"; break;
+                    case "6": result = "右后45度"; break;
+                    case "7": result = "车架号"; break;
+                    case "8": result = "发动机"; break;
+                    case "9": result = "仪表"; break;
+                    case "10": result = "行驶证"; break;
+                    case "11": result = "登记证"; break;
+                    case "12": result = "车主身份正正前方"; break;
+                    case "13": result = "车主身份正正后"; break;
+                    default: result = "";
+                }
+                return result;
+            }
+        </script>
+    </div>
+</body>
+</html>

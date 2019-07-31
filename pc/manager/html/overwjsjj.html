@@ -1,0 +1,325 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css" />
+    <link rel="stylesheet" href="../layui/css/layui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <script src="../js/jquery-3.1.1.min.js" type="text/javascript"></script>
+    <script src="../js/bootstrap.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../js/jquery.bootstrap.min.js"></script>
+    <script src="../js/dropdown.js" type="text/javascript"></script>
+    <script src="../js/modal.js" type="text/javascript"></script>
+    <script src="../layui/layui.all.js" type="text/javascript"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+            a:hover {
+                text-decoration: none;
+            }
+
+        .tcdPageCode {
+            padding: 15px 20px;
+            text-align: left;
+            color: #ccc;
+            text-align: center;
+        }
+
+            .tcdPageCode a {
+                display: inline-block;
+                color: #428bca;
+                display: inline-block;
+                height: 25px;
+                line-height: 25px;
+                padding: 0 10px;
+                border: 1px solid #ddd;
+                margin: 0 2px;
+                border-radius: 4px;
+                vertical-align: middle;
+            }
+
+                .tcdPageCode a:hover {
+                    text-decoration: none;
+                    border: 1px solid #428bca;
+                }
+
+            .tcdPageCode span.current {
+                display: inline-block;
+                height: 25px;
+                line-height: 25px;
+                padding: 0 10px;
+                margin: 0 2px;
+                color: #fff;
+                background-color: #428bca;
+                border: 1px solid #428bca;
+                border-radius: 4px;
+                vertical-align: middle;
+            }
+
+            .tcdPageCode span.disabled {
+                display: inline-block;
+                height: 25px;
+                line-height: 25px;
+                padding: 0 10px;
+                margin: 0 2px;
+                color: #bfbfbf;
+                background: #f2f2f2;
+                border: 1px solid #bfbfbf;
+                border-radius: 4px;
+                vertical-align: middle;
+            }
+
+        .tijia {
+            display: inline-block;
+            width: 100px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .tdmain th, td {
+            text-align: center;
+        }
+
+        tr a:hover {
+            text-decoration: underline;
+            color: blue;
+        }
+
+        .kan1 {
+            color: blue;
+            cursor: pointer;
+        }
+    </style>
+    <title>车报废管理后台</title>
+</head>
+<body>
+    <div class="back-stage-top">
+        <h1 class="pull-left">车报废管理后台</h1>
+        <h1 class="pull-right text-primary" id="loginout" style="margin-left:20px;cursor:pointer;font-size:18px;margin-right:50px;" onclick="loginout()">退出</h1>
+        <h1 class="pull-right text-primary" id="loginusername" style="margin-left:20px;font-size:18px;">用户名：张三</h1>
+    </div>
+    <div class="backnav">
+        <ul class="backnav" id="backnavper">
+            <li class="cur displaynone"><a href="index.html">首页</a></li>
+            <li class=""><a href="Inquiry.html">询价管理</a></li>
+            <li class="displaynone"><a href="orderquotelist.html">报价管理</a></li>
+            <li class="displaynone"><a href="orderlist.html">订单管理</a></li>
+            <li class="displaynone"><a href="scraplist.html">整车报废</a></li>
+            <li class="displaynone"><a href="jiulist.html">旧件回收</a></li>
+            <li class="displaynone"><a href="moneymanage.html">财务管理</a></li>
+            <li class="displaynone"><a href="system.html">系统管理</a></li>
+        </ul>
+    </div>
+    <div class="tablebox">
+        <div class="">
+            <ol class="breadcrumb">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="orderlist.html">超时未接收旧件</a></li>
+            </ol>
+            <!--<div class="searchbox">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="searchval" placeholder="订单编号/车牌号/车架号/描述/联系人/联系电话" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" id="searbtn">查询</button>
+                        </span>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>-->
+            <ul class="nav nav-tabs">
+                <li role="presentation" class="active"><a href="#" data-type="" data-url="order/getAll" class="changeye">全部</a></li>
+
+            </ul>
+            <table class="table table-striped tdmain">
+                <thead>
+                    <tr>
+                        <th width="150">订单编号</th>
+                        <th width="180">订单时间</th>
+                        <th width="150">订单类型</th>
+                        <th width="80">车牌号</th>
+                        <th width="50">车架号</th>
+                        <th width="80">车辆型号</th>
+                        <th width="90">配件数量</th>
+                        <th width="100">委托方</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <div class="page" style="background: #fff;">
+                <div class="tcdPageCode"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/jquery.page.js"></script>
+    <script src="../js/comm.js"></script>
+    <script>
+        showdata(1, "");
+        var typeurl = "";
+        $("#searbtn").on("click", function (event) {
+            event.preventDefault();
+            //var type=$(this).attr("data-type");
+            var val = $("#searchval").val();
+            showdata(1, val);
+        });
+        function showdata(x, z) {
+            $.ajax({
+                type: "get",
+                url: href + "index/getList",
+                data: {
+                    page: x,
+                    rows: 10,
+                    code: "6",
+                    keyWord: z
+                },
+                contentType: "application/json",
+                dataType: "json",
+                success: function (data) {
+                    if (data.code == "201") {
+                        layer.msg('<span style="font-size:20px">登录时效，请重新登录</span>', {
+                            time: 1000, //2s后自动关闭
+                        }, function () {
+                            window.location.href = "login.html";
+                        });
+                        return false;
+                    }
+                    if (data.msg == "success") {
+                        var otr = "";
+                        var d = data.data.rows;
+                        if (d.length) {
+                            for (var i = 0; i < d.length; i++) {
+                                otr += '<tr>'
+                                otr += '<td><a class="kan1" data-id="' + d[i].id + '">' + d[i].orderNo + '</a></td>'
+                                otr += '<td title="' + d[i].orderTime + '">' + d[i].orderTime + '</td>';
+                                otr += '<td title=' + st(d[i].orderType) + '>' + st(d[i].orderType) + '</td>';
+                                otr += '<td title=' + d[i].carNumber + '>' + d[i].carNumber + '</td>';
+                                otr += '<td title=' + d[i].carFrameNumber + '>' + d[i].carFrameNumber + '</td>';
+                                otr += '<td><span title="' + d[i].carModelNumberName + '" class="tijia">' + d[i].carModelNumberName + '</span></td>';
+                                if (d[i].orderType == 1) {
+                                    otr += '<td title="整车">整车</td>';
+                                } else {
+                                    otr += '<td title=' + d[i].totalPartsCount + '>' + d[i].totalPartsCount + '</td>';
+                                }
+                                otr += '<td><span title="' + d[i].custormName + '" class="tijia">' + d[i].custormName + '</span></td>';
+                                otr += '</tr>'
+                            }
+                        } else {
+                            otr = '<tr><td colspan=' + $(".tdmain th").length + ' style="text-align:center">无数据</td></tr>'
+                        }
+                        $(".tdmain tbody").html(otr);
+                        for (var i = 0; i < $(".tdmain td").length; i++) {
+                            if ($(".tdmain td").eq(i).text() == null || $(".tdmain td").eq(i).text() == "null") {
+                                $(".tdmain td").eq(i).html("")
+                            }
+                        }
+                        $(".page").html("");
+                        $(".page").html('<div class="tcdPageCode"></div>');
+                        $(".tcdPageCode").createPage({
+                            pageCount: Math.ceil(data.data.total / 10),
+                            current: x,
+                            backFn: function (p) {
+                                showdata2(p, z)
+                            }
+                        });
+                    }
+                }
+            });
+        };
+        function showdata2(x, z) {
+            $.ajax({
+                type: "get",
+                url: href + "index/getList",
+                data: {
+                    page: x,
+                    rows: 10,
+                    code: "6",
+                    keyWord: z
+                },
+                contentType: "application/json",
+                dataType: "json",
+                success: function (data) {
+                    if (data.code == "201") {
+                        layer.msg('<span style="font-size:20px">登录时效，请重新登录</span>', {
+                            time: 1000, //2s后自动关闭
+                        }, function () {
+                            window.location.href = "login.html";
+                        });
+                        return false;
+                    }
+                    if (data.msg == "success") {
+                        var otr = "";
+                        var d = data.data.rows;
+                        if (d.length) {
+                            for (var i = 0; i < d.length; i++) {
+                                otr += '<tr>'
+                                otr += '<td><a class="kan1" data-id="' + d[i].id + '">' + d[i].orderNo + '</a></td>'
+                                otr += '<td>' + d[i].orderTime + '</td>'
+                                otr += '<td>' + st(d[i].orderType) + '</td>'
+                                otr += '<td>' + d[i].carNumber + '</td>'
+                                otr += '<td>' + d[i].carFrameNumber + '</td>'
+                                otr += '<td><span title="' + d[i].carModelNumberName + '" class="tijia">' + d[i].carModelNumberName + '</span></td>'
+                                if (d[i].orderType == 1) {
+                                    otr += '<td>整车</td>'
+                                } else {
+                                    otr += '<td>' + d[i].totalPartsCount + '</td>'
+                                }
+
+                                otr += '<td><span title="' + d[i].custormName + '" class="tijia">' + d[i].custormName + '</span></td>'
+                                otr += '</tr>'
+                            }
+                        } else {
+                            otr = '<tr><td colspan=' + $(".tdmain th").length + ' style="text-align:center">无数据</td></tr>'
+                        }
+                        $(".tdmain tbody").html(otr);
+                        for (var i = 0; i < $(".tdmain td").length; i++) {
+                            if ($(".tdmain td").eq(i).text() == null || $(".tdmain td").eq(i).text() == "null") {
+                                $(".tdmain td").eq(i).html("")
+                            }
+                        }
+                        $(".page").html("");
+                        $(".page").html('<div class="tcdPageCode"></div>');
+                        $(".tcdPageCode").createPage({
+                            pageCount: Math.ceil(data.data.total / 10),
+                            current: x,
+                            backFn: function (p) {
+                                showdata(p, z)
+                            }
+                        });
+                    }
+
+                }
+
+            });
+        }
+        //判断状态
+        function st(x) {
+            if (x == 1) {
+                x = "整车报废"
+            };
+            if (x == 2) {
+                x = "旧件回收"
+            };
+            return x;
+        };
+
+        //查看1
+        $(document).delegate('.kan1', 'click', function (event) {
+            event.preventDefault();
+            var id = $(this).attr("data-id");
+            window.location.href = "view-reclaim.html?id=" + id
+        });
+        clearnull();
+    </script>
+</body>
+</html>

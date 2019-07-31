@@ -1,0 +1,13 @@
+{
+    "appName": "车互联运营APP",
+    "downUrl": "https://chl-apk.oss-cn-beijing.aliyuncs.com/app-release-PartsScrap-16-1.1.6-2019-07-12.apk",
+    "verName": "V_1.1.6",
+    "verCode": "16",
+    "updateContent": [
+        {
+            "content": "1.添加手机派单功能 \n2.修复一些已知Bug"
+        }
+    ],
+    "updateTitle": "检测到新版本",
+    "size": "3.6M"
+}

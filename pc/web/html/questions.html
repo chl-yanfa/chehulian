@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../layui/css/layui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <script src="../js/jquery-3.1.1.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../js/jquery.bootstrap.min.js"></script>
+    <script src="../js/dropdown.js" type="text/javascript"></script>
+    <title>车互联</title>
+    <script type="text/javascript">
+        $('.dropdown-toggle').dropdown()
+    </script>
+</head>
+<body class="bg">
+    <div class="topbar">
+        <div class="pull-right text-primary" id="loginout" style="margin-left:20px;cursor:pointer;" onclick="loginout()">退出</div>
+        <div class="pull-right text-primary" id="loginusername" style="margin-left:20px;"></div>
+        <div class="pull-right text-primary" id="loginphonenum"></div>
+        <div class="logo"><img src="../img/logo.png" title="" /></div>
+        <div class="topcity pull-left">
+            <div class="m-b-20">
+                <span class="text-primary firstcity pull-left m-r-10 m-l-15"></span>
+                <input type="hidden" value="" id="firstcityid" />
+                <div class="dropdown pull-left">
+                    <div id="changecity" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        [ 切换城市 <span class="caret"></span> ]
+                    </div>
+                    <ul class="dropdown-menu" aria-labelledby="changecity"></ul>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <ul class="nav nav-pills topnav">
+                <li role="presentation"><a href="index.html">首页</a></li>
+                <li role="presentation" class="kzper1" style="display:none;"><a href="scraplist.html">整车报废</a></li>
+                <li role="presentation" class="kzper2" style="display:none;"><a href="reclaimlist.html">旧件回收</a></li>
+                <li role="presentation"><a href="partstrading.html">配件交易</a></li>
+                <li role="presentation"><a href="auctionhouse.html">拍卖大厅</a></li>
+                <li role="presentation" class="active"><a href="questions.html">常见问题</a></li>
+                <li role="presentation"><a href="aboutus.html">关于我们</a></li>
+                <li role="presentation"><a href="mycenter.html">个人中心</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <br />
+    常见问题
+    <script src="../js/modal.js"></script>
+    <script src="../js/comm.js"></script>
+</body>
+</html>

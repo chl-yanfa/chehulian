@@ -1,0 +1,371 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css" />
+    <link rel="stylesheet" href="../layui/css/layui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/pagination.css" />
+    <script src="../js/jquery-3.1.1.min.js" type="text/javascript"></script>
+    <script src="../js/bootstrap.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../js/jquery.bootstrap.min.js"></script>
+    <script src="../js/dropdown.js" type="text/javascript"></script>
+    <script src="../js/modal.js" type="text/javascript"></script>
+    <script src="../layui/layui.all.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../js/pagination.js"></script>
+    <script src="../js/template-web.js"></script>
+    <script type="text/javascript">
+        $('.dropdown-toggle').dropdown()
+    </script>
+    <style>
+        #listinfo td, th {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        #wrapper a {
+            border-radius: 5px;
+        }
+
+        .paginationjs-pages {
+            margin-left: 35%;
+        }
+    </style>
+    <title>车报废管理后台-整车报废</title>
+</head>
+<body>
+    <div class="back-stage-top">
+        <h1 class="pull-left">车报废管理后台</h1>
+        <h1 class="pull-right text-primary" id="loginout" style="margin-left:20px;cursor:pointer;font-size:18px;margin-right:50px;" onclick="loginout()">退出</h1>
+        <h1 class="pull-right text-primary" id="loginusername" style="margin-left:20px;font-size:18px;"></h1>
+    </div>
+    <div class="backnav">
+        <ul class="backnav" id="backnavper">
+            <li class="displaynone"><a href="index.html">首页</a></li>
+            <li class=""><a href="Inquiry.html">询价管理</a></li>
+            <li class="displaynone"><a href="orderquotelist.html">报价管理</a></li>
+            <li class="displaynone"><a href="orderlist.html">订单管理</a></li>
+            <li class="cur displaynone"><a href="scraplist.html">整车报废</a></li>
+            <li class="displaynone"><a href="jiulist.html">旧件回收</a></li>
+            <li class="displaynone"><a href="moneymanage.html">财务管理</a></li>
+            <li class="displaynone"><a href="system.html">系统管理</a></li>
+        </ul>
+    </div>
+    <div class="tablebox">
+        <div class="">
+            <ol class="breadcrumb">
+                <li><a href="index.html">首页</a></li>
+                <li>整车报废</li>
+            </ol>
+            <div class="searchbox">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="searchval" placeholder="订单编号/车牌号/车架号/描述/联系人/联系电话" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" id="searbtn">查询</button>
+                        </span>
+                    </div>
+                </div>
+                <!--<div class="pull-right">
+                    <select class="img-input">
+                        <option>全部订单类型</option>
+                        <option>整车报废订单</option>
+                        <option>旧件回收订单</option>
+                    </select>
+                </div>-->
+                <div class="clearfix"></div>
+            </div>
+            <ul class="nav nav-tabs">
+                <li role="presentation" class="active"><a href="#" data-type="" data-url="autoparts" class="changeye">全部</a></li>
+                <li role="presentation"><a href="#" data-type="1" data-url="autoparts" class="changeye">未接单</a></li>
+                <li role="presentation"><a href="#" data-type="2" data-url="autoparts" class="changeye">等待取车</a></li>
+                <li role="presentation"><a href="#" data-type="3,4" data-url="autoparts" class="changeye">等待报废</a></li>
+                <li role="presentation"><a href="#" data-type="5,6" data-url="autoparts" class="changeye">等待发放残值</a></li>
+                <li role="presentation"><a href="#" data-type="7" data-url="autoparts" class="changeye">已完成</a></li>
+                <li role="presentation"><a href="#" data-type="8" data-url="autoparts" class="changeye">无法接收车辆</a></li>
+            </ul>
+            <table class="table table-striped tdmain" id="listinfo">
+                <thead>
+                    <tr>
+                        <th width="100">车牌号</th>
+                        <th width="180">车架号</th>
+                        <th width="180">车型</th>
+                        <th width="90">车主姓名</th>
+                        <th width="100">残值价格</th>
+                        <th width="170">委托方</th>
+                        <th width="150">订单编号</th>
+                        <th width="100">订单时间</th>
+                        <!--<th width="120">报案号</th>-->
+                        <th width="80">状态</th>
+                        <th width="100">操作</th>
+                        <th width="100">快递单号</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <script id="listorder" type="text/html">
+                {{each rows value i}}
+                <tr>
+                    <td title="{{value.carNumber}}"><a style="color:blue;" href='view-scrap.html?id={{value.id}}'>{{value.carNumber}}</a></td>
+                    <td title="{{value.carFrameNumber}}">{{value.carFrameNumber==null?"":(value.carFrameNumber.length>12?value.carFrameNumber.substring(0,12)+"...":value.carFrameNumber)}}</td>
+                    <td title="{{value.carModelNumberName}}">{{value.carModelNumberName==null?"":(value.carModelNumberName.length>12?value.carModelNumberName.substring(0,12)+"...":value.carModelNumberName)}}</td>
+                    <td title="{{value.carOwner}}">{{value.carOwner}}</td>
+                    <td title="{{value.orderAmount==null?"0":value.orderAmount}}">{{value.orderAmount==null?"0":value.orderAmount}}</td>
+                    <td title="{{value.custormName}}">{{value.custormName==null?"":(value.custormName.length>7?value.custormName.substring(0,7)+"...":value.custormName)}}</td>
+                    <td title="{{value.orderNo}}">{{value.orderNo}}</td>
+                    <td title="{{value.orderTime}}">{{value.orderTime}}</td>
+                    <!--<td title="{{value.reportNo}}">{{value.reportNo}}</td>-->
+                    <td title="{{value.orderStatus}}">{{value.orderStatus}}</td>
+                    <td><button type="button" class="btn btn-default btn-sm updatebtn" data-id={{value.id}} data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>编辑</button></td>
+                    <td><span title="{{value.expressNumber}}">{{value.expressNumber}}</span><button class="btn btn-default quan" type="button" data-id={{ value.id }} data-toggle="modal" data-target="#updatekuaidi">快递单号</button></td>
+                    <!--<td><% if(value.expressNumber) {%> <span>{{value.expressNumber}}</span><%}else{%><button class="btn btn-default quan" type="button" data-id={{ value.id }} data-toggle="modal" data-target="#updatekuaidi">快递单号</button><%}%></td>-->
+                </tr>
+                r>
+                {{/each}}
+            </script>
+            <div id="wrapper">
+
+            </div>
+        </div>
+    </div>
+    <!-- 填写快递单号 -->
+    <div class="hide">
+        <div id="detailState">
+            <table class="tablelist addkuaidi">
+                <tbody>
+                    <tr><td>快递公司：</td><td><input class="form-control" placeholder="快递公司" required="" autofocus="" type="text" id="kdgongsi" /></td></tr>
+                    <tr><td>快递单号：</td><td><input class="form-control" placeholder="快递单号" required="" type="text" id="kddanhao" /></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="../js/jquery.page.js"></script>
+    <script src="../js/comm.js"></script>
+    <script>
+        layui.use('layer', function () {
+
+        });
+
+        (function ($) {
+            $.getUrlParam = function (name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if (r != null) return unescape(r[2]);
+                return null;
+            }
+        })(jQuery);
+
+        var type = $.getUrlParam('type');
+        if (type == "1") {
+            indexInfo();
+        }
+        else {
+            paginationFunc(1, "", "");
+        }
+
+        //加载首页进来列表
+        function indexInfo() {
+            var lis = $(".nav-tabs li");
+            lis.siblings().removeClass("active");
+            for (var i = 0; i < lis.length; i++) {
+                if ($(lis[i]).text().indexOf("等待取车") >= 0) {
+                    $($(lis[i])).addClass("active");
+                }
+            }
+            paginationFunc(1, "2", "");
+        }
+
+        var typedata = "";
+
+        $("#searbtn").on("click", function (event) {
+            event.preventDefault();
+            var val = $("#searchval").val();
+            paginationFunc(1, typedata, val);
+        });
+
+        //点击切换数据
+        $(".changeye").on("click", function (event) {
+            event.preventDefault();
+            $(this).parent().siblings().removeClass("active");
+            $(this).parent().addClass("active");
+            var y = $(this).attr("data-type");
+            var val = $("#searchval").val();
+            paginationFunc(1, y, val);
+        });
+
+        //分页公共方法（整车列表1;datatype;关键字）
+        function paginationFunc(x, y, z) {
+            typedata = y;
+            var arr = [];
+            $.ajax({
+                type: "get",
+                url: href + "order",
+                data: {
+                    page: x,
+                    rows: 10,
+                    orderStatus: y,
+                    orderType: 1,
+                    keyWord: z
+                },
+                dataType: "json",
+                success: function (obj) {
+                    if (obj.code == "201") {
+                        layer.msg('<span style="font-size:20px">登录时效，请重新登录</span>', {
+                            time: 1000, //2s后自动关闭
+                        }, function () {
+                            window.location.href = "login.html";
+                        });
+                        return false;
+                    }
+                    if (obj.msg == "success") {
+                        var count = obj.data.total;
+                        for (var i = 0; i < count; i++) {
+                            arr.push(i)
+                        }
+                        $('#wrapper').pagination({
+                            dataSource: arr,
+                            pageNumber: x,
+                            pageSize: 10,
+                            prevText: "上一页",
+                            nextText: "下一页",
+                            callback: function (data, pagination) { //回调函数 当我们点击页数执行的方法
+                                LoadList(pagination.pageNumber, y, z);
+                            }
+                        })
+                    }
+                }
+            });
+        }
+
+        function LoadList(x, y, z) {
+            typedata = y;
+            $.ajax({
+                type: "get",
+                url: href + "order",
+                data: {
+                    page: x,
+                    rows: 10,
+                    orderStatus: y,
+                    orderType: 1,
+                    keyWord: z
+                },
+                dataType: "json",
+                success: function (obj) {
+                    if (obj.code == "201") {
+                        layer.msg('<span style="font-size:20px">登录时效，请重新登录</span>', {
+                            time: 1000, //2s后自动关闭
+                        }, function () {
+                            window.location.href = "login.html";
+                        });
+                        return false;
+                    }
+                    if (obj.msg == "success") {
+                        var count = obj.data.rows.length;
+                        var showlist = [];
+                        if (count == 0) {
+                            showlist.push('<tr><td colspan=' + $("#listinfo th").length + ' style="text-align:center">无数据</td></tr>');
+                            $("#listinfo tbody").html(showlist.join(''));
+                        }
+                        else {
+                            for (var t = 0; t < obj.data.rows.length; t++) {
+                                obj.data.rows[t].orderStatus = GetCarStateMsg(obj.data.rows[t].orderStatus);
+                            }
+                            var html = template('listorder', obj.data);
+                            $("#listinfo tbody").html(html);
+                        }
+                    }
+                },
+                error: function (ex) {
+                    console.log(ex);
+                }
+            });
+        }
+
+        //查看
+        $(document).delegate('.selectdetail', 'click', function (event) {
+            event.preventDefault();
+            var id = $(this).attr("data-id");
+            window.location.href = "view-scrap.html?id=" + id
+        })
+
+        //修改
+        $(document).delegate('.updatebtn', 'click', function (event) {
+            event.preventDefault();
+            var id = $(this).attr("data-id");
+            window.location.href = "edit-scrap.html?id=" + id
+        })
+
+        //快递单号填写
+        $(document).delegate('.quan', 'click', function (event) {
+            event.preventDefault();
+            var did = $(this).attr("data-id");
+            $.ajax({
+                type: "get",
+                url: href + 'order/' + did,
+                async: false,
+                dataType: "json",
+                success: function (obj) {
+                    if (obj.code == "201") {
+                        layer.msg('<span style="font-size:20px">登录时效，请重新登录</span>', {
+                            time: 1000, //2s后自动关闭
+                        }, function () {
+                            window.location.href = "login.html";
+                        });
+                        return false;
+                    }
+                    if (obj.msg == "success") {
+                        $("#kdgongsi").val(obj.data.expressCompany);
+                        $("#kddanhao").val(obj.data.expressNumber);
+                    }
+                }
+            });
+            $('#detailState').dialog({
+                title: '录入快递信息',
+                onClose: function () {
+                    $(this).dialog('close');
+                },
+                buttons: [{
+                    text: '取消',
+                    'click': function () {
+                        $(this).dialog('close');
+                    }
+                }, {
+                    text: '保存',
+                    'class': 'btn-primary',
+                    'click': function () {
+                        $.ajax({
+                            type: "put",
+                            url: href + "order/" + did,
+                            data: { expressCompany: $("#kdgongsi").val(), expressNumber: $("#kddanhao").val() },
+                            dataType: "json",
+                            success: function (obj) {
+                                if (obj.code == "201") {
+                                    layer.msg('<span style="font-size:20px">登录时效，请重新登录</span>', {
+                                        time: 1000, //2s后自动关闭
+                                    }, function () {
+                                        window.location.href = "login.html";
+                                    });
+                                    return false;
+                                }
+                                if (obj.msg == "success") {
+                                    if (obj.data) {
+                                        layer.msg('快单号保存成功', {
+                                            time: 2000, //2s后自动关闭
+                                        });
+                                        $("#kdgongsi").val("");
+                                        $("#kddanhao").val("");
+                                        $('#detailState').dialog('close');
+                                        window.location.reload();
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }]
+            })
+        });
+
+    </script>
+</body>
+</html>

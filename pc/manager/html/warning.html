@@ -1,0 +1,191 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css" />
+    <link rel="stylesheet" href="../layui/css/layui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <script src="../js/jquery-3.1.1.min.js" type="text/javascript"></script>
+    <script src="../js/bootstrap.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../js/jquery.bootstrap.min.js"></script>
+    <script src="../js/dropdown.js" type="text/javascript"></script>
+    <script src="../js/modal.js" type="text/javascript"></script>
+    <script src="../layui/layui.all.js" type="text/javascript"></script>
+    <title>车互联-旧件回收</title>
+    <title>车报废管理后台</title>
+    <style>
+        .tdmain span {
+            position: relative;
+            right: 0px;
+            width: 100px;
+        }
+
+        .tdmain input {
+            width: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="back-stage-top">
+        <h1 class="pull-left">车报废管理后台</h1>
+        <h1 class="pull-right text-primary" id="loginout" style="margin-left:20px;cursor:pointer;font-size:18px;margin-right:50px;" onclick="loginout()">退出</h1>
+        <h1 class="pull-right text-primary" id="loginusername" style="margin-left:20px;font-size:18px;">用户名：张三</h1>
+    </div>
+    <div class="backnav">
+        <ul class="backnav" id="backnavper">
+            <li class="displaynone"><a href="index.html">首页</a></li>
+            <li class=""><a href="Inquiry.html">询价管理</a></li>
+            <li class="displaynone"><a href="orderquotelist.html">报价管理</a></li>
+            <li class="displaynone"><a href="orderlist.html">订单管理</a></li>
+            <li class="displaynone"><a href="scraplist.html">整车报废</a></li>
+            <li class="displaynone"><a href="jiulist.html">旧件回收</a></li>
+            <li class="displaynone"><a href="moneymanage.html">财务管理</a></li>
+            <li class="cur displaynone"><a href="system.html">系统管理</a></li>
+        </ul>
+    </div>
+    <div class="tablebox">
+        <div style="position:relative;">
+            <div class="leftbar">
+                <ul class="leftbar-nav">
+                    <li role="presentation"><a href="role.html">角色管理</a></li>
+                    <li role="presentation"><a href="user.html">用户管理</a></li>
+                    <li role="presentation"><a href="autonym.html">实名认证</a></li>
+                    <li role="presentation"><a href="customer.html">客户管理</a></li>
+                    <li role="presentation"><a href="area.html">区域管理</a></li>
+                    <li role="presentation" class="active"><a href="warning.html">预警管理</a></li>
+                    <li role="presentation"><a href="parts.html">配件数据管理</a></li>
+                    <li role="presentation"><a href="residual-value.html">整车残值评估管理</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="rightbar">
+            <ol class="breadcrumb">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="system.html">系统管理</a></li>
+                <li>预警管理</li>
+            </ol>
+            <table class="table table-striped tdmain">
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class=" text-center">
+            <button type="button" class="btn btn-info updatedate">保存</button>
+        </div>
+    </div>
+    <script src="../js/comm.js"></script>
+    <script>
+        layui.use('layer', function () {
+
+        });
+
+        LoadWarningInfo();
+        //加载预警数据
+        function LoadWarningInfo() {
+            $.ajax({
+                url: href + "earlyWarningSetting",
+                type: "get",
+                dataType: "json",
+                async: false,
+                success: function (obj) {
+                    if (data.obj == "201") {
+                        layer.msg('<span style="font-size:20px">登录时效，请重新登录</span>', {
+                            time: 1000, //2s后自动关闭
+                        }, function () {
+                            window.location.href = "login.html";
+                        });
+                        return false;
+                    }
+                    if (obj.msg == "success") {
+                        var tbstr = "";
+                        if (obj.data) {
+                            for (var i = 0; i < obj.data.length; i++) {
+                                tbstr += '<tr>';
+                                tbstr += '<td class="col-lg-2 wname" style="text-align:right">';
+                                tbstr += CodeName(obj.data[i].earlyWarningCode);
+                                tbstr += '</td>';
+                                tbstr += '<td class="col-lg-10">';
+                                tbstr += '大于&nbsp; &nbsp;<input type="text" value="' + obj.data[i].earlyWarningValue.toString() + '" id="" />';
+                                tbstr += '&nbsp; &nbsp;小时，系统自动预警。</td>';
+                                tbstr += '</tr>';
+                            }
+                        }
+                        $(".tdmain tbody").html(tbstr);
+                    }
+                }
+            });
+        }
+
+        //编码配置
+        function CodeName(code) {
+            var name = "";
+            switch (code) {
+                case "unprocessed_orders": name = "超时未处理订单"; break;
+                case "unreceived_wholecartype_orders": name = "超时未接收报废车辆"; break;
+                case "unreceived_carpartstype_orders": name = "超时未接收旧件"; break;
+                default: name = "";
+            }
+            return name;
+        }
+
+        //编码反配置
+        function NameCode(name) {
+            var code = "";
+            switch (name) {
+                case "超时未处理订单": code = "unprocessed_orders"; break;
+                case "超时未接收报废车辆": code = "unreceived_wholecartype_orders"; break;
+                case "超时未接收旧件": code = "unreceived_carpartstype_orders"; break;
+                default: code = "";
+            }
+            return code;
+        }
+
+        //更新预警时间配置
+        $(document).delegate(".updatedate", "click", function (event) {
+            event.preventDefault();
+            var info = [];
+            var trs = $(".tdmain").find("tr");
+            for (var i = 0; i < trs.length; i++) {
+                var name = NameCode(trs.eq(i).find("td").eq(0).text());
+                var datevalue = parseFloat(trs.eq(i).find("input").val());
+                info.push({ earlyWarningCode: name, earlyWarningValue: datevalue });
+            }
+            //console.log(info);
+            $.ajax({
+                type: "PUT",
+                url: href + "earlyWarningSetting",
+                data: JSON.stringify(info),
+                dataType: "json",
+                contentType: "application/json",
+                async: false,
+                success: function (obj) {
+                    console.log(obj);
+                    if (obj.code == "201") {
+                        layer.msg('<span style="font-size:20px">登录时效，请重新登录</span>', {
+                            time: 1000, //2s后自动关闭
+                        }, function () {
+                            window.location.href = "login.html";
+                        });
+                        return false;
+                    }
+                    if (obj.msg == "success") {
+                        if (obj.data) {
+                            layer.msg('<span style="font-size:20px">设置成功</span>', {
+                                time: 1000, //2s后自动关闭
+                            }, function () {
+                                LoadWarningInfo();
+                            });
+                        }
+                    }
+                    else {
+                        layer.msg('<span style="font-size:20px">' + data.msg + '</span>', {
+                            time: 2000, //2s后自动关闭
+                        }, function () {
+                        });
+                    }
+                }
+            });
+        })
+    </script>
+</body>
+</html>

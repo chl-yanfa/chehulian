@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.car.app.carscraporder.mapper.TbCarPartsMapper">
+	<resultMap id="BaseResultMap" type="com.car.app.carscraporder.pojo.TbCarParts">
+		<id column="id" property="id" />
+		<result column="parts_name" property="partsName" />
+		<result column="parts_category_id" property="partsCategoryId" />
+		<result column="isvalid" property="isvalid" />
+	</resultMap>
+
+	<select id="queryByIdPageListByWhere" resultMap="BaseResultMap">
+		select
+			id as id,
+			isvalid as isvalid,
+			parts_name as partsName,
+			parts_category_id as partsCategoryId
+		from 
+			tb_car_parts
+		where
+		    isvalid = 1
+		    and parts_category_id = #{paramter.partsCategoryId}
+		<if test="paramter.partsName!=null and paramter.partsName!=''">
+			and parts_name like concat('%',#{paramter.partsName},'%')
+		</if>
+	</select>
+</mapper>
