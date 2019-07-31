@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.car.app.carscraporder.mapper.ChlAutoLogosMapper" >
+    <resultMap id="BaseResultMap" type="com.car.app.carscraporder.pojo.ChlAutoLogos">
+        <id column="auto_logos_id" jdbcType="INTEGER" property="autoLogosId" />
+        <result column="auto_logos_name" jdbcType="VARCHAR" property="autoLogosName" />
+        <result column="auto_logos_alias" jdbcType="VARCHAR" property="autoLogosAlias" />
+    </resultMap>
+    <select id="selectChlAutoLogos" resultMap="BaseResultMap">
+        select * from chl_auto_logos
+    </select>
+</mapper>

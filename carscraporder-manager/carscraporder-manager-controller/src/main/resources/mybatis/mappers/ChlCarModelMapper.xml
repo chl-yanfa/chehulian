@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.car.app.carscraporder.mapper.ChlCarModelMapper" >
+    <resultMap id="BaseResultMap" type="com.car.app.carscraporder.pojo.ChlCarModel">
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="brand_id" jdbcType="INTEGER" property="brandId"/>
+        <result column="vin_code" jdbcType="VARCHAR" property="vinCode"/>
+        <result column="model_name" jdbcType="VARCHAR" property="modelName"/>
+        <result column="series_id" jdbcType="INTEGER" property="seriesId"/>
+        <result column="sub_series_id" jdbcType="INTEGER" property="subSeriesId"/>
+        <result column="displacement" jdbcType="VARCHAR" property="displacement"/>
+        <result column="model_year" jdbcType="VARCHAR" property="modelYear"/>
+        <result column="drive_type" jdbcType="VARCHAR" property="driveType"/>
+        <result column="engine" jdbcType="VARCHAR" property="engine"/>
+        <result column="body_structure" jdbcType="VARCHAR" property="bodyStructure"/>
+        <result column="purchase_price" jdbcType="DECIMAL" property="purchasePrice"/>
+        <result column="range_of_service" jdbcType="VARCHAR" property="rangeOfService"/>
+        <result column="range_of_pickup" jdbcType="VARCHAR" property="rangeOfPickup"/>
+        <result column="part_num" jdbcType="VARCHAR" property="partNum"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="created_by" jdbcType="VARCHAR" property="createdBy"/>
+        <result column="updated_by" jdbcType="VARCHAR" property="updatedBy"/>
+        <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime"/>
+        <result column="delete_state" jdbcType="INTEGER" property="deleteState"/>
+        <result column="called" jdbcType="VARCHAR" property="called"/>
+        <result column="car_alias" jdbcType="VARCHAR" property="carAlias"/>
+        <result column="car_year" jdbcType="VARCHAR" property="carYear"/>
+        <result column="dynamic" jdbcType="VARCHAR" property="dynamic"/>
+        <result column="drives" jdbcType="VARCHAR" property="drives"/>
+        <result column="seat_num" jdbcType="VARCHAR" property="seatNum"/>
+        <result column="emission_standard" jdbcType="VARCHAR" property="emissionStandard"/>
+        <result column="configure_level" jdbcType="VARCHAR" property="configureLevel"/>
+        <result column="cylinder" jdbcType="VARCHAR" property="cylinder"/>
+        <result column="engine_valve_num" jdbcType="VARCHAR" property="engineValveNum"/>
+        <result column="transmission" jdbcType="VARCHAR" property="transmission"/>
+        <result column="wheelbase" jdbcType="VARCHAR" property="wheelbase"/>
+        <result column="cardoorNum" jdbcType="VARCHAR" property="cardoorNum"/>
+        <result column="supply" jdbcType="VARCHAR" property="supply"/>
+        <result column="inlet" jdbcType="VARCHAR" property="inlet"/>
+        <result column="power" jdbcType="VARCHAR" property="power"/>
+        <result column="remarks" jdbcType="VARCHAR" property="remarks"/>
+        <result column="car_type_id" jdbcType="INTEGER" property="carTypeId"/>
+        <result column="alias_id" jdbcType="VARCHAR" property="aliasId"/>
+    </resultMap>
+    <select id="selectCarModelSerid" resultMap="BaseResultMap">
+        SELECT
+	    m.id,m.called
+        FROM
+	    chl_car_model m
+	    INNER JOIN chl_car_model_group g ON m.sub_series_id = g.id
+	    INNER JOIN chl_car_model_series s ON s.id = g.vehice_system_id
+	    where s.id=#{serid} and m.status='1' order by car_year asc
+    </select>
+</mapper>
