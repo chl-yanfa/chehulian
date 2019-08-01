@@ -116,6 +116,7 @@
              <mvc:exclude-mapping path="/paimai/**" />
              <mvc:exclude-mapping path="/orderdeal/**" />
              <mvc:exclude-mapping path="/dictionary/getCar*/**" />
+			 <mvc:exclude-mapping path="/dictionaryJy/getCar*/**" />
 			<bean class="com.car.app.carscraporder.applet.interceptor.UserLoginHandlerInterceptor"></bean>
 			
 		</mvc:interceptor>

@@ -53,8 +53,7 @@ public class PermissionController {
 	private CarScrapOrderAutopartsAppService carScrapOrderAutopartsAppService;
 	
 	
-	
-	
+
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	@ApiOperation(value = "根据编码获取权限",notes = "根据编码获取权限")
@@ -89,6 +88,9 @@ public class PermissionController {
 		
 		Map permission = user.getPermission();
 		if(permission.containsKey(functionCode)){
+
+            System.out.println("进入1"+permission);
+
 			Map<String,List<Integer>> permissionCache = user.getPermission();
 			
 			List<Integer> permissionListCache = permissionCache.get(functionCode);
@@ -97,6 +99,7 @@ public class PermissionController {
 			
 		    return new ResultBean(result);
 		}else{
+            System.out.println("进入2"+permission);
 			List<Permission>  permisssionList = permissionService.getPermissionByCode(code);
 			if(permisssionList!=null&&permisssionList.size()>0){
 				List<Integer> funPermissionCode = new ArrayList<Integer>();
@@ -241,11 +244,7 @@ public class PermissionController {
 				}
 			}
 		}
-		
 		return bos;
-		
-		
-		
 	}
 
 }
