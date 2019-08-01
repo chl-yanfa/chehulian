@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -117,6 +118,10 @@ public class ChlAutoLogosController {
                 DictionaryBO bo = new DictionaryBO();
                 bo.setId(model.getId().toString());
                 bo.setName(model.getCalled());
+                if(model.getPurchasePrice()!=null){
+                   String money= getTenThousandOfANumber(model.getPurchasePrice().intValue());
+                    bo.setMoney(money);
+                }
                 dictionaryBOs.add(bo);
             }
             return new ResultBean<List<DictionaryBO>>(dictionaryBOs);
@@ -140,5 +145,19 @@ public class ChlAutoLogosController {
             pinyinStr = newChar+"";
         }
         return pinyinStr.toUpperCase();
+    }
+    public static String getTenThousandOfANumber(Integer num) {
+        if (num < 10000) {
+            return String.valueOf(num);
+        }
+        String numStr = new DecimalFormat("#.00").format(num / 10000d);
+        String[] ss = numStr.split("\\.");
+        if ("00".equals(ss[1])) {
+            return ss[0] + "万";
+        } else if ('0' == (ss[1].charAt(1))) {
+            return ss[0] + "." + ss[1].charAt(0) + "万";
+        } else {
+            return numStr + "万";
+        }
     }
 }
