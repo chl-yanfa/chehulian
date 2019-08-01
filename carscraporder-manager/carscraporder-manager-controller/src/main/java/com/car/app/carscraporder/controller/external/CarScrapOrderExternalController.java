@@ -274,7 +274,7 @@ public class CarScrapOrderExternalController {
 				&& ((cbo.getOrderAmount().compareTo(cbo.getSinceQuote())==-1) || (cbo.getOrderAmount().compareTo(cbo.getSinceQuote())==0))){
 			cbo.setOrderStatusCN("已审核");
 		}else if(cbo.getOrderStatus()==12 && cbo.getSinceQuote()==null){
-			cbo.setOrderStatusCN("待总部报价");
+			cbo.setOrderStatusCN("总部待报价");
 		}else if(cbo.getOrderStatus()==13 && cbo.getSinceQuote()==null){
 			cbo.setOrderStatusCN("已报价");
 		}
@@ -295,7 +295,7 @@ public class CarScrapOrderExternalController {
 				cbo.setOrderStatusCN("已完成");
 				break;
 			case 11:
-				cbo.setOrderStatusCN("待分部报价");
+				cbo.setOrderStatusCN("分部待报价");
 				break;
 			case 96:
 				cbo.setOrderStatusCN("已取消");

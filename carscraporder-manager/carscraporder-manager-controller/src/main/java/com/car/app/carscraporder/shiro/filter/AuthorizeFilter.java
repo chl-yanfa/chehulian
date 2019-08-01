@@ -62,7 +62,7 @@ public class AuthorizeFilter extends AuthorizationFilter {
             w.write(JSON.toJSONString(jr));
             w.flush();
             w.close();
-            return  false;
+            return false;
         }
         return super.onAccessDenied(servletRequest, servletResponse);
     }

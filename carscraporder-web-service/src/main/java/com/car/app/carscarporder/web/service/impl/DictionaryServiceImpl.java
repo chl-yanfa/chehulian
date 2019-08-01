@@ -54,6 +54,15 @@ public class DictionaryServiceImpl implements DictionaryService {
 	
 	@Value("${GET_CAR_MODEL_BY_ID}")
 	private String GET_CAR_MODEL_BY_ID;
+
+	@Value("${CAR_MODEL_NUMBER}")
+	private String GET_CAR_MODEL_JY;
+
+	@Value("${CAR_MODEL_NUMBER_BRAND}")
+	private String GET_CAR_MODEL_JY_BRAND;
+
+	@Value("${CAR_MODEL_NUMBER_SERVICE}")
+	private String GET_CAR_MODEL_JY_SERVICE;
 	
 	@Autowired
 	private ApiService apiService;
@@ -195,7 +204,7 @@ public class DictionaryServiceImpl implements DictionaryService {
 
 	@Override
 	public List<DictionarySystemBO> getAllCarBrand() throws Exception {
-		String queryAllBrand = UNIFIED_EXTERNAL_URI + GET_ALL_CAR_BRAND;
+		String queryAllBrand = UNIFIED_EXTERNAL_URI + GET_CAR_MODEL_JY;
 		HttpResult httpResult = this.apiService.doGet(queryAllBrand);
 		if (httpResult.getCode() == 200) {
 			String jsonData = httpResult.getContent();
@@ -212,7 +221,7 @@ public class DictionaryServiceImpl implements DictionaryService {
 
 	@Override
 	public List<DictionarySystemBO> getCarSystem(String brandId) throws Exception {
-		String getCarSystemByBrandIdUrl = MessageFormat.format(UNIFIED_EXTERNAL_URI + GET_CAR_SYSTEM_BY_ID, brandId);
+		String getCarSystemByBrandIdUrl = MessageFormat.format(UNIFIED_EXTERNAL_URI + GET_CAR_MODEL_JY_BRAND, brandId);
 		HttpResult httpResult = this.apiService.doGet(getCarSystemByBrandIdUrl);
 		if (httpResult.getCode() == 200) {
 			String jsonData = httpResult.getContent();
@@ -229,7 +238,7 @@ public class DictionaryServiceImpl implements DictionaryService {
 
 	@Override
 	public List<DictionaryBO> getCarModel(String systemId) throws Exception {
-		String getCarModelBySystemIdUrl = MessageFormat.format(UNIFIED_EXTERNAL_URI + GET_CAR_MODEL_BY_ID, systemId);
+		String getCarModelBySystemIdUrl = MessageFormat.format(UNIFIED_EXTERNAL_URI + GET_CAR_MODEL_JY_SERVICE, systemId);
 		HttpResult httpResult = this.apiService.doGet(getCarModelBySystemIdUrl);
 		if (httpResult.getCode() == 200) {
 			String jsonData = httpResult.getContent();
