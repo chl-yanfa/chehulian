@@ -45,11 +45,11 @@
     </resultMap>
     <select id="selectCarModelSerid" resultMap="BaseResultMap">
         SELECT
-	    m.id,m.called
+	    m.id,m.called,m.purchase_price
         FROM
 	    chl_car_model m
 	    INNER JOIN chl_car_model_group g ON m.sub_series_id = g.id
 	    INNER JOIN chl_car_model_series s ON s.id = g.vehice_system_id
-	    where s.id=#{serid} and m.status='1' order by car_year asc
+	    where s.id=#{serid} and m.status='1' order by car_year desc
     </select>
 </mapper>
