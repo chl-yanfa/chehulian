@@ -117,7 +117,7 @@ public class ChlAutoLogosController {
             for(ChlCarModel model:queryListByWhere){
                 DictionaryBO bo = new DictionaryBO();
                 bo.setId(model.getId().toString());
-            /*    bo.setName(model.getCalled());*/
+                bo.setName(model.getCalled());
                 if(model.getPurchasePrice()!=null){
                    String money= getTenThousandOfANumber(model.getPurchasePrice().intValue());
                     bo.setMoney(money);
