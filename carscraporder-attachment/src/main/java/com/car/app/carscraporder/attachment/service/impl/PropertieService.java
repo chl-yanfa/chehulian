@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 public class PropertieService {
 	
 	@Value("${REPOSITORY_PATH}")
-	public  String REPOSITORY_PATH;
+	public  String REPOSITORY_PATH;  ///home/upload
 	
 	
 	

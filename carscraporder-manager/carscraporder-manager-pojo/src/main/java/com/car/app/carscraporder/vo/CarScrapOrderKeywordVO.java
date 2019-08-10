@@ -47,8 +47,9 @@ public class CarScrapOrderKeywordVO {
 	@ApiParam(hidden = true)
 	private Date earlyWarningDate;
 
-	private Integer isLook;
-	
+	@ApiModelProperty(value = "用于显示二次报价总部已审核的条件")
+	private Integer isWhere;
+
 	public Date getEarlyWarningDate() {
 		return earlyWarningDate;
 	}
@@ -117,11 +118,11 @@ public class CarScrapOrderKeywordVO {
 		this.orderType = orderType;
 	}
 
-	public Integer getIsLook() {
-		return isLook;
+	public Integer getIsWhere() {
+		return isWhere;
 	}
 
-	public void setIsLook(Integer isLook) {
-		this.isLook = isLook;
+	public void setIsWhere(Integer isWhere) {
+		this.isWhere = isWhere;
 	}
 }

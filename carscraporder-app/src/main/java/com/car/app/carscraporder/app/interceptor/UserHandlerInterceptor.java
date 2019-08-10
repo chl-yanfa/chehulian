@@ -65,7 +65,6 @@ public class UserHandlerInterceptor  implements HandlerInterceptor{
 		
 		// 如何检查用户是否登录
         String ticket = CookieUtils.getCookieValue(request, SystemParameter.TICKET);
-		System.out.println("nrz_demo_cookie"+ticket);
         if (StringUtils.isBlank(ticket)) {
         	 ResultBean result = new ResultBean();
         	 result.setCode(201);

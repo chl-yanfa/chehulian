@@ -100,5 +100,17 @@ public class Permission extends BasePojo{
         this.available = available;
     }
 
-  
+    @Override
+    public String toString() {
+        return "Permission{" +
+                "id=" + id +
+                ", type='" + type + '\'' +
+                ", name='" + name + '\'' +
+                ", url='" + url + '\'' +
+                ", percode='" + percode + '\'' +
+                ", parentid=" + parentid +
+                ", sortstring=" + sortstring +
+                ", available=" + available +
+                '}';
+    }
 }

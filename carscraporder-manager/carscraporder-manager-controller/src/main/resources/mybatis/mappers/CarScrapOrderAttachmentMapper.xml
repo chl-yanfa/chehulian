@@ -255,7 +255,6 @@
       <if test="buniessType != null" >
          and ca.order_type=#{buniessType}
       </if>
-     
       and ca.isvalid='1'
   </select>
   

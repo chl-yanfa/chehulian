@@ -10,13 +10,11 @@ public class OrderAttachmentBO {
 	
 	@ApiModelProperty(value = "整车订单车辆基图片小类:1,左前 2,正前3.右前 4.左后 5,正后6,右后 7,车架号 8,发动机 9,仪表 10.行驶证 11，登记台12，车主身份正正前方 13，车主身份正正后")
 	private String carPictureType;
-	
 
 	private String carPictureName;
 	
 	private Boolean isVerify;
 
-	
 
 	public Boolean getIsVerify() {
 		return isVerify;
@@ -78,12 +76,6 @@ public class OrderAttachmentBO {
 		 }
 	 }
     }
-		
-	 
-		
-		
-		
-		
 		return carPictureName;
 	}
 
@@ -91,8 +83,6 @@ public class OrderAttachmentBO {
 		this.carPictureName = carPictureName;
 	}
 
-	
-	
 
 	public OrderAttachmentBO(String url, String carPictureType, boolean isVerify) {
 		super();
@@ -106,7 +96,6 @@ public class OrderAttachmentBO {
 		this.url = url;
 		this.carPictureType = carPictureType;
 	}
-	
 
 	public OrderAttachmentBO() {
 		super();
@@ -137,10 +126,14 @@ public class OrderAttachmentBO {
 		this.url = url;
 	}
 
-	
-
-	
-	
-	
-
+	@Override
+	public String toString() {
+		return "OrderAttachmentBO{" +
+				"id=" + id +
+				", url='" + url + '\'' +
+				", carPictureType='" + carPictureType + '\'' +
+				", carPictureName='" + carPictureName + '\'' +
+				", isVerify=" + isVerify +
+				'}';
+	}
 }

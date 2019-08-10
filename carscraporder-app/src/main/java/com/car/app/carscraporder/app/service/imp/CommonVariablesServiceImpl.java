@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 public class CommonVariablesServiceImpl {
 	
 	@Value("${PICURL}")
-	public  String PICURL;
+	public String PICURL;
 	
 	
 

@@ -28,7 +28,12 @@ public class PermissionBO {
 	public void setRemindNum(Integer remindNum) {
 		this.remindNum = remindNum;
 	}
-	
-	
 
+	@Override
+	public String toString() {
+		return "PermissionBO{" +
+				"functionCode=" + functionCode +
+				", remindNum=" + remindNum +
+				'}';
+	}
 }

@@ -43,6 +43,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -93,9 +94,42 @@ public class CarScrapOrderController {
 				    new ResultBean<>(pageResult);
 			    }   
 		     return new ResultBean<>(pageResult);
-		
-		
 	}
+
+	/**
+	 * 通知用户取车
+	 * @param
+	 * @param
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/gotocar",method = RequestMethod.POST)
+	@ResponseBody
+	@ApiOperation(value = "通知用户取车",notes = "通知用户取车")
+	public ResultBean<Boolean> TellUserTakeCar(@RequestParam(required = true)String clientId,
+											   @RequestParam(required = true)String salePhone,
+											   @RequestParam(required = true)String saleName,
+											   @RequestParam(required = true)String orderId){
+		return new ResultBean<Boolean>(carScrapOrderService.TellUserTakeCar(clientId,salePhone,saleName,orderId));
+	}
+
+
+
+	/**
+	 * 通知用户取车
+	 * @param
+	 * @param
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/gotomoney",method = RequestMethod.POST)
+	@ResponseBody
+	@ApiOperation(value = "通知财务打款",notes = "通知财务打款")
+	public ResultBean<Boolean> TellMoneyByUser(@RequestParam(required = true)String orderId,
+											   @RequestParam(required = true)String carNumber){
+		return new ResultBean<Boolean>(carScrapOrderService.TellMoneyByUser(carNumber,orderId));
+	}
+
 
 	/**
 	 *
@@ -246,7 +280,7 @@ public class CarScrapOrderController {
 	/**
 	 * 根据传递的参数更新字段
 	 * @param id
-	 * @param u
+	 * @param
 	 * @return
 	 * @throws Exception 
 	 */
@@ -273,7 +307,7 @@ public class CarScrapOrderController {
 	 * 全数据更新
 	 * @param id
 	 * @param carScrapOrderVo
-	 * @param bindingResult
+	 * @param
 	 * @param request
 	 * @return
 	 * @throws Exception
@@ -299,47 +333,41 @@ public class CarScrapOrderController {
 	/**
 	 * 订单审核
 	 * @param id
-	 * @param orderStatus
-	 * @param remark
+	 * @param
+	 * @param
 	 * @return
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/audit/{id}",method = RequestMethod.PUT)
 	@ResponseBody
-	@ApiOperation(value = "审核订单",notes = "审核订单")
+	@ApiOperation(value = "审核订单PC端",notes = "审核订单")
 	public ResultBean<Boolean> saveOrderAuditingRecord(@PathVariable("id")String id,
 			@RequestParam(required = true)Integer auditorderStatus,
 			String auditRemark,CarScrapOrder order, HttpServletRequest request) throws Exception{
-		System.out.println("进入派单的controller层!");
+
 		String username = request.getParameter("agentUserName");
 		String userId = request.getParameter("agentUserid");
 		String paidanren = request.getParameter("auditer");
 
-		System.out.println("前台收到的派单人为："+paidanren);
-
 		User user = UserUtil.getUser();
-		System.out.println("获取到登陆的user为："+user);
 	     if(user == null){
 	    	 throw new DataException("未登录系统");
 	     }
-		System.out.println("派单人的标识为:"+user.getId());
 	     CarScrapOrder carScrapOrder = carScrapOrderService.queryById(id);
 		 
 	     carScrapOrder = DataConverter.copyRequestParamToOrdermedel(carScrapOrder,request);
 		 carScrapOrder.setOperator(user.getId());
 		 if(username!=null||userId!=null){
-			 ResultBean<Boolean> bool = new ResultBean<Boolean> (carScrapOrderService.saveOrderAuditingRecord(id,auditorderStatus,auditRemark,paidanren,carScrapOrder,username,userId)==1);
-			 //ResultBean<Boolean> bool = new ResultBean<Boolean> (carScrapOrderService.saveOrderAuditingRecord(id,auditorderStatus,auditRemark,user.getId(),carScrapOrder,username,userId)==1);ResultBean<Boolean> bool = new ResultBean<Boolean> (carScrapOrderService.saveOrderAuditingRecord(id,auditorderStatus,auditRemark,user.getId(),carScrapOrder,username,userId)==1);
+			 ResultBean<Boolean> bool = new ResultBean<Boolean> (carScrapOrderService.saveOrderAuditingRecord(id,auditorderStatus,auditRemark,paidanren,carScrapOrder,username,userId,"")==1);
 			 return bool;
 		 }else{
-			// ResultBean<Boolean> bool = new ResultBean<Boolean> (carScrapOrderService.saveOrderAuditingRecord(id,auditorderStatus,auditRemark,user.getId(),carScrapOrder)==1);
 			 ResultBean<Boolean> bool = new ResultBean<Boolean> (carScrapOrderService.saveOrderAuditingRecord(id,auditorderStatus,auditRemark,paidanren,carScrapOrder)==1);
 			 return bool;
 		 }
 	}
 	/**
 	 * quote 报价(分总,总部)
-	 * @param id
+	 * @param
 	 * @return
 	 * @throws Exception 
 	 */

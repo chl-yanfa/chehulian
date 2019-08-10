@@ -22,4 +22,6 @@ public interface UserMapper extends Mapper<User> {
 	List<UserSimpleBO> getReceiveOrderPermissionUser(@Param("permisscode")String permisscode,@Param("areid")String areid);
 
 	List<UserSimpleBO> getAllBussinessPeople(@Param("permisscode")String permisscode);
+
+	List<UserSimpleBO> getAllMoneyPeople(@Param("roleid")Integer roleNum);
 }

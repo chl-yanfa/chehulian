@@ -37,6 +37,12 @@ public class SmsSender {
     public static String PUBLICEORDER="SMS_170115873";
     public static String formatmsg="{ \"order_no\":\"%s\"}";
 
+    public static String PUBLICETAKECAR="SMS_172207349";
+    public static String formatmbg="{ \"yewuyuan_name\":\"%s\"},{ \"dianhua\":\"%s\"}";
+
+    public static String PUBLICETAKEMONEY="SMS_172207404";
+    public static String formatmcg="{ \"chepai\":\"%s\"},{ \"order_no\":\"%s\"}";
+
     private static IAcsClient acsClient= null;
     
     static{
@@ -87,6 +93,70 @@ public class SmsSender {
         request.setTemplateCode(templeCope);
         //可选:模板中的变量替换JSON串,如模板内容为"亲爱的${name},您的验证码为${code}"时,此处的值为//"{ \"code\":\"123\"}"
         request.setTemplateParam("{\"order_no\":\""+order_no+"\"}");
+        //hint 此处可能会抛出异常，注意catch
+        SendSmsResponse sendSmsResponse=new SendSmsResponse();
+        try {
+            sendSmsResponse = acsClient.getAcsResponse(request);
+            if (sendSmsResponse.getCode() != null && sendSmsResponse.getCode().equals("OK")) {
+                //请求成功
+                System.out.println("请求成功");
+            }else{
+                System.out.println("发送失败"+sendSmsResponse.getCode());
+            }
+        } catch (ServerException e) {
+            e.printStackTrace();
+        } catch (ClientException e) {
+            e.printStackTrace();
+        }
+        return sendSmsResponse;
+    }
+
+
+    //短信推送函数_去取车
+    public static SendSmsResponse sendSmsByTakeCar(String mobile,String formatmbg,String templeCope,String salePhone,String saleName){
+        //组装请求对象-具体描述见控制台-文档部分内容
+        SendSmsRequest request = new SendSmsRequest();
+        request.setMethod(MethodType.POST);
+        //必填:待发送手机号
+        request.setPhoneNumbers(mobile);
+        //必填:短信签名-可在短信控制台中找到
+        request.setSignName("车互联");
+        //必填:短信模板-可在短信控制台中找到
+        request.setTemplateCode(templeCope);
+        request.setTemplateParam("{\"yewuyuan_name\":\"" + saleName + "\", \"dianhua\":\"" + salePhone + "\"}");
+        //hint 此处可能会抛出异常，注意catch
+        SendSmsResponse sendSmsResponse=new SendSmsResponse();
+        try {
+            sendSmsResponse = acsClient.getAcsResponse(request);
+            if (sendSmsResponse.getCode() != null && sendSmsResponse.getCode().equals("OK")) {
+                //请求成功
+                System.out.println("请求成功");
+            }else{
+                System.out.println("发送失败"+sendSmsResponse.getCode());
+            }
+        } catch (ServerException e) {
+            e.printStackTrace();
+        } catch (ClientException e) {
+            e.printStackTrace();
+        }
+        return sendSmsResponse;
+    }
+
+
+
+    //短信推送函数_去取车
+    public static SendSmsResponse sendSmsByMoney(String mobile,String formatmbg,String templeCope,String carNumber,String orderNo){
+        //组装请求对象-具体描述见控制台-文档部分内容
+        SendSmsRequest request = new SendSmsRequest();
+        request.setMethod(MethodType.POST);
+        //必填:待发送手机号
+        request.setPhoneNumbers(mobile);
+        //必填:短信签名-可在短信控制台中找到
+        request.setSignName("车互联");
+        //必填:短信模板-可在短信控制台中找到
+        request.setTemplateCode(templeCope);
+        //可选:模板中的变量替换JSON串,如模板内容为"亲爱的${name},您的验证码为${code}"时,此处的值为//"{ \"code\":\"123\"}"
+        request.setTemplateParam("{\"chepai\":\"" + carNumber + "\", \"order_no\":\"" + orderNo + "\"}");
         //hint 此处可能会抛出异常，注意catch
         SendSmsResponse sendSmsResponse=new SendSmsResponse();
         try {

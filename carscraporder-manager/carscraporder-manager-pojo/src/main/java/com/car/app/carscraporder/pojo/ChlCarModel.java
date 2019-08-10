@@ -403,4 +403,50 @@ public class ChlCarModel {
     public void setAliasId(String aliasId) {
         this.aliasId = aliasId;
     }
+
+    @Override
+    public String toString() {
+        return "ChlCarModel{" +
+                "id=" + id +
+                ", brandId=" + brandId +
+                ", vinCode='" + vinCode + '\'' +
+                ", modelName='" + modelName + '\'' +
+                ", seriesId=" + seriesId +
+                ", subSeriesId=" + subSeriesId +
+                ", displacement='" + displacement + '\'' +
+                ", modelYear='" + modelYear + '\'' +
+                ", driveType='" + driveType + '\'' +
+                ", engine='" + engine + '\'' +
+                ", bodyStructure='" + bodyStructure + '\'' +
+                ", purchasePrice=" + purchasePrice +
+                ", partNum='" + partNum + '\'' +
+                ", rangeOfService='" + rangeOfService + '\'' +
+                ", rangeOfPickup='" + rangeOfPickup + '\'' +
+                ", status=" + status +
+                ", createdTime=" + createdTime +
+                ", createdBy='" + createdBy + '\'' +
+                ", updatedBy='" + updatedBy + '\'' +
+                ", updatedTime=" + updatedTime +
+                ", deleteState=" + deleteState +
+                ", called='" + called + '\'' +
+                ", carAlias='" + carAlias + '\'' +
+                ", carYear='" + carYear + '\'' +
+                ", dynamic='" + dynamic + '\'' +
+                ", drives='" + drives + '\'' +
+                ", seatNum='" + seatNum + '\'' +
+                ", emissionStandard='" + emissionStandard + '\'' +
+                ", configureLevel='" + configureLevel + '\'' +
+                ", cylinder='" + cylinder + '\'' +
+                ", engineValveNum='" + engineValveNum + '\'' +
+                ", transmission='" + transmission + '\'' +
+                ", wheelbase='" + wheelbase + '\'' +
+                ", cardoorNum='" + cardoorNum + '\'' +
+                ", supply='" + supply + '\'' +
+                ", inlet='" + inlet + '\'' +
+                ", power='" + power + '\'' +
+                ", remarks='" + remarks + '\'' +
+                ", carTypeId=" + carTypeId +
+                ", aliasId='" + aliasId + '\'' +
+                '}';
+    }
 }

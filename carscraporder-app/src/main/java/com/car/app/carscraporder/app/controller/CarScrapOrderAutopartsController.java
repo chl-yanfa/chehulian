@@ -132,14 +132,8 @@ public class CarScrapOrderAutopartsController {
 	     if(user == null){
 	    	 throw new DataException("未登录系统");
 	     }
-
-	     
 	     Map<String,String> map = HttpRequestParamConConverter.getParameterMap(request);
-	    
-	    
-	     
-		return new ResultBean<Boolean>(carScrapOrderAutopartsAppService.saveOrderAutopartsAuditingRecord(id,auditorderStatus,auditRemark,user.getId(),map));
-		
+		 return new ResultBean<Boolean>(carScrapOrderAutopartsAppService.saveOrderAutopartsAuditingRecord(id,auditorderStatus,auditRemark,user.getId(),map));
 	}
 	
 	@RequestMapping(value = "/sorting/{id}",method = RequestMethod.POST)

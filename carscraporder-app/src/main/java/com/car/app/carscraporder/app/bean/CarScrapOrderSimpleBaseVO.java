@@ -32,4 +32,18 @@ public class CarScrapOrderSimpleBaseVO extends CarScrapOrderBaseVO {
 	@ApiModelProperty(value = "取车地址")
     private String takeCarAddress;
 
+
+	@Override
+	public String toString() {
+		return "CarScrapOrderSimpleBaseVO{" +
+				"carAscription='" + carAscription + '\'' +
+				", carOwner='" + carOwner + '\'' +
+				", isdrive='" + isdrive + '\'' +
+				", carScrapDate='" + carScrapDate + '\'' +
+				", takeCarContacts='" + takeCarContacts + '\'' +
+				", takeCarContactNumber='" + takeCarContactNumber + '\'' +
+				", takeCarTime=" + takeCarTime +
+				", takeCarAddress='" + takeCarAddress + '\'' +
+				'}';
+	}
 }

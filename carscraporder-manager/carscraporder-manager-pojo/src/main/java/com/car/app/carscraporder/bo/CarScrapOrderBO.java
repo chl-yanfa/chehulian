@@ -35,6 +35,7 @@ public class CarScrapOrderBO extends  CarScrapOrder{
 	//业务员电话
 	private String salePhone;
 
+	//派单人电话
 	private String adminPhone;
 
 	private String orderStatusCN;
@@ -42,11 +43,12 @@ public class CarScrapOrderBO extends  CarScrapOrder{
 	private String factoryName;
 
 	private String factoryPhone;
-	
-	
+
+	//快递公司名称
+	private String CourierName;
+
 	 @ApiModelProperty(value = "派单备注")
      private String piesNote;
-	 
 	 
 	 @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	 //@ApiModelProperty(value = "下单日期")
@@ -68,8 +70,9 @@ public class CarScrapOrderBO extends  CarScrapOrder{
 	 @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	 private Date settlementDate;
 	
-	
-	
+	 //派单人Id
+	 private String operatorId;
+
 	//车辆照片集合
 	@ApiModelProperty(value = "车辆照片")
 	private List<OrderAttachmentBO> vehiclePictures = new ArrayList<OrderAttachmentBO>();
@@ -82,6 +85,9 @@ public class CarScrapOrderBO extends  CarScrapOrder{
 	//报废证明照片
 	@ApiModelProperty(value = "车辆报废证明照片")
 	private List<OrderAttachmentBO> certificatePictures= new ArrayList<OrderAttachmentBO>();
+	//二次报价证明照片
+	@ApiModelProperty(value = "车辆二次报价证明照片")
+	private List<OrderAttachmentBO> sincepricePictures= new ArrayList<OrderAttachmentBO>();
 
 	 List<CarScrapOrderAutopartsBO> carScrapOrderAutopartsList = new ArrayList<CarScrapOrderAutopartsBO>();
 	 List<CarScrapOrderSettlementBO>  settlementList = new ArrayList<CarScrapOrderSettlementBO>();
@@ -256,5 +262,59 @@ public class CarScrapOrderBO extends  CarScrapOrder{
 
 	public void setFactoryPhone(String factoryPhone) {
 		this.factoryPhone = factoryPhone;
+	}
+
+	public String getCourierName() {
+		return CourierName;
+	}
+
+	public void setCourierName(String courierName) {
+		CourierName = courierName;
+	}
+
+	public List<OrderAttachmentBO> getSincepricePictures() {
+		return sincepricePictures;
+	}
+
+	public void setSincepricePictures(List<OrderAttachmentBO> sincepricePictures) {
+		this.sincepricePictures = sincepricePictures;
+	}
+
+	public String getOperatorId() {
+		return operatorId;
+	}
+
+	public void setOperatorId(String operatorId) {
+		this.operatorId = operatorId;
+	}
+
+	@Override
+	public String toString() {
+		return "CarScrapOrderBO{" +
+				"carModelNumberName='" + carModelNumberName + '\'' +
+				", orderAreas='" + orderAreas + '\'' +
+				", custormName='" + custormName + '\'' +
+				", saleName='" + saleName + '\'' +
+				", salePhone='" + salePhone + '\'' +
+				", adminPhone='" + adminPhone + '\'' +
+				", orderStatusCN='" + orderStatusCN + '\'' +
+				", factoryName='" + factoryName + '\'' +
+				", factoryPhone='" + factoryPhone + '\'' +
+				", CourierName='" + CourierName + '\'' +
+				", piesNote='" + piesNote + '\'' +
+				", createOrderDate=" + createOrderDate +
+				", receiveCarDate=" + receiveCarDate +
+				", inStorageDate=" + inStorageDate +
+				", formalitiesDate=" + formalitiesDate +
+				", settlementDate=" + settlementDate +
+				", operatorId='" + operatorId + '\'' +
+				", vehiclePictures=" + vehiclePictures +
+				", formalitiesPictures=" + formalitiesPictures +
+				", destroyPictures=" + destroyPictures +
+				", certificatePictures=" + certificatePictures +
+				", sincepricePictures=" + sincepricePictures +
+				", carScrapOrderAutopartsList=" + carScrapOrderAutopartsList +
+				", settlementList=" + settlementList +
+				'}';
 	}
 }

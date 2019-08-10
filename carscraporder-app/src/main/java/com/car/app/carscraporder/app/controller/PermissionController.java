@@ -89,17 +89,14 @@ public class PermissionController {
 		Map permission = user.getPermission();
 		if(permission.containsKey(functionCode)){
 
-            System.out.println("进入1"+permission);
-
 			Map<String,List<Integer>> permissionCache = user.getPermission();
 			
 			List<Integer> permissionListCache = permissionCache.get(functionCode);
 			
-			 result = queryRemindNum(permissionListCache,functionCode);
+			result = queryRemindNum(permissionListCache,functionCode);
 			
 		    return new ResultBean(result);
 		}else{
-            System.out.println("进入2"+permission);
 			List<Permission>  permisssionList = permissionService.getPermissionByCode(code);
 			if(permisssionList!=null&&permisssionList.size()>0){
 				List<Integer> funPermissionCode = new ArrayList<Integer>();
@@ -114,20 +111,19 @@ public class PermissionController {
 							funPermissionCode.add(3);
 						}else if (StringUtils.equals(permissions.getPercode(), "order_car_whole:query")){
 							funPermissionCode.add(4);
+						}else if (StringUtils.equals(permissions.getPercode(), "order_car_whole:jiedan")){
+							funPermissionCode.add(5);
 						}
 						
 					}
-					//将权限存储到user缓存
+					//将权限存储到user缓存与Map集合
 					if(funPermissionCode.size()>0){
 						user.getPermission().put(functionCode, funPermissionCode);
 						String appSessionId = CookieUtils.getCookieValue(request, SystemParameter.TICKET);
 						redisService.set(SystemParameter.TICKET+appSessionId, SystemParameter.MAPPER.writeValueAsString(user), 30*60);
 						
-						 result = queryRemindNum(funPermissionCode,functionCode);
-						
+						result = queryRemindNum(funPermissionCode,functionCode);
 					    return new ResultBean(result);
-						
-						
 					}
 					
 				}else{
@@ -203,9 +199,14 @@ public class PermissionController {
 					PermissionBO bo = new PermissionBO();
 					bo.setFunctionCode(4);
 					bos.add(bo);
+				}else if(permissioncode==5){
+					//接单管理
+					PermissionBO bo = new PermissionBO();
+					int count = carScrapOrderAppService.queryPendingOrder(user.getId(), 33, user.getAreasids());
+					bo.setRemindNum(count);
+					bo.setFunctionCode(5);
+					bos.add(bo);
 				}
-				
-				
 			}
 		}else{
 			for(Integer permissioncode:permissionListCache){

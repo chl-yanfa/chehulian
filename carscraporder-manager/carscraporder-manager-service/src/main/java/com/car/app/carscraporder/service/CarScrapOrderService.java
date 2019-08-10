@@ -44,8 +44,7 @@ public interface CarScrapOrderService extends BaseService<CarScrapOrder> {
 	 PageInfo<CarScrapOrderPageBO>  queryAll(Integer page,Integer rows,CarScrapOrderKeywordVO paramter)throws Exception;
 
 	 PageInfo<CarScrapOrderPageBO>  queryAllByChl(Integer page,Integer rows,CarScrapOrderKeywordVO paramter)throws Exception;
-	
-	
+
 	 CarScrapOrderBO queryBOById(String id)throws Exception;
 	
 	/**
@@ -62,31 +61,28 @@ public interface CarScrapOrderService extends BaseService<CarScrapOrder> {
 	 Boolean confirmAmount(CarScrapOrderConfirmAmountVO confirmAmountVO)throws Exception;
 	
 	 Integer update(CarScrapOrderVO record) throws Exception;
+
 	 Integer save(CarScrapOrderVO record)throws Exception ;
-	
-	
+
 	 CarScrapOrder queryById(String id);
 	
-	 Integer saveOrderAuditingRecord(String id,Integer orderStatus,String remark,String operator,CarScrapOrder order,String username,String userId) throws Exception;
+	 Integer saveOrderAuditingRecord(String id,Integer orderStatus,String remark,String operator,CarScrapOrder order,String username,String userId,String isClient) throws Exception;
 
 	 Integer saveOrderAuditingRecord(String id,Integer orderStatus,String remark,String operator,CarScrapOrder order) throws Exception;
-
-	 Integer saveOrderAuditingRecord(String id,Integer orderStatus,String remark,String operator,String whyNo,CarScrapOrder order) throws Exception;
 
 	 OrderAduitBO getOrderAuditInfo(String orderId) throws Exception;
 
 	 CarScrapOrderMyTradeBO myTrade(String clientId)throws Exception;
 	
 	 PageInfo<CarScrapOrderMyTradeInfoBO> myTradeInfo(Integer page,Integer rows, String clientId)throws Exception;
-	
-	
+
 	 Boolean quote(CarScrapOrderQuoteVO quoteVO)throws Exception;
 
 	 Boolean quoteByPush(CarScrapOrderQuoteVO quoteVO)throws Exception;
-	
-	
+
 	 PageInfo<CarScrapOrderQuotePageBO>  queryQuotePageListByKeyword(Integer page,Integer rows,CarScrapOrderKeywordVO paramter)throws Exception;
-	
-	
-	
+
+	 Boolean TellUserTakeCar(String clientId,String salePhone,String saleName,String orderId);
+
+	 Boolean TellMoneyByUser(String carNumber,String orderId);
 }

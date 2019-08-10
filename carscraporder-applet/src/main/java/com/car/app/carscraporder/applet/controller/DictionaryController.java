@@ -136,7 +136,7 @@ public class DictionaryController {
 	@ResponseBody
 	@ApiOperation(value = "根据车系id获取车型数据",notes = "根据车系id获取车型数据")
 	public ResultBean<List<DictionaryBO>> queryModel(@PathVariable("systemId")String systemId) throws Exception{
-		
+		System.out.println("nrz_list_3"+dictionaryService.getCarModel(systemId));
 		return new ResultBean<List<DictionaryBO>>(dictionaryService.getCarModel(systemId));
 		
 	}

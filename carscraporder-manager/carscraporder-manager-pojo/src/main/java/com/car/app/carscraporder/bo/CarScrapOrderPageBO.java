@@ -89,6 +89,8 @@ public class CarScrapOrderPageBO {
 
 	 private String orderStatusCN;
 
+	 private String sinceCN;
+
 	 @ApiModelProperty(value = "取车时间")
 	 @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	 private Date takeCarTime;
@@ -126,6 +128,7 @@ public class CarScrapOrderPageBO {
 
 	 private String cancelMemo;
 
+	 private Integer isAgree;
 
 	public String getOrderTypes() {
 		return orderTypes;
@@ -380,5 +383,21 @@ public class CarScrapOrderPageBO {
 
 	public void setCancelMemo(String cancelMemo) {
 		this.cancelMemo = cancelMemo;
+	}
+
+	public String getSinceCN() {
+		return sinceCN;
+	}
+
+	public void setSinceCN(String sinceCN) {
+		this.sinceCN = sinceCN;
+	}
+
+	public Integer getIsAgree() {
+		return isAgree;
+	}
+
+	public void setIsAgree(Integer isAgree) {
+		this.isAgree = isAgree;
 	}
 }

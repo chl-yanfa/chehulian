@@ -46,6 +46,7 @@ public class CarScrapOrderServiceImpl extends BaseServiceImpl<CarScrapOrder> imp
 
 	@Autowired
 	private CarScrapOrderMapper carScrapOrderMapper;
+
 	
 	@Autowired
 	private CarScrapOrderAutopartsDelMapper carScrapOrderAutopartsDelMapper;
@@ -89,7 +90,7 @@ public class CarScrapOrderServiceImpl extends BaseServiceImpl<CarScrapOrder> imp
 
 	/**
 	 * 新增订单
-	 * @param record
+	 * @param
 	 * @return
 	 * @throws Exception
 	 */
@@ -402,18 +403,21 @@ public class CarScrapOrderServiceImpl extends BaseServiceImpl<CarScrapOrder> imp
 	
 	
 	private void fillPrictureToOrder(CarScrapOrderBO bo){
+
 		 List<OrderAttachmentBO> attachmentBo1 = carScrapOrderAttachmentService.getArrachmentByOrderIdAndAttachmentType(bo.getId(),CommonSystemParamter.ORDER_PICTURE_CAR,CommonSystemParamter.ORDER_WhOLECAR_TYPE);
-			
 		 bo.setVehiclePictures(attachmentBo1);
 			
 		 List<OrderAttachmentBO> attachmentBo2 = carScrapOrderAttachmentService.getArrachmentByOrderIdAndAttachmentType(bo.getId(),CommonSystemParamter.ORDER_PICTURE_CAR_FORMALITIES,CommonSystemParamter.ORDER_WhOLECAR_TYPE);
 		 bo.setFormalitiesPictures(attachmentBo2);
+
 		  List<OrderAttachmentBO> attachmentBo3 = carScrapOrderAttachmentService.getArrachmentByOrderIdAndAttachmentType(bo.getId(),CommonSystemParamter.ORDER_PICTURE_CAR_DESTROY,CommonSystemParamter.ORDER_WhOLECAR_TYPE);
 		  bo.setDestroyPictures(attachmentBo3);
+
 		  List<OrderAttachmentBO> attachmentBo4 = carScrapOrderAttachmentService.getArrachmentByOrderIdAndAttachmentType(bo.getId(),CommonSystemParamter.ORDER_PICTURE_CAR_CERTIFICATE,CommonSystemParamter.ORDER_WhOLECAR_TYPE);
 		  bo.setCertificatePictures(attachmentBo4);
-		
-		
+
+		 List<OrderAttachmentBO> attachmentBo5 = carScrapOrderAttachmentService.getArrachmentByOrderIdAndAttachmentType(bo.getId(),CommonSystemParamter.ORDER_PICTURE_CAR_SINCE,CommonSystemParamter.ORDER_WhOLECAR_TYPE);
+		 bo.setSincepricePictures(attachmentBo5);
 		
 		
 		
@@ -454,12 +458,12 @@ public class CarScrapOrderServiceImpl extends BaseServiceImpl<CarScrapOrder> imp
 		{
 
 			CarScrapOrder order = this.queryById(id);
+			System.out.println("+++++"+order);
 			if(order!=null){
-				CheckUtil.check(orderStatus>=order.getOrderStatus(), "param.is.null");
+				//CheckUtil.check(orderStatus>=order.getOrderStatus(), "param.is.null");
 				if(orderParam!=null){
 					BeanUtils.copyProperties(orderParam, order);
 				}
-
 
 				order.setOperator(operator);
 
@@ -469,22 +473,18 @@ public class CarScrapOrderServiceImpl extends BaseServiceImpl<CarScrapOrder> imp
 					if(CommonSystemParamter.PARTS_CREATE_STATUS == orderStatus){
 						//整车订单初始化
 						saveauditHistory(order.getId(),CommonSystemParamter.PARTS_CREATE_STATUS,"下单",CommonSystemParamter.BUSINESS_TYPE_ORDER,operator);
-
-
 					}else if(CommonSystemParamter.ORDER_DISTRIBUTION_STATUS == orderStatus){
 						//整车订单接单派单
 						saveauditHistory(order.getId(),CommonSystemParamter.ORDER_DISTRIBUTION_STATUS,remark,CommonSystemParamter.BUSINESS_TYPE_ORDER,operator);
 						order.setOrderStatus(orderStatus);
 						//保存订单信息
 						int result = super.updateSelective(order);
-
 					}else if(CommonSystemParamter.ORDER_RECEIVE_STATUS == orderStatus){
 						//整车订单接收车辆
 						saveauditHistory(order.getId(),CommonSystemParamter.ORDER_RECEIVE_STATUS,remark,CommonSystemParamter.BUSINESS_TYPE_ORDER,operator);
 						order.setOrderStatus(orderStatus);
 						//保存订单信息
 						int result = super.updateSelective(order);
-
 					}else if(CommonSystemParamter.ORDER_STORAGE_STATUS == orderStatus){
 						//整车订单入场
 						saveauditHistory(order.getId(),CommonSystemParamter.ORDER_STORAGE_STATUS,remark,CommonSystemParamter.BUSINESS_TYPE_ORDER,operator);
@@ -530,7 +530,6 @@ public class CarScrapOrderServiceImpl extends BaseServiceImpl<CarScrapOrder> imp
 					 */
 
 				}else if(StringUtils.equals(order.getOrderType(), CommonSystemParamter.ORDER_OLDPARTS_TYPE)){
-
 					if(CommonSystemParamter.PARTS_CREATE_STATUS == orderStatus){
 						//旧件订单初始化
 						saveauditHistory(order.getId(),CommonSystemParamter.PARTS_CREATE_STATUS,"下单",CommonSystemParamter.BUSINESS_TYPE_ORDER,operator);
@@ -596,45 +595,31 @@ public class CarScrapOrderServiceImpl extends BaseServiceImpl<CarScrapOrder> imp
 		}
 	}
 
-	public Integer saveOrderAuditingRecord(String id,Integer orderStatus,String remark,String operator,String whyNo,CarScrapOrder orderParam) throws Exception{
-		{
-			CarScrapOrder order = this.queryById(id);
-			if(order!=null){
-				CheckUtil.check(orderStatus>=order.getOrderStatus(), "param.is.null");
-				if(orderParam!=null){
-					BeanUtils.copyProperties(orderParam, order);
-				}
-				order.setOperator(operator);
-				//判断订单类型
-				if(StringUtils.equals(order.getOrderType(), CommonSystemParamter.ORDER_WhOLECAR_TYPE)){
-					if(CommonSystemParamter.ORDER_RE_FUSE == orderStatus){
-						//整车订单接收车辆
-						saveauditHistory(order.getId(),CommonSystemParamter.ORDER_RECEIVE_STATUS,remark,CommonSystemParamter.BUSINESS_TYPE_ORDER,operator);
-						order.setOrderStatus(orderStatus);
-						order.setCancelMemo(whyNo); //将取消原因赋值
-						//保存订单信息
-						int result = super.updateSelective(order);
-					}
-				}
-			}
-			return 1;
-		}
-	}
 
-	
+
 	/**
-	 * 订单为维度进行审核操作
+	 *
+	 * @param id
+	 * @param orderStatus 要更新的订单状态
+	 * @param remark 备注
+	 * @param operator 操作人
+	 * @param orderParam 订单类对象
+	 * @param username 业务员姓名
+	 * @param userId 业务员Id
+	 * @return
+	 * @throws Exception
 	 */
-	public Integer saveOrderAuditingRecord(String id,Integer orderStatus,String remark,String operator,CarScrapOrder orderParam,String username,String userId) throws Exception{
-		
+	public Integer saveOrderAuditingRecord(String id,Integer orderStatus,String remark,String operator,CarScrapOrder orderParam,String username,String userId,String isClient) throws Exception{
+
+		System.out.println("service层_operator:"+operator);
+
 		CarScrapOrder order = this.queryById(id);
         if(order!=null){
-        	CheckUtil.check(orderStatus>=order.getOrderStatus(), "param.is.null");
+        	//CheckUtil.check(orderStatus>=order.getOrderStatus(), "param.is.null");
         	if(orderParam!=null){
     			 BeanUtils.copyProperties(orderParam, order);
     		 }
 
-	         order.setOperator(operator);
 	    		
 	  		  //判断订单类型
 	  		if(StringUtils.equals(order.getOrderType(), CommonSystemParamter.ORDER_WhOLECAR_TYPE)){
@@ -642,13 +627,33 @@ public class CarScrapOrderServiceImpl extends BaseServiceImpl<CarScrapOrder> imp
 	  			  if(CommonSystemParamter.PARTS_CREATE_STATUS == orderStatus){
 	  				   //整车订单初始化
 	  				  saveauditHistory(order.getId(),CommonSystemParamter.PARTS_CREATE_STATUS,"下单",CommonSystemParamter.BUSINESS_TYPE_ORDER,operator);
-	  				  
-	  				  
-	  			  }else if(CommonSystemParamter.ORDER_DISTRIBUTION_STATUS == orderStatus){
-	  				  //整车订单接单派单
+					  order.setOperator(operator);
+	  			  }else if(CommonSystemParamter.ORDER_DISTRIBUTION_STATUS == orderStatus && orderParam.getSinceQuote()!=null && isClient==null){  //更改订单状态为2,待用户接收【总部已审核】【用户待接收】
+					  saveauditHistory(order.getId(),CommonSystemParamter.ORDER_DISTRIBUTION_STATUS,remark,CommonSystemParamter.BUSINESS_TYPE_ORDER,operator);
+					  order.setOperator(operator);
+					  order.setIsAgree(2); //用户端待接受二次报价
+					  order.setOrderStatus(orderStatus);
+					  order.setSinceQuote(orderParam.getSinceQuote());
+					  order.setClientId(orderParam.getClientId());
+					  super.updateSelective(order);
+				  }else if(CommonSystemParamter.ORDER_DISTRIBUTION_STATUS == orderStatus && isClient!=null){   //用户端用户接受总部二次报价
+					  saveauditHistory(order.getId(),CommonSystemParamter.ORDER_DISTRIBUTION_STATUS,remark,CommonSystemParamter.BUSINESS_TYPE_ORDER,operator);
+//					  order.setOperator(operator);
+					  order.setIsAgree(1); //用户端已接受二次报价
+					  order.setOrderStatus(orderStatus);
+					  super.updateSelective(order);
+				  } else if(CommonSystemParamter.ORDER_NOOK_STATUS == orderStatus){ //派单操作-传递33,点击派单按钮进入此操作。将2变更33
+					  //整车订单接单
+					  saveauditHistory(order.getId(),CommonSystemParamter.ORDER_NOOK_STATUS,remark,CommonSystemParamter.BUSINESS_TYPE_ORDER,operator);
+					  order.setOrderStatus(orderStatus);
+					  super.updateSelective(order);
+				  }else if(CommonSystemParamter.ORDER_DISTRIBUTION_STATUS == orderStatus){
+	  				  //整车订单派单
 	  				  saveauditHistory(order.getId(),CommonSystemParamter.ORDER_DISTRIBUTION_STATUS,remark,CommonSystemParamter.BUSINESS_TYPE_ORDER,operator);
-	  				  order.setOrderStatus(orderStatus);
-	  				  //保存订单信息
+	  				  order.setOperator(operator);
+					  order.setOperatorName("");
+	  				  order.setIsAgree(3); //订单未参与过二次报价
+					  order.setOrderStatus(orderStatus);
 	  				  int result = super.updateSelective(order);
 					  List<CarPush> carPushList = carPushService.getAllCarPush();
 					  CarPush carPush = carPushList.get(4);
@@ -672,45 +677,62 @@ public class CarScrapOrderServiceImpl extends BaseServiceImpl<CarScrapOrder> imp
 //				  		  SmsSender.sendSmsByOrder(cb.getPhone(), SmsSender.formatmsg, SmsSender.PUBLICEORDER,order.getOrderNo());
 	  				  }
 	  			  }else if(CommonSystemParamter.ORDER_RECEIVE_STATUS == orderStatus){
-	  				  //整车订单接收车辆
+	  				  //整车订单接收
 	  				  saveauditHistory(order.getId(),CommonSystemParamter.ORDER_RECEIVE_STATUS,remark,CommonSystemParamter.BUSINESS_TYPE_ORDER,operator);
+					  order.setOperator(operator);
 	  				  order.setOrderStatus(orderStatus);
-	  				  //保存订单信息
-	  				 int result = super.updateSelective(order);
+	  				  int result = super.updateSelective(order);
 					  List<CarPush> carPushList = carPushService.getAllCarPush();
-	  				 CarPush carPush = carPushList.get(3);
-	  				 if(result>0){
+	  				  CarPush carPush = carPushList.get(3);
+	  				  if(result>0){
 						 JYyPushUtil.sendToRegistrationId(userId,carPush.getNotificationTitle(),carPush.getMsgTitle(),carPush.getMsgContent(),"1");
-					 }
-	  			  }else if(CommonSystemParamter.ORDER_STORAGE_STATUS == orderStatus){
-	  				//整车订单入场
+					  }
+	  			  }else if(CommonSystemParamter.ORDER_RE_FUSE == orderStatus){  //更改订单状态为96,二次报价单【业务员提交审核,总部待审核】
+					  //整车订单二次报价车辆
+					  saveauditHistory(order.getId(),CommonSystemParamter.ORDER_RE_FUSE,remark,CommonSystemParamter.BUSINESS_TYPE_ORDER,operator);
+					  order.setOperator(operator);
+					  order.setOrderStatus(orderStatus);
+					  order.setAdjustWhy(orderParam.getAdjustWhy()); //将二次报价原因赋值
+					  order.setSinceQuote(orderParam.getSinceQuote()); //将二次报价金额赋值
+					  //保存订单信息
+					  super.updateSelective(order);
+				  }else if(CommonSystemParamter.ORDER_CANCEL_STATUS == orderStatus){ //更改订单状态为-1，用户不接受
+					  saveauditHistory(order.getId(),CommonSystemParamter.ORDER_CANCEL_STATUS,remark,CommonSystemParamter.BUSINESS_TYPE_ORDER,operator);
+					  order.setOperator(operator);
+					  order.setOrderStatus(orderStatus);
+					  super.updateSelective(order);
+				  }else if(CommonSystemParamter.ORDER_STORAGE_STATUS == orderStatus){
 	  				  saveauditHistory(order.getId(),CommonSystemParamter.ORDER_STORAGE_STATUS,remark,CommonSystemParamter.BUSINESS_TYPE_ORDER,operator);
+					  order.setOperator(operator);
 	  				  order.setOrderStatus(orderStatus);
-	  				  //保存订单信息
 	  				  super.updateSelective(order);
 	  			  }else if(CommonSystemParamter.ORDER_SCRAP_STATUS == orderStatus){
-	  				//整车订单报废
+	  			  	  String kdId = orderParam.getExpressCompany(); //快递公司编码
+					  String kdNum = orderParam.getExpressNumber(); //快递单号
+	  				  //整车订单报废
 	  				  saveauditHistory(order.getId(),CommonSystemParamter.ORDER_SCRAP_STATUS,remark,CommonSystemParamter.BUSINESS_TYPE_ORDER,operator);
+					  order.setOperator(operator);
+					  order.setExpressCompany(kdId);
+					  order.setExpressNumber(kdNum);
 	  				  order.setOrderStatus(orderStatus);
-	  				  //保存订单信息
 	  				  super.updateSelective(order);
 	  			  }else if(CommonSystemParamter.ORDER_SETTLEMENT_STATUS == orderStatus){
 	  				  //整车订单结算
 	  				  saveauditHistory(order.getId(),CommonSystemParamter.ORDER_SETTLEMENT_STATUS,remark,CommonSystemParamter.BUSINESS_TYPE_ORDER,operator);
+					  order.setOperator(operator);
 	  				  order.setOrderStatus(orderStatus);
-	  				  //保存订单信息
 	  				  super.updateSelective(order);
 	  			  }else if(CommonSystemParamter.ORDER_END_STATUS == orderStatus){
-	  				//整车订单结束
+	  				  //整车订单结束
 	  				  saveauditHistory(order.getId(),CommonSystemParamter.ORDER_END_STATUS,remark,CommonSystemParamter.BUSINESS_TYPE_ORDER,operator);
+					  order.setOperator(operator);
 	  				  order.setOrderStatus(orderStatus);
-	  				  //保存订单信息
 	  				  super.updateSelective(order);
 	  			  }else if(CommonSystemParamter.ORDER_ERROR_STATUS == orderStatus){
 	  				  //整车订单异常
 	  				  saveauditHistory(order.getId(),CommonSystemParamter.ORDER_ERROR_STATUS,remark,CommonSystemParamter.BUSINESS_TYPE_ORDER,operator);
+					  order.setOperator(operator);
 	  				  order.setOrderStatus(orderStatus);
-	  				  //保存订单信息
 	  				  super.update(order);
 	  			  }
 	  		    /**
@@ -727,7 +749,7 @@ public class CarScrapOrderServiceImpl extends BaseServiceImpl<CarScrapOrder> imp
 	  		     */
 
 	  		}else if(StringUtils.equals(order.getOrderType(), CommonSystemParamter.ORDER_OLDPARTS_TYPE)){
-	  			
+				order.setOperator(operator);
 	  			if(CommonSystemParamter.PARTS_CREATE_STATUS == orderStatus){
 	  				//旧件订单初始化
 	  				saveauditHistory(order.getId(),CommonSystemParamter.PARTS_CREATE_STATUS,"下单",CommonSystemParamter.BUSINESS_TYPE_ORDER,operator);
@@ -895,7 +917,7 @@ public class CarScrapOrderServiceImpl extends BaseServiceImpl<CarScrapOrder> imp
 	 * 获取订单列表
 	 * @param page
 	 * @param rows
-	 * @param paramater
+	 * @param
 	 * @return
 	 */
 	@Override
@@ -1337,9 +1359,10 @@ public class CarScrapOrderServiceImpl extends BaseServiceImpl<CarScrapOrder> imp
 				CarScrapOrder order =new CarScrapOrder();
 				order.setId(confirmAmountVO.getId());
 				Integer orderStatue = null;
-				if(confirmAmountVO.getAmountIsaccept() == 0) {//接受
+				if(confirmAmountVO.getAmountIsaccept() == 0) {//接受报价
 					orderStatue = CommonSystemParamter.ORDER_CREATE_STATUS;
-				}else {//不接受
+				}else {
+					//不接受报价
 					orderStatue = CommonSystemParamter.ORDER_REJECTED_STATUS;
 				}
 				order.setOrderStatus(orderStatue);
@@ -1514,13 +1537,11 @@ public class CarScrapOrderServiceImpl extends BaseServiceImpl<CarScrapOrder> imp
 
 		Integer userType = -1;
 		UserBO userBOByDB = userService.queryUserBOById(quoteVO.getOperator());
-		System.out.println("service层的数据："+userBOByDB);
 		List<String> areasidList = null;
 		if(StringUtils.isNotBlank(userBOByDB.getAreasids())) {
 			areasidList = Arrays.asList(userBOByDB.getAreasids().split(","));
 		}
 		if(areasidList!=null) {
-			System.out.println(userBOByDB.getRoleName().contains("业务员"));
 			if(areasidList.size()==1 && areasidList.contains(CommonSystemParamter.HEAD_AREA_ID)) {
 				System.out.println("进入总部");
 				userType = 0;//角色为总部
@@ -1553,11 +1574,7 @@ public class CarScrapOrderServiceImpl extends BaseServiceImpl<CarScrapOrder> imp
 			}
 			if(orderStatusByDB == CommonSystemParamter.ORDER_TO_SUB_QUOTED_STATUS) {
 				userType = 1;//分部
-			}else if(userBOByDB.getRoleName().contains("业务员")){  //与上层互换逻辑
-				System.out.println("进入业务员报价");
-				userType = 3; //此处为业务员现场查看车辆后报价
-			}
-			else {
+			}else {
 				userType = 0;//总部
 			}
 		}
@@ -1644,12 +1661,6 @@ public class CarScrapOrderServiceImpl extends BaseServiceImpl<CarScrapOrder> imp
 					System.out.println("这是分部报的价格");
 					order.setSubQuote(quoteVO.getAmount());
 					order.setOrderStatus(CommonSystemParamter.ORDER_TO_QUOTED_STATUS);
-				}else if(userType == 3){
-					System.out.println("进入业务员现场报价!");
-					order.setSinceQuote(quoteVO.getAmount());
-					order.setAdjustWhy(quoteVO.getAdjustWhy());
-					//业务员报价完毕，订单再次变更为待总部确认报价。
-					order.setOrderStatus(CommonSystemParamter.ORDER_TO_QUOTED_STATUS);
 				}
 				carScrapOrderMapper.updateByPrimaryKeySelective(order);
 			}
@@ -1689,5 +1700,41 @@ public class CarScrapOrderServiceImpl extends BaseServiceImpl<CarScrapOrder> imp
 		return null;
 	}
 
-	
+	@Override
+	public Boolean TellUserTakeCar(String clientId,String salePhone,String saleName,String orderId) {
+		try{
+			ClientBO cb = clientService.getClientById(clientId);
+			System.out.println("cccccccc"+cb);
+			CarScrapOrder order = this.queryById(orderId);
+			//更新is_take字段为已点击
+			order.setIsTake(1);
+			int result = super.updateSelective(order);
+			if(result>0){
+				System.out.println("更新is_take状态成功！");
+			}
+			//短信通知用户
+			System.out.println("要发送的手机号为:"+cb.getPhone());
+			SmsSender.sendSmsByTakeCar(cb.getPhone(),SmsSender.formatmbg,SmsSender.PUBLICETAKECAR,salePhone,saleName);
+			return true;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public Boolean TellMoneyByUser(String carNumber,String orderId) {
+		try{
+			//获取所有的财务人员
+			List<UserSimpleBO> userList = userService.getAllMoneyPeople(34);
+			for (UserSimpleBO money:userList) {
+				SmsSender.sendSmsByMoney(money.getContactPhone(), SmsSender.formatmcg, SmsSender.PUBLICETAKEMONEY,carNumber,orderId);
+			}
+			return true;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return false;
+	}
+
 }

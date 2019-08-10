@@ -241,9 +241,9 @@
 
 
         </if>
-
+            and o.since_quote is not null
         <if test="vo.orderStatusList != null and vo.orderStatusList.size()>0">
-            and o.order_status = 12
+            and o.order_status = 96
         </if>
 
         <if test="vo.orderType != null and vo.orderType != ''" >
@@ -300,9 +300,9 @@
 
 
         </if>
-
+            and o.since_quote is not null
         <if test="vo.orderStatusList != null and vo.orderStatusList.size()>0">
-            and o.order_status = 13
+            and o.order_status = 2
         </if>
 
         <if test="vo.orderType != null and vo.orderType != ''" >
@@ -339,7 +339,7 @@
         else  (select sum(ss.settlement_amount) from car_scrap_order_settlement ss where ss.settlement_object_id in (select id from car_scrap_order_autoparts p where p.order_id=o.id))
         end  as  settlementAmount,
         case  o.client_type  when '1' then '个人' else (select  c1.customer_name from sys_client c ,sys_company c1 where c.companyid = c1.id and c.id=o.client_id) end as custormName,
-        o.car_model_number as carModelNumberName,COALESCE(o.car_number,'暂未填写')  as carNumber,'已取消' as orderStatusCN,o.since_quote as sinceQuote,o.* from car_scrap_order o
+        o.car_model_number as carModelNumberName,COALESCE(o.car_number,'暂未填写')  as carNumber,'待审核' as orderStatusCN,o.since_quote as sinceQuote,o.* from car_scrap_order o
         where  o.isremove=0 and <![CDATA[ ((o.order_type='2' and o.order_status<>'4') or o.order_type='1') ]]>
         and o.order_amount<![CDATA[ <= ]]>o.since_quote
         <if test="vo.keyWord != null and vo.keyWord != ''" >
@@ -398,16 +398,21 @@
            else  (select sum(ss.settlement_amount) from car_scrap_order_settlement ss where ss.settlement_object_id in (select id from car_scrap_order_autoparts p where p.order_id=o.id)) 
 		     end  as  settlementAmount,
        case  o.client_type  when '1' then '个人' else (select  c1.customer_name from sys_client c ,sys_company c1 where c.companyid = c1.id and c.id=o.client_id) end as custormName,
-		o.car_model_number as carModelNumberName,COALESCE(o.car_number,'暂未填写')  as carNumber,
-
+		o.car_model_number as carModelNumberName,
+		COALESCE(o.car_number,'暂未填写')  as carNumber,
+        if(o.is_agree is null,3,is_agree) as isAgree,
         CASE o.order_status
         WHEN 2 THEN '待接收'
-        WHEN 3 THEN '待入场'
-        WHEN 4 THEN '待报废'
-        WHEN 96 THEN '已取消'
+        WHEN 3 THEN '待报废'
+        WHEN 4 THEN '待入场'
+        WHEN 96 THEN '待审核'
         END
-		as orderStatusCN,o.* from car_scrap_order o
-		where  o.isremove=0 and <![CDATA[ ((o.order_type='2' and o.order_status<>'4') or o.order_type='1') ]]>
+		as orderStatusCN,
+        IF(o.since_quote <![CDATA[ <= ]]> o.order_amount and o.since_quote is not null and o.order_status=2, '二次报价订单','') AS sinceCN,
+		o.* from car_scrap_order o
+        where  o.isremove=0
+<!--		 and <![CDATA[ ((o.order_type='2' and o.order_status<>'4') or o.order_type='1') ]]>-->
+
 		 <if test="vo.keyWord != null and vo.keyWord != ''" >
 		       and (o.order_no  like CONCAT('%',#{vo.keyWord},'%')  
                     or o.report_no like CONCAT('%',#{vo.keyWord},'%') 
@@ -423,20 +428,24 @@
 		        <foreach collection="vo.araesidList" index="index"  item="item"  open="(" separator=","  close=")">
 		                ${item}
 		         </foreach>
-		   
+
 		     
 		 </if>
 		 
 		 <if test="vo.orderStatusList != null and vo.orderStatusList.size()>0">
-		      and o.order_status in 
+		      and o.order_status in
 		        <foreach collection="vo.orderStatusList" index="index1"  item="item1"  open="(" separator=","  close=")">
 		                ${item1}
 		         </foreach>
 		  </if>
-		   
+
 		 <if test="vo.orderType != null and vo.orderType != ''" >
 		    and o.order_type = #{vo.orderType}
 		 </if>
+
+<!--        <if test="vo.orderStatus != null and vo.orderStatus != ''" >-->
+<!--            and o.order_status = #{vo.orderStatus}-->
+<!--        </if>-->
 		 
 		 <if test="vo.clientId != null and vo.clientId != ''" >
 		     and o.client_id = #{vo.clientId}
@@ -444,15 +453,15 @@
 		 <if test="vo.userid != null and vo.userid != ''" >
 		      and o.agent_userid = #{vo.userid}
 		 </if>
-		 
+
+        <if test="vo.isWhere != null and vo.isWhere != ''" >
+            AND o.since_quote is not null AND o.since_quote <![CDATA[ <= ]]> o.order_amount
+        </if>
+
 		 <if  test="vo.earlyWarningDate!=null">
 		          <![CDATA[ and  o.operatortime <=#{vo.earlyWarningDate} ]]>
 		   </if>
-		 
-		 
 		  order by o.operatortime desc
-          
-		 
 	</select>
 
 
@@ -553,6 +562,9 @@
                <if test="vo.orderStatus != null and vo.orderStatus !=''" >
                       and a.stauts= #{vo.orderStatus}
                </if>
+                <if test="vo.orderStatus != null and vo.orderStatus !=''" >
+                    and o.order_status= #{vo.orderStatus}
+                </if>
                <if test="vo.orderType != null and vo.orderType != ''" >
                     and o.order_type= #{vo.orderType}
                </if>
@@ -602,7 +614,7 @@
         where
         o.isremove=0
         and <![CDATA[ ((o.order_type='2' and o.order_status<>'4') or o.order_type='1') ]]>
-        and o.order_status = 2
+        and (o.order_status = 2 or o.order_status=33)
         and o.order_amount>0
         and length(o.car_model_number)>12
         <if test="vo.keyWord != null and vo.keyWord != ''" >
@@ -823,16 +835,19 @@
                  else (select  c1.customer_name from sys_client c ,sys_company c1 where c.companyid = c1.id and c.id=o.client_id) end as custormName,
                      (select t.real_name from sys_user t where t.id=o.agent_userid ) saleName,
                      ( SELECT t.contact_phone FROM sys_user t WHERE t.id = o.agent_userid ) salePhone,
-                     ( SELECT t.contact_phone FROM sys_user t WHERE t.real_name = o.operator ) adminPhone,
+                     ( SELECT t.contact_phone FROM sys_user t WHERE t.id = o.operator ) adminPhone,
 
             o.car_model_number as carModelNumberName,
             o.*,
+            o.operator as operatorId,
             fa.factory_name as factoryName,
             fa.factory_phone as factoryPhone,
-            sa.areas_name orderAreas
+            sa.areas_name orderAreas,
+            kd.car_scrap_name as CourierName
 		from car_scrap_order o
 		    left join sys_areas sa on o.order_areas_id = sa.id
 		    left join car_scrap_factory fa on o.factory_id = fa.id
+		    left join tb_car_courier kd on o.express_company = kd.car_scrap_num
 		where
 		    o.isremove=0
 		    and o.id =#{id,jdbcType=VARCHAR}

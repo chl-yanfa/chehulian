@@ -27,5 +27,7 @@ public interface UserService extends BaseService<User> {
 
 	 List<UserSimpleBO> getReceiveOrderPermissionUser(String permisscode,String areid);
 
+	 List<UserSimpleBO> getAllMoneyPeople(Integer roleNum);
+
 	 List<UserSimpleBO> getAllBussinessPeople(@Param("permisscode")String permisscode);
 }

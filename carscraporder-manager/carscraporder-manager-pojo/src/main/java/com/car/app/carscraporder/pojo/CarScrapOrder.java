@@ -104,10 +104,10 @@ public class CarScrapOrder extends BasePojo {
 	@ApiModelProperty(value = "快递单号")
     private String expressNumber;
 	
-	@ApiModelProperty(value = "快递邮递人明细")
+	@ApiModelProperty(value = "快递邮递人明细(收件人姓名)")
 	private String mailingAddressName;
 	
-	@ApiModelProperty(value = "快递邮寄电话")
+	@ApiModelProperty(value = "快递邮寄电话(收件人电话)")
 	private String mailingAddressTelephone;
 	
 	@ApiModelProperty(value = "快递邮递省份主键")
@@ -119,7 +119,7 @@ public class CarScrapOrder extends BasePojo {
 	@ApiModelProperty(value = "快递邮递县/地区之间")
 	private Integer county;
 	
-	@ApiModelProperty(value = "快递详细地址")
+	@ApiModelProperty(value = "快递详细地址(收件人详细地址)")
 	private String detailedAddress;
 	
 	@ApiModelProperty(value = "分总报价金额")
@@ -175,9 +175,15 @@ public class CarScrapOrder extends BasePojo {
 
 	//解体厂ID
 	private Integer factoryId;
-	
-	
-	
+
+	//判断用户端是否点击了同意
+	private Integer isAgree;
+
+	//判断用户端是否点击了去取车
+	private Integer isTake;
+
+	//测试_派单专员
+	private String operatorName;
 
     public String getAuditRemark() {
 		return auditRemark;
@@ -579,5 +585,85 @@ public class CarScrapOrder extends BasePojo {
 
 	public void setFactoryId(Integer factoryId) {
 		this.factoryId = factoryId;
+	}
+
+	public Integer getIsAgree() {
+		return isAgree;
+	}
+
+	public void setIsAgree(Integer isAgree) {
+		this.isAgree = isAgree;
+	}
+
+	public Integer getIsTake() {
+		return isTake;
+	}
+
+	public void setIsTake(Integer isTake) {
+		this.isTake = isTake;
+	}
+
+	public String getOperatorName() {
+		return operatorName;
+	}
+
+	public void setOperatorName(String operatorName) {
+		this.operatorName = operatorName;
+	}
+
+	@Override
+	public String toString() {
+		return "CarScrapOrder{" +
+				"id='" + id + '\'' +
+				", orderNo='" + orderNo + '\'' +
+				", reportNo='" + reportNo + '\'' +
+				", orderTime=" + orderTime +
+				", reportTime=" + reportTime +
+				", carNumber='" + carNumber + '\'' +
+				", carFrameNumber='" + carFrameNumber + '\'' +
+				", carModelNumber='" + carModelNumber + '\'' +
+				", carAge='" + carAge + '\'' +
+				", drivingMileage='" + drivingMileage + '\'' +
+				", carAscription='" + carAscription + '\'' +
+				", carOwner='" + carOwner + '\'' +
+				", orderAreasId=" + orderAreasId +
+				", isdrive='" + isdrive + '\'' +
+				", orderStatus=" + orderStatus +
+				", agentUserid='" + agentUserid + '\'' +
+				", carScrapDate='" + carScrapDate + '\'' +
+				", orderType='" + orderType + '\'' +
+				", takeCarContacts='" + takeCarContacts + '\'' +
+				", takeCarContactNumber='" + takeCarContactNumber + '\'' +
+				", takeCarTime=" + takeCarTime +
+				", takeCarAddress='" + takeCarAddress + '\'' +
+				", coordinate='" + coordinate + '\'' +
+				", expressCompany='" + expressCompany + '\'' +
+				", expressNumber='" + expressNumber + '\'' +
+				", mailingAddressName='" + mailingAddressName + '\'' +
+				", mailingAddressTelephone='" + mailingAddressTelephone + '\'' +
+				", province=" + province +
+				", city=" + city +
+				", county=" + county +
+				", detailedAddress='" + detailedAddress + '\'' +
+				", subQuote=" + subQuote +
+				", orderAmount=" + orderAmount +
+				", sinceQuote=" + sinceQuote +
+				", clientId='" + clientId + '\'' +
+				", clientType='" + clientType + '\'' +
+				", payeeName='" + payeeName + '\'' +
+				", bankAccount='" + bankAccount + '\'' +
+				", bank='" + bank + '\'' +
+				", openingBank='" + openingBank + '\'' +
+				", cancelMemo='" + cancelMemo + '\'' +
+				", isremove=" + isremove +
+				", sourceType='" + sourceType + '\'' +
+				", auditRemark='" + auditRemark + '\'' +
+				", operator='" + operator + '\'' +
+				", adjustWhy='" + adjustWhy + '\'' +
+				", operatortime=" + operatortime +
+				", factoryId=" + factoryId +
+				", isAgree=" + isAgree +
+				", isTake=" + isTake +
+				'}';
 	}
 }

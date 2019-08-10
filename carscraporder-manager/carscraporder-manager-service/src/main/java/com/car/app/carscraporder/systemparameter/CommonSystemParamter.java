@@ -23,9 +23,13 @@ public class CommonSystemParamter {
 	 */
 	public static final Integer ORDER_REJECTED_STATUS=14;
 	/**
-	 * 2.接单派单
+	 * 2.派单
 	 */
 	public static final Integer ORDER_DISTRIBUTION_STATUS=2;
+	/**
+	 * 97.用户再次接收
+	 */
+	public static final Integer ORDER_CLIENT_CONFIRM_STATUS=97;
 	/**
 	 * 3.业务员接收车辆
 	 */
@@ -53,6 +57,12 @@ public class CommonSystemParamter {
 	 * 8.订单异常
 	 */
 	public static final Integer ORDER_ERROR_STATUS=8;
+
+	/**
+	 * 33.业务员待接单
+	 */
+	public static final Integer ORDER_NOOK_STATUS=33;
+
 	/**
 	 * -1.订单取消
 	 */
@@ -187,6 +197,10 @@ public class CommonSystemParamter {
 	 *车辆报废证明照片
 	 */
 	public static final String ORDER_PICTURE_CAR_CERTIFICATE="4";
+	/**
+	 *车辆报废证明照片
+	 */
+	public static final String ORDER_PICTURE_CAR_SINCE="5";
 	/**
 	 * 配件照片
 	 */

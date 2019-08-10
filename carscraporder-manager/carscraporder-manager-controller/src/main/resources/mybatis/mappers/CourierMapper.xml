@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.car.app.carscraporder.mapper.CourierMapper">
+	<resultMap id="BaseResultMap" type="com.car.app.carscraporder.pojo.TbCarCourier" >
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="car_scrap_num" property="carScrapNum" jdbcType="VARCHAR" />
+		<result column="car_scrap_name" property="carScrapName" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="getAllCourier" resultMap="BaseResultMap" >
+		select
+			 id,
+			 car_scrap_num,
+			 car_scrap_name
+		from
+			 tb_car_courier
+		group by
+		   car_scrap_num,car_scrap_name
+		order by id
+  </select>
+</mapper>

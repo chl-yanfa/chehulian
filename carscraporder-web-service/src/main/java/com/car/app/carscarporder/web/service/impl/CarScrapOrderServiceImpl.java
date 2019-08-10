@@ -53,7 +53,7 @@ public class CarScrapOrderServiceImpl implements CarScrapOrderService {
 	private String QUERY_ORDERS_PAGE_URL;
 	  
 	@Value("${QUERY_ORDER_URI}")
-    private String QUERY_ORDER_URL;
+    private String  QUERY_ORDER_URL;
 	
 	@Value("${QUERY_ORDER_HISTORY_AUDIT_URL}")
 	private String QUERY_ORDER_HISTORY_AUDIT_URL;

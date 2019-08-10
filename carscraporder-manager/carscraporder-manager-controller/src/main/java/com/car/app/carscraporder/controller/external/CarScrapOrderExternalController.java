@@ -65,20 +65,16 @@ public class CarScrapOrderExternalController {
 			@RequestParam(value="rows",required = true,defaultValue="10")Integer rows,
 			CarScrapOrderKeywordVO paramter) throws Exception{
 			    PageResult<CarScrapOrderPageBO> pageResult = null;
+				PageInfo<CarScrapOrderPageBO> pageInfo = null;
 			    if((paramter.getOrderStatus().equals("1")||paramter.getOrderStatus()=="1")){
-					PageInfo<CarScrapOrderPageBO> pageInfo =  carScrapOrderService.queryPageListByKeywordByChl(page, rows, paramter);
-					if(pageInfo!=null){
-						pageResult  = new PageResult<CarScrapOrderPageBO>();
-						pageResult.setRows(pageInfo.getList());
-						pageResult.setTotal(pageInfo.getTotal());
-					}
+					 pageInfo =  carScrapOrderService.queryPageListByKeywordByChl(page, rows, paramter);
 				}else{
-					PageInfo<CarScrapOrderPageBO> pageInfo =  carScrapOrderService.queryPageListByKeyword(page, rows, paramter);
-					if(pageInfo!=null){
-						pageResult  = new PageResult<CarScrapOrderPageBO>();
-						pageResult.setRows(pageInfo.getList());
-						pageResult.setTotal(pageInfo.getTotal());
-					}
+					 pageInfo =  carScrapOrderService.queryPageListByKeyword(page, rows, paramter);
+				}
+				if(pageInfo!=null){
+					pageResult  = new PageResult<CarScrapOrderPageBO>();
+					pageResult.setRows(pageInfo.getList());
+					pageResult.setTotal(pageInfo.getTotal());
 				}
 		     return new ResultBean<PageResult<CarScrapOrderPageBO>>(pageResult);
 	}
@@ -128,7 +124,7 @@ public class CarScrapOrderExternalController {
 
 	@RequestMapping(value="/cancel",method = RequestMethod.GET)
 	@ResponseBody
-	@ApiOperation(value = "获取二次报价已审核",notes = "获取二次报价已审核")
+	@ApiOperation(value = "获取二次报价已取消",notes = "获取二次报价已取消")
 	public ResultBean<PageResult<CarScrapOrderPageBO>> getOrderListByCancel(
 			@ApiParam(name = "page", value = "分页参数页码",required = true)
 			@RequestParam(value="page",required = true,defaultValue="1")Integer page,
@@ -265,7 +261,12 @@ public class CarScrapOrderExternalController {
 	@ApiOperation(value = "根据id获取订单详情",notes = "根据id获取User详情")
 	public ResultBean<CarScrapOrderBO> getOrderById(@PathVariable("id")String id) throws Exception{
 		CarScrapOrderBO cbo = carScrapOrderService.queryBOById(id);
+		System.out.println("cbo:"+cbo);
 
+		//获取数据操作人
+		UserBO userbo = userMapper.queryUserBOById(cbo.getOperator());
+		System.out.println("userbo"+userbo);
+		if(userbo!=null){cbo.setOperator(userbo.getRealName());}
 		//若订单为12【12为待总部报价】& 总部报价不为空 & 总部最初报价>业务报价【说明一开始报多了】,得出该单为二次报价【待审核】
 		if(cbo.getOrderStatus()==12 && cbo.getOrderAmount()!=null && cbo.getSinceQuote()!=null && (cbo.getOrderAmount().compareTo(cbo.getSinceQuote())==1) ){
 			cbo.setOrderStatusCN("未审核");  //车辆接收-订单详情-二次报价-'待审核'小字
@@ -297,8 +298,11 @@ public class CarScrapOrderExternalController {
 			case 11:
 				cbo.setOrderStatusCN("分部待报价");
 				break;
+			case 33:
+				cbo.setOrderStatusCN("待接单");
+				break;
 			case 96:
-				cbo.setOrderStatusCN("已取消");
+				cbo.setOrderStatusCN("待审核");
 				break;
 		}
 		return new ResultBean(cbo);
@@ -355,23 +359,31 @@ public class CarScrapOrderExternalController {
 	 */
 	@RequestMapping(value = "/audit/{id}",method = RequestMethod.PUT)
 	@ResponseBody
-	@ApiOperation(value = "审核订单",notes = "审核订单")
+	@ApiOperation(value = "审核订单App-最终落地接口",notes = "审核订单")
 	public ResultBean<Boolean> saveOrderAuditingRecord(@PathVariable("id")String id,
 			@RequestParam(required = true)Integer auditorderStatus,
-			@RequestParam(value="auditRemark",required = false)String auditRemark,@RequestParam(value="auditer")String auditer,CarScrapOrder order, HttpServletRequest request) throws Exception{
-		String username = request.getParameter("agentUserName");
-		String userId = request.getParameter("agentUserid");
+			@RequestParam(value="auditRemark",required = false)String auditRemark,
+		    @RequestParam(value="auditer")String auditer,
+		    @RequestParam(value="agentUserName",required = false)String username,
+		    @RequestParam(value="agentUserid",required = false)String userId,
+			@RequestParam(value="isClient",required = false)String isClient,
+		    CarScrapOrder order, HttpServletRequest request) throws Exception{
+
+		 System.out.println("测试接单的auditer:"+auditer);
 
 		CarScrapOrder carScrapOrder = carScrapOrderService.queryById(id);
 		if(carScrapOrder!=null){
+			if(order.getAdjustWhy()!=null && order.getSinceQuote()!=null){
+				carScrapOrder.setAdjustWhy(order.getAdjustWhy());
+				carScrapOrder.setSinceQuote(order.getSinceQuote());
+			}
 			int result;
 			carScrapOrder = DataConverter.copyRequestParamToOrdermedel(carScrapOrder,request);
 			carScrapOrder.setOperator(auditer);
 			if(username!=null||userId!=null){
-				result = carScrapOrderService.saveOrderAuditingRecord(id,auditorderStatus,auditRemark,auditer,carScrapOrder,username,userId);
-			}else if(auditorderStatus==96){ //车辆被业务员拒收，96为拒收
-				String whyNot = request.getParameter("whyNot"); //获取app运营端传进来的拒收原因
-				result = carScrapOrderService.saveOrderAuditingRecord(id,auditorderStatus,auditRemark,auditer,whyNot,carScrapOrder);
+				result = carScrapOrderService.saveOrderAuditingRecord(id,auditorderStatus,auditRemark,auditer,carScrapOrder,username,userId,isClient);
+			}else if(username==null && userId==null && isClient!=null){
+				result = carScrapOrderService.saveOrderAuditingRecord(id,auditorderStatus,auditRemark,auditer,carScrapOrder,username,userId,isClient);
 			} else{
 				result = carScrapOrderService.saveOrderAuditingRecord(id,auditorderStatus,auditRemark,auditer,carScrapOrder);
 			}
@@ -419,23 +431,18 @@ public class CarScrapOrderExternalController {
 		
 		if(CommonSystemParamter.ORDER_DISTRIBUTION_STATUS==orderStauts){
 			CheckUtil.notEmpty(agentUserid, "param is null");
-			
 			criteria.andEqualTo("orderStatus", CommonSystemParamter.ORDER_DISTRIBUTION_STATUS);
 			criteria.andEqualTo("agentUserid", agentUserid);
-			criteria.andEqualTo("isremove", false);
-			criteria.andEqualTo("orderType", "1");
-			
 		}else if(CommonSystemParamter.ORDER_RECEIVE_STATUS==orderStauts){
 			criteria.andEqualTo("orderStatus", CommonSystemParamter.ORDER_RECEIVE_STATUS);
-			criteria.andEqualTo("isremove", false);
-			criteria.andEqualTo("orderType", "1");
-			
 		}else if(CommonSystemParamter.ORDER_STORAGE_STATUS==orderStauts){
 			criteria.andEqualTo("orderStatus", CommonSystemParamter.ORDER_STORAGE_STATUS);
-			criteria.andEqualTo("isremove", false);
-			criteria.andEqualTo("orderType", "1");
+		}else if(CommonSystemParamter.ORDER_NOOK_STATUS==orderStauts){
+			criteria.andEqualTo("orderStatus", CommonSystemParamter.ORDER_NOOK_STATUS);
+			criteria.andEqualTo("agentUserid", agentUserid);
 		}
-		
+		criteria.andEqualTo("isremove", false);
+		criteria.andEqualTo("orderType", "1");
 		if(areasArray!=null&&areasArray.size()>0){
 			criteria.andIn("orderAreasId", areasArray);
 		}

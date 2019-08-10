@@ -207,4 +207,9 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		return userMapper.getAllBussinessPeople(permisscode);
 	}
 
+	@Override
+	public List<UserSimpleBO> getAllMoneyPeople(Integer roleNum) {
+		return userMapper.getAllMoneyPeople(roleNum);
+	}
+
 }

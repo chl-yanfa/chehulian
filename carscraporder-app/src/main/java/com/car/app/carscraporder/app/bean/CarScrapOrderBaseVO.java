@@ -2,6 +2,8 @@ package com.car.app.carscraporder.app.bean;
 
 import io.swagger.annotations.ApiModelProperty;
 
+import java.math.BigDecimal;
+
 public class CarScrapOrderBaseVO {
 	
 	private String id;
@@ -20,6 +22,12 @@ public class CarScrapOrderBaseVO {
 	
 	@ApiModelProperty(value = "无法接收原因")
 	private Integer unableReceiveReason;
+
+	@ApiModelProperty(value = "二次报价金额")
+	private BigDecimal sinceQuote;
+
+	@ApiModelProperty(value = "业务员现场调整价格原因")
+	private String adjustWhy;
 	
 	
 	
@@ -71,8 +79,20 @@ public class CarScrapOrderBaseVO {
 	public void setCarModelNumber(String carModelNumber) {
 		this.carModelNumber = carModelNumber;
 	}
-	
-	
 
+	public BigDecimal getSinceQuote() {
+		return sinceQuote;
+	}
 
+	public void setSinceQuote(BigDecimal sinceQuote) {
+		this.sinceQuote = sinceQuote;
+	}
+
+	public String getAdjustWhy() {
+		return adjustWhy;
+	}
+
+	public void setAdjustWhy(String adjustWhy) {
+		this.adjustWhy = adjustWhy;
+	}
 }

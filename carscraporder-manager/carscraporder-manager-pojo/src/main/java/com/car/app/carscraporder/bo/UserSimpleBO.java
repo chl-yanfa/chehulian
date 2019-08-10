@@ -31,4 +31,13 @@ public class UserSimpleBO {
 	public void setContactPhone(String contactPhone) {
 		this.contactPhone = contactPhone;
 	}
+
+	@Override
+	public String toString() {
+		return "UserSimpleBO{" +
+				"id='" + id + '\'' +
+				", realName='" + realName + '\'' +
+				", contactPhone='" + contactPhone + '\'' +
+				'}';
+	}
 }

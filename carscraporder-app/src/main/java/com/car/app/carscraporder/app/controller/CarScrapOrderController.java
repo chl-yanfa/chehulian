@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,7 +61,7 @@ public class CarScrapOrderController {
 	
 	@Autowired
 	private CarScrapOrderAppService  carScrapOrderAppService;
-	
+
 	@Autowired
 	private  CarScrapOrderAutopartsAppService carScrapOrderAutopartsAppService;
 	
@@ -208,16 +209,16 @@ public class CarScrapOrderController {
 		PageResult<CarScrapOrderPageBO> pageData = null;
 		if(querytype==1){
    		 //1.车辆未接收
-	   	          paramter.setOrderStatus("2");
-	   	          paramter.setUserid(user.getId());
-	   	          paramter.setAraesids(areaesids);
-	   	          pageData = carScrapOrderAppService.getOrderPageListByKeyword(page, rows, paramter);
+			  paramter.setOrderStatus("2");
+			  paramter.setUserid(user.getId());
+			  paramter.setAraesids(areaesids);
+			  pageData = carScrapOrderAppService.getOrderPageListByKeyword(page, rows, paramter);
 	        		  
    	  }else if(querytype==2){
-	             //2.车辆已接收
-	   	          paramter.setOrderStatus("3");
-	   	          paramter.setUserid(user.getId());
-	   	          pageData = carScrapOrderAppService.queryPageHistoryListByKeyword(page, rows, paramter);
+			 //2.车辆已接收
+			  paramter.setOrderStatus("3");
+			  paramter.setUserid(user.getId());
+			  pageData = carScrapOrderAppService.queryPageHistoryListByKeyword(page, rows, paramter);
 	        		  
    	  }else if(querytype==3){
    		  //3.整车待入场
@@ -250,8 +251,37 @@ public class CarScrapOrderController {
    		        paramter.setOrderType("1");
    		        pageData = carScrapOrderAppService.getAll(page, rows, paramter);
    		          
-   	  }
-		
+   	  }else if(querytype==8){
+			//8.整车待接单
+			paramter.setOrderStatus("33");
+			paramter.setUserid(user.getId());
+			paramter.setAraesids(areaesids);
+			pageData = carScrapOrderAppService.getOrderPageListByKeyword(page, rows, paramter);
+	  }else if(querytype==9){
+			//8.整车已接单
+			paramter.setOrderStatus("2");
+			paramter.setUserid(user.getId());
+			paramter.setAraesids(areaesids);
+			pageData = carScrapOrderAppService.getOrderPageListByKeyword(page, rows, paramter);
+		}else if(querytype==10){
+			//8.整车待审核
+			paramter.setOrderStatus("96");
+			paramter.setUserid(user.getId());
+			paramter.setAraesids(areaesids);
+			pageData = carScrapOrderAppService.getOrderPageListByKeyword(page, rows, paramter);
+		}else if(querytype==11){
+			//8.整车已审核
+			paramter.setOrderStatus("2");
+			paramter.setUserid(user.getId());
+			paramter.setAraesids(areaesids);
+			paramter.setIsWhere(1);
+			pageData = carScrapOrderAppService.getOrderPageListByKeyword(page, rows, paramter);
+		}else if(querytype==12){
+            //8.整车已取消
+            paramter.setOrderStatus("-1");
+            paramter.setAraesids(areaesids);
+            pageData = carScrapOrderAppService.getOrderPageListByKeyword(page, rows, paramter);
+        }
 		return pageData;
 	}
 	
@@ -278,15 +308,13 @@ public class CarScrapOrderController {
 			if(StringUtils.equals(bo.getOrderType(), "1"))
 			    fillDeafultPicture(bo);
 		}
-
 		return new ResultBean<CarScrapOrderBO>(bo);
-
 	}
 	
 	
 	
      private List<OrderAttachmentBO> deafulePricture(Integer prictureType,List<OrderAttachmentBO> sourceData){
-		  if(prictureType==1){
+		  if(prictureType==1){  //整车
 			  Map<String,OrderAttachmentBO> relation = new HashMap<String,OrderAttachmentBO>();
 			  List<OrderAttachmentBO> prictures = new ArrayList<OrderAttachmentBO>();
 			  OrderAttachmentBO bo = new OrderAttachmentBO(commonVariablesServiceImpl.PICURL+"/carscraporder-app/android/image/1.png","1",true);
@@ -316,29 +344,21 @@ public class CarScrapOrderController {
 			  OrderAttachmentBO bo9 = new OrderAttachmentBO(commonVariablesServiceImpl.PICURL+"/carscraporder-app/android/image/9.png","9",false);
 			  prictures.add(bo9);
 			  relation.put("9", bo9);
-			  
-			  
+
 			  for(OrderAttachmentBO data:sourceData){
 				  if(relation.containsKey(data.getCarPictureType())){
 					  relation.get(data.getCarPictureType()).setUrl(data.getUrl());
 					  relation.get(data.getCarPictureType()).setId(data.getId());
 				  }
-				  
-				  
 			  }
-			  
-			  
-			  
+			  System.out.println("prictures"+prictures);
 			  return prictures;
-		
-			  
 		  }else if (prictureType==2){
 			  Map<String,OrderAttachmentBO> relation = new HashMap<String,OrderAttachmentBO>();
 			  List<OrderAttachmentBO> prictures = new ArrayList<OrderAttachmentBO>();
 			  OrderAttachmentBO bo = new OrderAttachmentBO(commonVariablesServiceImpl.PICURL+"/carscraporder-app/android/image/10.png","10",true);
 			  prictures.add(bo);
 			  relation.put("10", bo);
-			  
 			  OrderAttachmentBO bo2 = new OrderAttachmentBO(commonVariablesServiceImpl.PICURL+"/carscraporder-app/android/image/11.png","11",true);
 			  prictures.add(bo2);
 			  relation.put("11", bo2);
@@ -354,15 +374,10 @@ public class CarScrapOrderController {
 					  relation.get(data.getCarPictureType()).setUrl(data.getUrl());
 					  relation.get(data.getCarPictureType()).setId(data.getId());
 				  }
-				  
-				  
 			  }
-			  
 			  return prictures;
 		  }
 		return sourceData;
-		
-		
 	}
 	
 	
@@ -371,17 +386,10 @@ public class CarScrapOrderController {
 		if(bo!=null){
 				List<OrderAttachmentBO> vehiclePictures = deafulePricture(1,bo.getVehiclePictures());
 				bo.setVehiclePictures(vehiclePictures);
-				
-		
+
 	    	   List<OrderAttachmentBO> formalitiesPictures = deafulePricture(2,bo.getFormalitiesPictures());
 	    	   bo.setFormalitiesPictures(formalitiesPictures);
 			}
-			
-			
-			
-	
-		
-		
 	}
 	
 	
@@ -431,18 +439,25 @@ public class CarScrapOrderController {
 	 */
 	@RequestMapping(value = "/audit/{id}",method = RequestMethod.POST)
 	@ResponseBody
-	@ApiOperation(value = "审核订单",notes = "审核订单")
+	@ApiOperation(value = "审核订单-App跳板接口",notes = "审核订单")
 	public ResultBean<Boolean> saveOrderAuditingRecord(@PathVariable("id")String id,
 			@RequestParam(required = true)Integer auditorderStatus,
-			String auditRemark,CarScrapOrderSimpleBaseVO vo,HttpServletRequest request) throws Exception{
+			String auditRemark,String isGetOrder,CarScrapOrderSimpleBaseVO vo,HttpServletRequest request) throws Exception{
 		UserBO user = (UserBO) UserUtil.getUser();
 	     if(user == null){
 	    	 throw new DataException("未登录系统");
 	     }
-	     Map<String,String> map = HttpRequestParamConConverter.getParameterMap(request);
-		return new ResultBean<Boolean>(carScrapOrderAppService.saveOrderAuditingRecord(id,auditorderStatus,auditRemark,user.getId(),map));
-
+		Map<String,String> map = HttpRequestParamConConverter.getParameterMap(request);
+	     if(isGetOrder!=null){ //接单操作
+			 return new ResultBean<Boolean>(carScrapOrderAppService.saveOrderAuditingRecord(id,auditorderStatus,auditRemark,map));
+		 }else{
+			 return new ResultBean<Boolean>(carScrapOrderAppService.saveOrderAuditingRecord(id,auditorderStatus,auditRemark,user.getId(),map));
+		 }
 	}
+
+
+
+
 	/**
 	 * quote 报价(分总,总部)
 	 * @param id

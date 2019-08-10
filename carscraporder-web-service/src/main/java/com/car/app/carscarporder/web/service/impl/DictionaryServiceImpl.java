@@ -242,6 +242,7 @@ public class DictionaryServiceImpl implements DictionaryService {
 		HttpResult httpResult = this.apiService.doGet(getCarModelBySystemIdUrl);
 		if (httpResult.getCode() == 200) {
 			String jsonData = httpResult.getContent();
+			System.out.println("nrz_json_data"+jsonData);
 			JsonNode jsonNode = MAPPER.readTree(jsonData);
 			if (jsonNode.has("code") && jsonNode.get("code").asInt() == 200) {
 				List<DictionaryBO> data = (List<DictionaryBO>) MAPPER.readValue(jsonNode.path("data").toString(),new TypeReference<List<DictionaryBO>>() {});

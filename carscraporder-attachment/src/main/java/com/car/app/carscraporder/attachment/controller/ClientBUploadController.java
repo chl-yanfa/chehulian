@@ -104,6 +104,60 @@ public class ClientBUploadController {
 
 
 
+	@RequestMapping(value="/operator/{buniessid}",method = RequestMethod.POST)
+	@ResponseBody
+	public ResultBean<List<PicUploadResult>> UploadResource(
+			@PathVariable("buniessid") String buniessid,
+			@RequestParam(value="businessType",required=true) String businessType,
+			@RequestParam(value="pictureType",required=true) String pictureType,
+			@RequestParam(value="picturePecialType",required=false) Integer picturePecialType,
+			@RequestParam("files") String[] files) throws Exception {
+
+
+		System.out.println("+++++"+files);
+
+
+		UploadVO vo = new UploadVO();
+		vo.setBuniessid(buniessid);
+		vo.setBusinessType(businessType);
+		vo.setPictureType(pictureType);
+		vo.setPicturePecialType(picturePecialType);
+
+		List<PicUploadResult> resultList = new ArrayList<PicUploadResult>();
+		PicUploadResult result = new PicUploadResult();
+		//判断上传文件是否为空
+		if(files!=null){
+			for (int i=0;i<files.length;i++){
+					//保存到数据库
+					AttachmentVO  data = new AttachmentVO();
+					data.setBuniessid(vo.getBuniessid());
+					data.setBusinessType(vo.getBusinessType());
+					data.setPicturePecialType(vo.getPicturePecialType());
+					data.setPictureType(vo.getPictureType());
+					data.setOriginalName(files[i].substring(files[i].lastIndexOf("/")+1,files[i].length()).replaceAll("\"",""));
+					data.setStoragePath(files[i].replaceAll("\"",""));
+					Integer id =  uploadService.saveCarAttachmentBuniessData(vo.getBuniessid(),data);
+					if(id==null){
+						result.setError(3);
+						result.setMessage("保存数据库错误");
+					}else{
+						result.setId(id);
+						result.setMessage("返回数据成功");
+						result.setOriginalFilename(data.getOriginalName());
+						result.setUrl(data.getStoragePath());
+					}
+				resultList.add(result);
+			}
+		}else{
+			throw new AttachmentException("附件为空");
+		}
+		return new ResultBean(resultList);
+	}
+
+
+
+
+
 	@RequestMapping(value="/carattachment/{buniessid}",method = RequestMethod.POST)
 	@ResponseBody
 	public ResultBean<List<PicUploadResult>> addOrUpdateResource(

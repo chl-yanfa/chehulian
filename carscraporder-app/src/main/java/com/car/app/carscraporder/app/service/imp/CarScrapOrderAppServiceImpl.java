@@ -1,5 +1,6 @@
 package com.car.app.carscraporder.app.service.imp;
 
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -89,18 +90,38 @@ public class CarScrapOrderAppServiceImpl extends com.car.app.carscarporder.web.s
 
 	@Override
 	public CarScrapOrderBO getOrderById(String orderid) throws Exception {
-		
 		return super.getOrderById(orderid);
 	}
 
 	@Override
 	public Boolean updateOrder(String id,Map<String,String> paramMap) throws Exception {
-		
 		return super.updateOrder(id,paramMap);
 	}
 
+	@Override
+	public Boolean saveOrderAuditingRecord(String id, Integer orderStatus, String remark, Map<String, String> paramMap) throws Exception {
+		paramMap.put("auditorderStatus", orderStatus+"");
+		paramMap.put("auditRemark", remark);
+		String auditOrderUrl = MessageFormat.format(UNIFIED_EXTERNAL_URI+AUDIT_ORDERS_BYID_URI, id);
 
-	
+		HttpResult httpResult = this.apiService.doPut(auditOrderUrl, paramMap);
+
+		if (httpResult.getCode() == 200) {
+			String jsonData = httpResult.getContent();
+			JsonNode jsonNode = MAPPER.readTree(jsonData);
+			if (jsonNode.has("code") && jsonNode.get("code").asInt() == 200) {
+				// 订单创建成功
+				String data = jsonNode.get("data").asText();
+				return  jsonNode.get("data").asBoolean();
+			}
+		}else{
+			logger.error("调用订单审核出错响应结果：{},接口路径：{}", httpResult.getCode(),auditOrderUrl);
+		}
+
+		return false;
+	}
+
+
 	@Override
 	public Boolean saveOrderAuditingRecord(String id, Integer orderStatus,
 			String remark, String operator,Map<String,String> paramMap) throws Exception {
@@ -108,7 +129,8 @@ public class CarScrapOrderAppServiceImpl extends com.car.app.carscarporder.web.s
 		  paramMap.put("auditorderStatus", orderStatus+"");
 		  paramMap.put("auditRemark", remark);
 		  paramMap.put("auditer", operator);
-		  
+
+		  System.out.println("map2"+paramMap);
 		
 		  String auditOrderUrl = MessageFormat.format(UNIFIED_EXTERNAL_URI+AUDIT_ORDERS_BYID_URI, id);
 		
@@ -127,8 +149,6 @@ public class CarScrapOrderAppServiceImpl extends com.car.app.carscarporder.web.s
          }
 		 
 		return false;
-		
-		
 	}
 	
 	public PageResult<CarScrapOrderPageBO> getAll(Integer page,Integer rows,CarScrapOrderKeywordVO paramter)throws Exception{
@@ -225,7 +245,6 @@ public class CarScrapOrderAppServiceImpl extends com.car.app.carscarporder.web.s
 			         for(int i=0;i<array.size();i++){
 				         String str = JSONObject.toJSONString(array.get(i),SerializerFeature.WriteMapNullValue); 
 				         CarScrapOrderQuotePageBO bo = JSON.parseObject(str,CarScrapOrderQuotePageBO.class);
-						 System.out.println("带回来的bo为:"+bo);
 				         rowsData.add(bo);
 			          }
 			         return result;
@@ -235,5 +254,4 @@ public class CarScrapOrderAppServiceImpl extends com.car.app.carscarporder.web.s
        }
 		return null;
 	}
-
 }
