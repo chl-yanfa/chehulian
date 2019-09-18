@@ -25,11 +25,7 @@ import com.car.app.common.exception.FileTooLargeException;
 public class ControllerAOP {
 	private static final Logger logger = LoggerFactory.getLogger(ControllerAOP.class);
 	
-	/**
-	 * 对  com.jbr365.app.controller下所用的类的所有public方法都做拦截 
-	 * @param point
-	 * @return
-	 */
+
 	public Object handlerControllerMethod(ProceedingJoinPoint point){
 		long startTime = System.currentTimeMillis();
 		 ResultBean<?>  result = null;

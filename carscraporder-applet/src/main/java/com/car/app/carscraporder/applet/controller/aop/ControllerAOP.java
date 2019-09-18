@@ -24,7 +24,6 @@ public class ControllerAOP {
 	public Object handlerControllerMethod(ProceedingJoinPoint point){
 		long startTime = System.currentTimeMillis();
 		 ResultBean<?>  result = null;
-		 
 		 try{
 			 result = (ResultBean<?>)point.proceed();
 			 logger.info(point.getSignature()+"use time"+(System.currentTimeMillis()-startTime));
@@ -33,10 +32,7 @@ public class ControllerAOP {
 			 e.printStackTrace();
 			 result =handlerException(point,e);
 		 }
-		
-		
 		return result;
-		
 	}
 	/**
 	 * 拦截 目标抛出异常统一处理
@@ -78,10 +74,7 @@ public class ControllerAOP {
         	  result.setCode(500);
         	  result.setMsg("未知异常");
           }
-		
 		return result;
-		
-
 	}
 }
 	

@@ -17,8 +17,7 @@ public class DemoUtil {
 
 
     public static void TestResetPwd(String name,String pwd) {
-        //修改密码调用件交易修改密码接口
-        String piece = "http://10.0.0.240:8087";
+        String piece = "http://101.200.62.57:8087";
         String apiName = "/updatePwd";
         String pieceUrl = piece + apiName;
 

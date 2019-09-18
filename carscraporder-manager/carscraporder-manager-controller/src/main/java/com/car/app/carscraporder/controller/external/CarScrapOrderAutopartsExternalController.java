@@ -262,25 +262,18 @@ public class CarScrapOrderAutopartsExternalController {
 			return new ResultBean<Integer>(count);
 		}else if (CommonSystemParamter.PARTS_RECEIVE_STATUS==partsStauts){
 			//待入库
-			Integer count = carScrapOrderAutopartsService.queryPendingOrder(null, partsStauts, areasArray,null);
+			Integer count = carScrapOrderAutopartsService.queryPendingOrder(agentUserid, partsStauts, areasArray,null);
 			return new ResultBean<Integer>(count);
 		}else if (6==partsStauts){
 			//待分拣
-			Integer count = carScrapOrderAutopartsService.queryPendingOrder(null, 5, areasArray,false);
+			Integer count = carScrapOrderAutopartsService.queryPendingOrder(agentUserid, 5, areasArray,false);
 			return new ResultBean<Integer>(count);
 		}else if (CommonSystemParamter.PARTS_STORAGE_STATUS==partsStauts){
 			//待出库
-			Integer count = carScrapOrderAutopartsService.queryPendingOrder(null, partsStauts, areasArray,true);
+			Integer count = carScrapOrderAutopartsService.queryPendingOrder(agentUserid, partsStauts, areasArray,true);
 			return new ResultBean<Integer>(count);
 		}
-		
-		
-		
-		
-		
-		
 		 return new ResultBean<Integer>(0);
-		
 	}
 	
 	@RequestMapping(value = "/sorting/{id}",method = RequestMethod.POST)

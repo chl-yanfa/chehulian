@@ -162,7 +162,7 @@ public class PermissionController {
 		
 	}
 	
-	
+	//获得角标
 	private List<PermissionBO> queryRemindNum(List<Integer> permissionListCache,String functionCode) throws Exception{
 		
 		UserAppBO user = (UserAppBO) UserUtil.getUser();
@@ -184,14 +184,14 @@ public class PermissionController {
 				}else if(permissioncode==2){
 					//待入场数量
 					PermissionBO bo = new PermissionBO();
-					int count =carScrapOrderAppService.queryPendingOrder(null, 3, user.getAreasids());
+					int count =carScrapOrderAppService.queryPendingOrder(user.getId(), 3, user.getAreasids());
 					bo.setRemindNum(count);
 					bo.setFunctionCode(2);
 					bos.add(bo);
 				}else if(permissioncode==3){
 					//待报废数量
 					PermissionBO bo = new PermissionBO();
-					int count = carScrapOrderAppService.queryPendingOrder(null, 4, user.getAreasids());
+					int count = carScrapOrderAppService.queryPendingOrder(user.getId(), 4, user.getAreasids());
 					bo.setRemindNum(count);
 					bo.setFunctionCode(3);
 					bos.add(bo);
@@ -220,14 +220,14 @@ public class PermissionController {
 				}else if(permissioncode==2){
 					//旧件待入库数量
 					PermissionBO bo = new PermissionBO();
-					int count = carScrapOrderAutopartsAppService.queryPendingOrder(null, 3, user.getAreasids(),null);
+					int count = carScrapOrderAutopartsAppService.queryPendingOrder(user.getId(), 3, user.getAreasids(),null);
 					bo.setRemindNum(count);
 					bo.setFunctionCode(2);
 					bos.add(bo);
 				}else if(permissioncode==3){
 					//旧件待出库库数量
 					PermissionBO bo = new PermissionBO();
-					int count = carScrapOrderAutopartsAppService.queryPendingOrder(null, 5, user.getAreasids(),true);
+					int count = carScrapOrderAutopartsAppService.queryPendingOrder(user.getId(), 5, user.getAreasids(),true);
 					bo.setRemindNum(count);
 					bo.setFunctionCode(3);
 					bos.add(bo);
@@ -238,7 +238,7 @@ public class PermissionController {
 				}else if(permissioncode==5){
 					
 					PermissionBO bo = new PermissionBO();
-					int count = carScrapOrderAutopartsAppService.queryPendingOrder(null, 6, user.getAreasids(),false);
+					int count = carScrapOrderAutopartsAppService.queryPendingOrder(user.getId(), 6, user.getAreasids(),false);
 					bo.setRemindNum(count);
 					bo.setFunctionCode(5);
 					bos.add(bo);

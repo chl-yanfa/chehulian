@@ -2,7 +2,9 @@ package com.car.app.carscraporder.applet.controller;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -55,29 +57,31 @@ public class AccoutController {
     public ResultBean<Map<String,Object>> doLogin(@RequestParam("username") String username,
             @RequestParam("password") String password, HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-      
+
     	ClientBO user = this.clientUserService.doLogin(username, password);
         if (user != null) {
         	// 登录成功
         	  String ticket = DigestUtils.md5Hex(user.getLoginName() + System.currentTimeMillis());
+			  System.out.println("这是"+user.getLoginName()+"所拥有的ticket: "+ticket);
         	  String userstr = SystemParameter.MAPPER.writeValueAsString(user);
-        	  //放入缓存
-           	  redisService.set(SystemParameter.TICKET+ticket, userstr,60 * 30);
-            
-               // 将ticket写入到cookie中
-              CookieUtils.setCookie(request, response, COOKIE_TICKET, ticket);
-              
-              Map<String,Object> map = new HashMap<String,Object>();
-              map.put("state", true);
-              map.put("session", ticket);
-              map.put("areaid", user.getAreaid());
-              map.put("realName", user.getUserName());
-              map.put("userType", user.getUserType());
-              map.put("phone", user.getPhone());
-              map.put("businessType", user.getBusinessType());
-              map.put("userId", user.getId());
-              map.put("isScrapOrde", user.getIsScrapOrde());
-              map.put("isPartsOrde", user.getIsPartsOrde());
+        	  //放入缓存,设置缓存过期时间为一月
+//           	  redisService.set(SystemParameter.TICKET+ticket, userstr,60 * 30);
+			redisService.set(SystemParameter.TICKET+ticket, userstr,3600 * 24 * 30);
+
+			 // 将ticket写入到cookie中
+			 CookieUtils.setCookie(request, response, COOKIE_TICKET, ticket);
+
+			  Map<String,Object> map = new HashMap<String,Object>();
+			  map.put("state", true);
+			  map.put("session", ticket);
+			  map.put("areaid", user.getAreaid());
+			  map.put("realName", user.getUserName());
+			  map.put("userType", user.getUserType());
+			  map.put("phone", user.getPhone());
+			  map.put("businessType", user.getBusinessType());
+			  map.put("userId", user.getId());
+			  map.put("isScrapOrde", user.getIsScrapOrde());
+			  map.put("isPartsOrde", user.getIsPartsOrde());
             return new ResultBean<Map<String,Object>>(map);
         } else {
         	 Map<String,Object> map = new HashMap<String,Object>();
@@ -90,11 +94,9 @@ public class AccoutController {
              map.put("businessType", "");
         	 return new ResultBean<Map<String,Object>>(map);
         }
-        
-
     }
-	
-	
+
+
 	
 	 @RequestMapping(value = "setPwd",method = RequestMethod.PUT)
 		@ResponseBody
@@ -137,9 +139,9 @@ public class AccoutController {
 	/**
 	 * doRegister 个人用户注册
 	 * 
-	 * @param loginName
-	 * @param phone
-	 * @param validateCode
+	 * @param
+	 * @param
+	 * @param
 	 * @return
 	 * @throws Exception
 	 */

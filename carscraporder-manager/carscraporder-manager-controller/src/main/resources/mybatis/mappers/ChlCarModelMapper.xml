@@ -52,6 +52,6 @@
 	    chl_car_model m
 	    INNER JOIN chl_car_model_group g ON m.sub_series_id = g.id
 	    INNER JOIN chl_car_model_series s ON s.id = g.vehice_system_id
-	    where s.id=#{serid} and m.status='1' order by car_year desc
+	    where s.id=#{serid} and m.status='1' order by  if(m.car_year!='',0,1),m.car_year asc,s.vehicle_system_name asc,m.displacement asc
     </select>
 </mapper>

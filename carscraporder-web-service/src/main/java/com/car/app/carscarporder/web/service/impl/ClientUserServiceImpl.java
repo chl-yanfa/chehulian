@@ -114,8 +114,8 @@ public class ClientUserServiceImpl implements ClientUserService {
         }
         ClientBO user = SystemParameter.MAPPER.readValue(value, ClientBO.class);
 
-        // 刷新reds中的数据的生存时�?
-        this.redisService.expire(key, 60 * 30);
+        // 刷新redis中的数据的生存时间
+        this.redisService.expire(key, 3600*24*30);
 //		ClientBO user = new ClientBO();
 //		user.setAreaid(2);
 //		user.setAreaName("北京");
@@ -142,12 +142,13 @@ public class ClientUserServiceImpl implements ClientUserService {
         paramter.put("operator", operator);
 
         HttpResult httpResult = this.apiService.doPut(resetPasswordUrl, paramter);
-        DemoUtil.TestResetPwd(loginName,newPassword);
 
         if (httpResult.getCode() == 200) {
             String jsonData = httpResult.getContent();
             JsonNode jsonNode = MAPPER.readTree(jsonData);
             if (jsonNode.has("code") && jsonNode.get("code").asInt() == 200) {
+                //顺带更新件交易密码
+                DemoUtil.TestResetPwd(loginName,newPassword);
                 // 订单创建成功
                 return jsonNode.get("data").asBoolean();
             } else if (jsonNode.has("code") && jsonNode.get("code").asInt() == 204) {
@@ -319,11 +320,13 @@ public class ClientUserServiceImpl implements ClientUserService {
         paramter.put("newPassword", newPwd);
         paramter.put("operator", operator);
         HttpResult httpResult = this.apiService.doPut(resetPasswordUrl, paramter);
-
+        ClientBO clientBO = queryUserById(id);
         if (httpResult.getCode() == 200) {
             String jsonData = httpResult.getContent();
             JsonNode jsonNode = MAPPER.readTree(jsonData);
             if (jsonNode.has("code") && jsonNode.get("code").asInt() == 200) {
+                //顺带更新件交易密码
+                DemoUtil.TestResetPwd(clientBO.getLoginName(),newPwd);
                 return jsonNode.get("data").asBoolean();
             } else if (jsonNode.has("code") && jsonNode.get("code").asInt() == 204) {
                 throw new DataException("数据异常");
@@ -334,6 +337,4 @@ public class ClientUserServiceImpl implements ClientUserService {
             throw new NetException("http请求响应编码" + httpResult.getCode());
         }
     }
-
-
 }

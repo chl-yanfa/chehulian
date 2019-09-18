@@ -43,7 +43,7 @@ public class ClientUserExternalController {
 			@RequestParam(value="password",required = true)String password) throws Exception{
 		    
 		    //根据用户名查询用户
-		ClientBO user = clientService.queryClientBOByNameOrPhone(name);
+			ClientBO user = clientService.queryClientBOByNameOrPhone(name);
 		    if(user==null){
 		    	  throw new DataException("用户名密码错误");
 		      }else {
@@ -56,7 +56,6 @@ public class ClientUserExternalController {
 		            }
 		    
 		      }
-		
 		
 	}
 	

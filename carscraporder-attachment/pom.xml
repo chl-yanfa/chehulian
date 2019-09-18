@@ -68,8 +68,7 @@
 				<artifactId>jsp-api</artifactId>
 				<scope>provided</scope>
 			</dependency>
-			
-						<dependency>
+			<dependency>
 				<groupId>joda-time</groupId>
 				<artifactId>joda-time</artifactId>
 				<version>2.5</version>
@@ -90,15 +89,15 @@
             <properties>
                 <profiles.active>dev</profiles.active>
             </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
         </profile>
         <profile>
             <id>prod</id>
             <properties>
                 <profiles.active>prod</profiles.active>
             </properties>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
         </profile>
     </profiles>
 

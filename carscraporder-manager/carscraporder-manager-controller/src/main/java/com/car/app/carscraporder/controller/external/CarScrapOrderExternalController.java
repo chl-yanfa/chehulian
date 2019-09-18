@@ -261,12 +261,12 @@ public class CarScrapOrderExternalController {
 	@ApiOperation(value = "根据id获取订单详情",notes = "根据id获取User详情")
 	public ResultBean<CarScrapOrderBO> getOrderById(@PathVariable("id")String id) throws Exception{
 		CarScrapOrderBO cbo = carScrapOrderService.queryBOById(id);
-		System.out.println("cbo:"+cbo);
+//		System.out.println("cbo:"+cbo);
 
 		//获取数据操作人
-		UserBO userbo = userMapper.queryUserBOById(cbo.getOperator());
-		System.out.println("userbo"+userbo);
-		if(userbo!=null){cbo.setOperator(userbo.getRealName());}
+//		UserBO userbo = userMapper.queryUserBOById(cbo.getOperator());
+//		System.out.println("userbo"+userbo);
+//		if(userbo!=null){cbo.setOperator(userbo.getRealName());}
 		//若订单为12【12为待总部报价】& 总部报价不为空 & 总部最初报价>业务报价【说明一开始报多了】,得出该单为二次报价【待审核】
 		if(cbo.getOrderStatus()==12 && cbo.getOrderAmount()!=null && cbo.getSinceQuote()!=null && (cbo.getOrderAmount().compareTo(cbo.getSinceQuote())==1) ){
 			cbo.setOrderStatusCN("未审核");  //车辆接收-订单详情-二次报价-'待审核'小字
@@ -361,7 +361,7 @@ public class CarScrapOrderExternalController {
 	@ResponseBody
 	@ApiOperation(value = "审核订单App-最终落地接口",notes = "审核订单")
 	public ResultBean<Boolean> saveOrderAuditingRecord(@PathVariable("id")String id,
-			@RequestParam(required = true)Integer auditorderStatus,
+			@RequestParam(value="auditorderStatus",required = true)Integer auditorderStatus,
 			@RequestParam(value="auditRemark",required = false)String auditRemark,
 		    @RequestParam(value="auditer")String auditer,
 		    @RequestParam(value="agentUserName",required = false)String username,

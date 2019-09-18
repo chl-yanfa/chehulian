@@ -52,14 +52,14 @@ public class UserLoginHandlerInterceptor implements HandlerInterceptor{
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
 			Object arg2) throws Exception {
 		// 如何检查用户是否登录
-       String ticket = CookieUtils.getCookieValue(request, AccoutController.COOKIE_TICKET);
+       String ticket = CookieUtils.getCookieValue(request, AccoutController.COOKIE_TICKET,false);
+
        if (StringUtils.isBlank(ticket)) {
       	 ResultBean result = new ResultBean();
       	 result.setCode(201);
       	 result.setMsg("未登陆系统1");
       	 returnJson(response,result);
       	 return false;
-      	
       }
 
        ClientBO user = this.clientUserService.queryUserByTicket(ticket);
@@ -70,7 +70,7 @@ public class UserLoginHandlerInterceptor implements HandlerInterceptor{
        	 result.setCode(201);
        	 result.setMsg("未登陆系统2");
        	 returnJson(response,result);
-       	 return  false;
+       	 return false;
        }
        
        //将user保存到ThreadLocal中
@@ -84,7 +84,7 @@ public class UserLoginHandlerInterceptor implements HandlerInterceptor{
 		// 放入到threadlocal，同一个线程任何地方都可以拿出来
 		if (locale != null) {
 			 UserUtil.setLocale(locale);
-				}
+		}
        return true;
 	}
 	

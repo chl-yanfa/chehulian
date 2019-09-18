@@ -63,19 +63,16 @@ public class CustomSessionListener implements SessionListener{
 			LoggerUtils.error(CustomSessionListener.class,"session or session id is null");
 			return;
 		}
-		
 		redisManager.del(this.getByteKey(session.getId()));
-		
 	}
 	
 	/**
 	 * 获得byte[]型的key
-	 * @param key
+	 * @param
 	 * @return
 	 */
 	private byte[] getByteKey(Serializable sessionId){
 		String preKey = this.keyPrefix + sessionId;
 		return preKey.getBytes();
 	}
-
 }

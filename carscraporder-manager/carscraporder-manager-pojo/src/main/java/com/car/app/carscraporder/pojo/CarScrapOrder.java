@@ -182,8 +182,11 @@ public class CarScrapOrder extends BasePojo {
 	//判断用户端是否点击了去取车
 	private Integer isTake;
 
-	//测试_派单专员
-	private String operatorName;
+	//派单人姓名
+	private String pdName;
+
+	//派单人手机号
+	private String pdPhone;
 
     public String getAuditRemark() {
 		return auditRemark;
@@ -603,12 +606,20 @@ public class CarScrapOrder extends BasePojo {
 		this.isTake = isTake;
 	}
 
-	public String getOperatorName() {
-		return operatorName;
+	public String getPdName() {
+		return pdName;
 	}
 
-	public void setOperatorName(String operatorName) {
-		this.operatorName = operatorName;
+	public void setPdName(String pdName) {
+		this.pdName = pdName;
+	}
+
+	public String getPdPhone() {
+		return pdPhone;
+	}
+
+	public void setPdPhone(String pdPhone) {
+		this.pdPhone = pdPhone;
 	}
 
 	@Override

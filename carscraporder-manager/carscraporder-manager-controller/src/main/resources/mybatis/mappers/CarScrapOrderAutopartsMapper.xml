@@ -136,25 +136,22 @@
 		              ${item}
 		     </foreach>
 		    </if>
-		
-		 
-		
-          
+
            <if test="vo.orderStatusList != null and vo.orderStatusList.size()>0">
 		      and t.order_autoparts_status in 
 		        <foreach collection="vo.orderStatusList" index="index"  item="item"  open="(" separator=","  close=")">
 		                ${item}
 		         </foreach>
 		  </if>
+
+          <if test="vo.userid != null and vo.userid != ''" >
+              and o.agent_userid = #{vo.userid}
+          </if>
 		  
-		  <if  test="vo.earlyWarningDate!=null">
+		  <if test="vo.earlyWarningDate!=null">
 		          <![CDATA[ and  t.operatortime <=#{vo.earlyWarningDate} ]]>
 		   </if>
-		 
-		 
-		
 		  order by t.operatortime desc
-		 
 	 </select> 
 	 
 	 
@@ -194,6 +191,10 @@
 		              ${item}
 		     </foreach>
 		    </if>
+
+          <if test="vo.userid != null and vo.userid != ''" >
+              and o.agent_userid = #{vo.userid}
+          </if>
 		
 		
 		<choose>
@@ -275,9 +276,8 @@
 
                where 1=1
                
-                    <if test="vo.userid != null" >
-                          and  t.auditor=#{vo.userid} 
-                           
+                        <if test="vo.userid != null" >
+                          and  t.auditor=#{vo.userid}
                         </if>
                          <if test="vo.orderStatus != null" >
                                and  t.orderStatus=#{vo.orderStatus}

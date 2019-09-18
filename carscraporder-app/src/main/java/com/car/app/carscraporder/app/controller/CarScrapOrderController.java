@@ -129,81 +129,70 @@ public class CarScrapOrderController {
 		PageResult<CarScrapOrderPageBO> pageData = null;
 		if(querytype==8){
    		 //1.旧件待接收
-	   	          paramter.setOrderStatus("2");
-	   	          paramter.setUserid(user.getId());
-	   	          paramter.setAraesids(areaesids);
-	   	          pageData = carScrapOrderAppService.getOrderPageListByKeyword(page, rows, paramter);
-	        		  
+		  paramter.setOrderStatus("2");
+		  paramter.setUserid(user.getId());
+		  paramter.setAraesids(areaesids);
+		  pageData = carScrapOrderAppService.getOrderPageListByKeyword(page, rows, paramter);
    	  }else if(querytype==9){
-	             //2.旧件已接收
-	   	          paramter.setOrderStatus("3");
-	   	          paramter.setUserid(user.getId());
-	   	          pageData = carScrapOrderAppService.queryPageHistoryListByKeyword(page, rows, paramter);
-	        		  
+		  //2.旧件已接收
+		  paramter.setOrderStatus("3");
+		  paramter.setUserid(user.getId());
+		  pageData = carScrapOrderAppService.queryPageHistoryListByKeyword(page, rows, paramter);
    	  }else if(querytype==10){
    		  //3.旧件待入库
-   		        paramter.setOrderStatus("3");
-   		        paramter.setAraesids(areaesids);
-   		     pageData = carScrapOrderAutopartsAppService.queryBOPageListByWhere(page, rows, paramter);
-   		      
-   		  
+		 paramter.setOrderStatus("3");
+		 paramter.setAraesids(areaesids);
+		 paramter.setUserid(user.getId());
+		 pageData = carScrapOrderAutopartsAppService.queryBOPageListByWhere(page, rows, paramter);
    	  }else if(querytype==11){
    		  //4.旧件已入库
-	        		  paramter.setOrderStatus("5");
-		   	          //paramter.setUserid(user.getId());
-		   	          paramter.setAraesids(areaesids);
-		   	          pageData = carScrapOrderAutopartsAppService.queryHistoryBOPageListByWhere(page, rows, paramter);
+		  paramter.setOrderStatus("5");
+		  paramter.setUserid(user.getId());
+		  paramter.setAraesids(areaesids);
+		  pageData = carScrapOrderAutopartsAppService.queryHistoryBOPageListByWhere(page, rows, paramter);
    	  }else if(querytype==12){
    		  //5.旧件待出库
-   		           paramter.setOrderStatus("5");
-   		           paramter.setIsSorting(true);
-   		           paramter.setAraesids(areaesids);
-		           pageData = carScrapOrderAutopartsAppService.getSortingParts(page, rows, paramter);
-   		  
+		   paramter.setOrderStatus("5");
+		   paramter.setUserid(user.getId());
+		   paramter.setIsSorting(true);
+		   paramter.setAraesids(areaesids);
+		   pageData = carScrapOrderAutopartsAppService.getSortingParts(page, rows, paramter);
    	  }else if(querytype==13){
    		  //3.旧件已出库
-	        		  paramter.setOrderStatus("6");
-		   	          //paramter.setUserid(user.getId());
-		   	          paramter.setAraesids(areaesids);
-		   	          pageData = carScrapOrderAutopartsAppService.queryHistoryBOPageListByWhere(page, rows, paramter);
-	        		  
+		  paramter.setOrderStatus("6");
+		  paramter.setUserid(user.getId());
+		  paramter.setAraesids(areaesids);
+		  pageData = carScrapOrderAutopartsAppService.queryHistoryBOPageListByWhere(page, rows, paramter);
    	  }else if(querytype==14){
    		  //3.车辆查询
-   		        paramter.setAraesids(areaesids);
-   		        paramter.setOrderType("2");
-		        pageData = carScrapOrderAutopartsAppService.queryBOPageListByWhere(page, rows, paramter);
-   		          
+		  paramter.setAraesids(areaesids);
+		  paramter.setOrderType("2");
+		  paramter.setUserid(user.getId());
+		  pageData = carScrapOrderAutopartsAppService.queryBOPageListByWhere(page, rows, paramter);
    	  }else if(querytype==15){
    		  //3.待分拣
-   		       paramter.setOrderStatus("5");
-	           paramter.setIsSorting(false);
-	           paramter.setAraesids(areaesids);
-               pageData = carScrapOrderAutopartsAppService.getSortingParts(page, rows, paramter);
-		          
+		   paramter.setOrderStatus("5");
+		   paramter.setIsSorting(false);
+		   paramter.setAraesids(areaesids);
+		   paramter.setUserid(user.getId());
+		   pageData = carScrapOrderAutopartsAppService.getSortingParts(page, rows, paramter);
 	  }else if(querytype==16){
    		  //3.配件在制造
 		      paramter.setOrderStatus("51");
-	          //paramter.setUserid(user.getId());
+	          paramter.setUserid(user.getId());
 	          paramter.setAraesids(areaesids);
-	        pageData = carScrapOrderAutopartsAppService.queryHistoryBOPageListByWhere(page, rows, paramter);
-	          
+	          pageData = carScrapOrderAutopartsAppService.queryHistoryBOPageListByWhere(page, rows, paramter);
       }else if(querytype==17){
    		  //3.配件报废
     	   paramter.setOrderStatus("52");
-           //paramter.setUserid(user.getId());
+           paramter.setUserid(user.getId());
            paramter.setAraesids(areaesids);
 	       pageData = carScrapOrderAutopartsAppService.queryHistoryBOPageListByWhere(page, rows, paramter);
-	          
     }
-		
-		
 		return pageData;
-	}
+ }
 	
-	
-	
-	
-	
+
 	private PageResult<CarScrapOrderPageBO> handleWholeCar(CarScrapOrderKeywordVO paramter,Integer querytype,UserAppBO user,String areaesids,
 			Integer page,Integer rows) throws Exception{
 		PageResult<CarScrapOrderPageBO> pageData = null;

@@ -65,9 +65,7 @@ public class AccountController {
 	    public ResultBean<Map> doLogin(@RequestParam("userName") String username,
 	            @RequestParam("password") String password, HttpServletRequest request,
 	            HttpServletResponse response) throws Exception {
-	      
 	    	UserAppBO user = this.userService.doLogin(username, password);
-			System.out.println("登陆跳转返回后，得到的user为："+user);
 	    	 Map<String,Object> result = new HashMap<String,Object>();
 	        if (user != null) {
 				System.out.println("用户的sessionid为:"+user.getSessionid());
@@ -90,9 +88,7 @@ public class AccountController {
 	    }
 	
 	
-	
-	
-	
+
 	/**
 	 * 登出系统
 	 * @return  ResultBean 登出方法返回包装信息
@@ -103,15 +99,13 @@ public class AccountController {
 	@ApiOperation(value = "退出系统",notes = "退出系统")
 	public ResultBean<Boolean> logout(HttpServletRequest request,
             HttpServletResponse response) throws Exception{
-		
+
+		String appSessionId = CookieUtils.getCookieValue(request, SystemParameter.TICKET);
 		//获取redis存储session
-		 String ticket = CookieUtils.getCookieValue(request, SystemParameter.TICKET);
+		 String ticket = CookieUtils.getCookieValue(request, SystemParameter.TICKET+appSessionId);
 		 if(ticket!=null){
 			 redisService.del(ticket);
 		 }
-		 
-		 
-		
 		//退出系统
 		return new ResultBean(ResultBean.SUCCESS,null,"登出成功");
 	}
@@ -147,7 +141,6 @@ public class AccountController {
 			 if(ticket!=null){
 				 redisService.del(ticket);
 			 }
-			
 			return new ResultBean(ResultBean.SUCCESS,success,"密码修改成功");
 		}else{
 			return new ResultBean(ResultBean.SUCCESS,success,"密码修改失败");
@@ -155,18 +148,4 @@ public class AccountController {
 		
 		
 	}
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 }

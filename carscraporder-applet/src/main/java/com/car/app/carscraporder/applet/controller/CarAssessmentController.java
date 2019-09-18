@@ -24,11 +24,6 @@ public class CarAssessmentController {
 		@ResponseBody
 		@ApiOperation(value = "根据车架后查询车辆估值",notes = "根据车架后查询车辆估值")
 		public ResultBean<String> getCarPrice(@RequestParam(name="vin",required=true)String vin,@RequestParam(name="areaName",required=false)String areaName) throws Exception{
-		
-	    	
 	    	return new ResultBean(carAssessmentService.getPrice(vin, areaName));
-	    	
-	  
-		 
 	 }
 }

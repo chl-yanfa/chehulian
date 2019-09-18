@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.car.app.carscraporder.bo.*;
+import com.car.app.carscraporder.mapper.UserMapper;
 import com.car.app.carscraporder.pojo.*;
 import com.car.app.carscraporder.service.*;
 import com.car.app.carscraporder.util.*;
@@ -46,6 +47,9 @@ public class CarScrapOrderServiceImpl extends BaseServiceImpl<CarScrapOrder> imp
 
 	@Autowired
 	private CarScrapOrderMapper carScrapOrderMapper;
+
+	@Autowired
+	private UserMapper userMapper;
 
 	
 	@Autowired
@@ -643,22 +647,16 @@ public class CarScrapOrderServiceImpl extends BaseServiceImpl<CarScrapOrder> imp
 					  order.setOrderStatus(orderStatus);
 					  super.updateSelective(order);
 				  } else if(CommonSystemParamter.ORDER_NOOK_STATUS == orderStatus){ //派单操作-传递33,点击派单按钮进入此操作。将2变更33
-					  //整车订单接单
 					  saveauditHistory(order.getId(),CommonSystemParamter.ORDER_NOOK_STATUS,remark,CommonSystemParamter.BUSINESS_TYPE_ORDER,operator);
 					  order.setOrderStatus(orderStatus);
-					  super.updateSelective(order);
-				  }else if(CommonSystemParamter.ORDER_DISTRIBUTION_STATUS == orderStatus){
-	  				  //整车订单派单
-	  				  saveauditHistory(order.getId(),CommonSystemParamter.ORDER_DISTRIBUTION_STATUS,remark,CommonSystemParamter.BUSINESS_TYPE_ORDER,operator);
-	  				  order.setOperator(operator);
-					  order.setOperatorName("");
-	  				  order.setIsAgree(3); //订单未参与过二次报价
-					  order.setOrderStatus(orderStatus);
-	  				  int result = super.updateSelective(order);
+					  UserBO ub =  userMapper.queryUserBOById(operator);
+					  order.setPdName(ub.getRealName());
+					  order.setPdPhone(ub.getContactPhone());
+					  int result = super.updateSelective(order);
 					  List<CarPush> carPushList = carPushService.getAllCarPush();
 					  CarPush carPush = carPushList.get(4);
 
-	  				  if(result>0){
+					  if(result>0){
 //						  JPushUtil.sendToRegistrationId(userId,"Hi,业务员-"+(null==username?"未知用户":username)+",该你去取车啦!","车互联-派单消息","Hi,"+(null==username?"未知用户":username)+",领导派你去取车啦!","1");
 						  JYyPushUtil.sendToRegistrationId(userId,username+"，"+carPush.getNotificationTitle(),carPush.getMsgTitle(),carPush.getMsgContent(),"1");
 
@@ -675,7 +673,13 @@ public class CarScrapOrderServiceImpl extends BaseServiceImpl<CarScrapOrder> imp
 //
 //						  //短信通知用户
 //				  		  SmsSender.sendSmsByOrder(cb.getPhone(), SmsSender.formatmsg, SmsSender.PUBLICEORDER,order.getOrderNo());
-	  				  }
+					  }
+				  }else if(CommonSystemParamter.ORDER_DISTRIBUTION_STATUS == orderStatus){
+	  				  saveauditHistory(order.getId(),CommonSystemParamter.ORDER_DISTRIBUTION_STATUS,remark,CommonSystemParamter.BUSINESS_TYPE_ORDER,operator);
+	  				  order.setOperator(operator);
+	  				  order.setIsAgree(3); //订单未参与过二次报价
+					  order.setOrderStatus(orderStatus);
+	  				  int result = super.updateSelective(order);
 	  			  }else if(CommonSystemParamter.ORDER_RECEIVE_STATUS == orderStatus){
 	  				  //整车订单接收
 	  				  saveauditHistory(order.getId(),CommonSystemParamter.ORDER_RECEIVE_STATUS,remark,CommonSystemParamter.BUSINESS_TYPE_ORDER,operator);
@@ -1109,7 +1113,6 @@ public class CarScrapOrderServiceImpl extends BaseServiceImpl<CarScrapOrder> imp
 
 
 			PageHelper.startPage(page, rows);
-			//此处判断然并卵，订单管理只进入else
 			if(StringUtils.equals(CommonSystemParamter.ORDER_OLDPARTS_TYPE, paramter.getOrderType())){ //旧件订单查询
 				System.out.println("进入旧件");
 	        	List<CarScrapOrderPageBO> data = carScrapOrderMapper.queryOldPartsWillReceivePageListByKeyword(paramter);

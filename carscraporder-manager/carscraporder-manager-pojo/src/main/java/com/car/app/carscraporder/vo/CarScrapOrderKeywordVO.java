@@ -86,7 +86,6 @@ public class CarScrapOrderKeywordVO {
 	public void setAraesids(String araesids) {
 		this.araesids = araesids;
 	}
-	
 	public String getKeyWord() {
 		return keyWord;
 	}
@@ -117,11 +116,9 @@ public class CarScrapOrderKeywordVO {
 	public void setOrderType(String orderType) {
 		this.orderType = orderType;
 	}
-
 	public Integer getIsWhere() {
 		return isWhere;
 	}
-
 	public void setIsWhere(Integer isWhere) {
 		this.isWhere = isWhere;
 	}

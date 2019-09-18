@@ -20,34 +20,34 @@ import com.github.pagehelper.PageInfo;
  */
 public interface ClientService extends BaseService<Client>{
 	
-	public ClientBO queryClientBOByName(String loginname)throws Exception;
+	 ClientBO queryClientBOByName(String loginname)throws Exception;
 	
-	public Boolean resetPassword(String id,String oldpassword,String newpassword,String operator)throws Exception;
+	 Boolean resetPassword(String id,String oldpassword,String newpassword,String operator)throws Exception;
 	
-	public Boolean validateCode(String phone) throws Exception;
+	 Boolean validateCode(String phone) throws Exception;
 	
-	public ClientBO queryClientBOByNameOrPhone(String whereParam)throws Exception;
+	 ClientBO queryClientBOByNameOrPhone(String whereParam)throws Exception;
 	
-	public ClientBO getClientById(String id)throws Exception;
+	 ClientBO getClientById(String id)throws Exception;
 	
-	public ClientBO getClientByPhone(String phone)throws Exception;
+	 ClientBO getClientByPhone(String phone)throws Exception;
 	
-	public Boolean doRegister(ClientVO clientVO)throws Exception;
+	 Boolean doRegister(ClientVO clientVO)throws Exception;
 	
-	public Boolean certification(ClientCertificationVO vo)throws Exception;
+	 Boolean certification(ClientCertificationVO vo)throws Exception;
 	
-	public ClientBankCardBO queryUserBankCard(String clientid)throws Exception;
+	 ClientBankCardBO queryUserBankCard(String clientid)throws Exception;
 	
-	public Boolean addBankCard(ClientAddBankVO vo)throws Exception;
+	 Boolean addBankCard(ClientAddBankVO vo)throws Exception;
 	
-	public String verifyValidateCode(String phone)throws Exception;
+	 String verifyValidateCode(String phone)throws Exception;
 	
-	public Boolean forgetPwd(String id,String newpassword,String operator)throws Exception;
+	 Boolean forgetPwd(String id,String newpassword,String operator)throws Exception;
 	
-	public PageInfo<ClientCertificationBO> queryUserCertificationList(Integer page, Integer rows,ClientVO vo) throws Exception;
+	 PageInfo<ClientCertificationBO> queryUserCertificationList(Integer page, Integer rows,ClientVO vo) throws Exception;
 	
-	public ClientCertificationBO queryUserCertification(String id) throws Exception;
+	 ClientCertificationBO queryUserCertification(String id) throws Exception;
 	
-	public Boolean auditCertification(ClientVO clientVO)throws Exception;
+	 Boolean auditCertification(ClientVO clientVO)throws Exception;
 	
 }

@@ -164,7 +164,6 @@ public class AccountController {
 			@RequestParam(value="rememberMe",required = false)boolean rememberMe
 			) throws Exception{
 
-		System.out.println("进入登陆！");
 
 		ResultBean<UserBO> result = new ResultBean<UserBO>();
 
@@ -178,9 +177,7 @@ public class AccountController {
 		
 		Subject subject = SecurityUtils.getSubject();
 	    subject.login(new UsernamePasswordToken(name, password,rememberMe));
-	    
-	 
-	    
+
 	    LoggerUtils.debug(AccountController.class, "登录成功");
 	    
 	    //取身份信息

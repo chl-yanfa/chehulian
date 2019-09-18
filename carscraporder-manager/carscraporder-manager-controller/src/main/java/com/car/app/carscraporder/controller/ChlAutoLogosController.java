@@ -123,7 +123,7 @@ public class ChlAutoLogosController {
             JSONArray jsonArray = JSONArray.fromObject(list);
             System.out.println(jsonArray.toString());
             // 写入缓存
-            redisService.set(key,jsonArray.toString(),86400);
+            redisService.set(key,jsonArray.toString(),31536000);
 
             return new ResultBean<List<DictionarySystemBO>>(list);
 
@@ -188,7 +188,7 @@ public class ChlAutoLogosController {
                 JSONArray jsonArray = JSONArray.fromObject(dictionaryBOs);
                 System.out.println(jsonArray.toString());
                 // 写入缓存
-                redisService.set(key,jsonArray.toString(),86400);
+                redisService.set(key,jsonArray.toString(),31536000);
                 return new ResultBean<List<DictionaryBO>>(dictionaryBOs);
             }
             return new ResultBean<List<DictionaryBO>>();

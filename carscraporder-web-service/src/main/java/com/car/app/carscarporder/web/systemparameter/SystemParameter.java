@@ -8,8 +8,5 @@ public class SystemParameter {
 	
 	public final static String TICKET= "TICKET_";
 
-	
 	public static final ObjectMapper MAPPER = new ObjectMapper();
-
-
 }

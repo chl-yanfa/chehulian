@@ -37,6 +37,8 @@ public class User extends BasePojo {
 	@ApiModelProperty(value = "用户状态(1:正常 2:删除 3:禁用),默认：'正常'")
     private String status="1";
 
+	private String contactPhone;
+
   
 
     public String getId() {
@@ -88,6 +90,14 @@ public class User extends BasePojo {
         this.status = status == null ? null : status.trim();
     }
 
+    public String getContactPhone() {
+        return contactPhone;
+    }
+
+    public void setContactPhone(String contactPhone) {
+        this.contactPhone = contactPhone;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -97,6 +107,7 @@ public class User extends BasePojo {
                 ", password='" + password + '\'' +
                 ", passwordSalt='" + passwordSalt + '\'' +
                 ", status='" + status + '\'' +
+                ", contactPhone='" + contactPhone + '\'' +
                 '}';
     }
 }
