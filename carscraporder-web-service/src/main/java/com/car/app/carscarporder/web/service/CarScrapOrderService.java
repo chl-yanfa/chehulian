@@ -19,32 +19,32 @@ public interface CarScrapOrderService {
 	
 
 	
-	public PageResult<CarScrapOrderPageBO> getOrderPageListByKeyword(Integer page,Integer rows,CarScrapOrderKeywordVO paramter)throws Exception;
+	 PageResult<CarScrapOrderPageBO> getOrderPageListByKeyword(Integer page,Integer rows,CarScrapOrderKeywordVO paramter)throws Exception;
 	
-	public PageResult<CarScrapOrderPageBO>  queryPageHistoryListByKeyword(Integer page,
-			Integer rows, CarScrapOrderKeywordVO paramter)
-			throws Exception ;
+	 PageResult<CarScrapOrderPageBO>  queryPageHistoryListByKeyword(Integer page,
+		Integer rows, CarScrapOrderKeywordVO paramter)
+		throws Exception ;
 	
-	public PageResult<CarScrapOrderPageBO> getAll(Integer page,Integer rows,CarScrapOrderKeywordVO paramter)throws Exception;
+	 PageResult<CarScrapOrderPageBO> getAll(Integer page,Integer rows,CarScrapOrderKeywordVO paramter)throws Exception;
 	
 	
-	public Boolean addOrder(CarScrapOrderVO order)throws Exception;
+	 Boolean addOrder(CarScrapOrderVO order)throws Exception;
 	
-	public Boolean deleteOrderById(String orderid,String operator)throws Exception;
+	 Boolean deleteOrderById(String orderid,String operator)throws Exception;
 	
-	public Boolean cancelOrderById(Map<String,String> paramMap)throws Exception;
+	 Boolean cancelOrderById(Map<String,String> paramMap)throws Exception;
 	
-	public Boolean confirmAmount(CarScrapOrderConfirmAmountVO confirmAmountVO)throws Exception;
+	 Boolean confirmAmount(CarScrapOrderConfirmAmountVO confirmAmountVO)throws Exception;
 	
-	public CarScrapOrderBO getOrderById(String orderid)throws Exception;
+	 CarScrapOrderBO getOrderById(String orderid)throws Exception;
 	
-	public Boolean updateOrder(String id,Map<String,String> paramMap)throws Exception;
+	 Boolean updateOrder(String id,Map<String,String> paramMap)throws Exception;
 	
-	public OrderAduitBO getOrderAuditInfo(String orderId) throws Exception;
+	 OrderAduitBO getOrderAuditInfo(String orderId) throws Exception;
 	
-	public CarScrapOrderMyTradeBO myTrade(String clientId)throws Exception;
+	 CarScrapOrderMyTradeBO myTrade(String clientId)throws Exception;
 	
-	public PageResult<CarScrapOrderMyTradeInfoBO> myTradeInfo(Map<String,Object> map)throws Exception;
+	 PageResult<CarScrapOrderMyTradeInfoBO> myTradeInfo(Map<String,Object> map)throws Exception;
 	
  
 }

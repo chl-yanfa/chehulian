@@ -147,11 +147,7 @@ public class CarScrapOrderController {
 	     if(user == null){
 	    	 throw new DataException("未登录系统");
 	     }
-	     
-	     
 		return new ResultBean<Boolean>(carScrapOrderService.deleteOrderById(id,user.getId()));
-
-		
 	}
 
 	
@@ -184,13 +180,9 @@ public class CarScrapOrderController {
 	     if(user == null){
 	    	 throw new DataException("未登录系统");
 	     }
-		
 	     Map<String,String> paramMap = HttpRequestParamConConverter.getParameterMap(request);
-	     
-	    
 	     paramMap.put("operator", user.getId());
-	     
-		return new ResultBean<Boolean>(carScrapOrderService.updateOrder(id,paramMap));
+		 return new ResultBean<>(carScrapOrderService.updateOrder(id, paramMap));
 		
 	}
 	

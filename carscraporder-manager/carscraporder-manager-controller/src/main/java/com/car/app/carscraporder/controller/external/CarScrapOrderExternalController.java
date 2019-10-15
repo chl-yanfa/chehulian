@@ -327,9 +327,7 @@ public class CarScrapOrderExternalController {
 		}else{
 			return new ResultBean(bo);
 		}
-		
 		return new ResultBean(simpleInfo);
-		
 	}
 	
 	/**
@@ -346,7 +344,6 @@ public class CarScrapOrderExternalController {
          CarScrapOrder carScrapOrder = carScrapOrderService.queryById(id);
 	     carScrapOrder = DataConverter.copyRequestParamToOrdermedel(carScrapOrder,request);
 		 return new ResultBean(carScrapOrderService.update(carScrapOrder));
-		
 	}
 	
 	/**

@@ -23,13 +23,8 @@ public class CarAttachmentController {
 	  @RequestMapping(value = "delete/{id}", method = RequestMethod.POST)
 	    @ResponseBody
 	    public ResultBean<Boolean> delete(@PathVariable("id")Integer id) throws Exception {
-		 
-		  
 		  Boolean result=carAttachmentService.delete(id);
-		 
-		  
-			return new ResultBean<Boolean>(result);
-		  
+		  return new ResultBean<Boolean>(result);
 	  }
 
 }

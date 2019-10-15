@@ -25,9 +25,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  */
 
 public class CarScrapOrderAutopartsBO extends  CarScrapOrderAutoparts {
-	
-	
-	
+
 	private  Integer partsCaregoryId;
 	
 	@ApiModelProperty(value = "接收备注")
@@ -65,11 +63,6 @@ public class CarScrapOrderAutopartsBO extends  CarScrapOrderAutoparts {
 	
 	@ApiModelProperty(value = "已经结算金额")
 	private BigDecimal settledAmount;
-	
-	
-
-
-	
 
 	public String getPicture() {
 		if(autoPartsPictures!=null&&autoPartsPictures.size()>0){
@@ -84,256 +77,62 @@ public class CarScrapOrderAutopartsBO extends  CarScrapOrderAutoparts {
 		return picture;
 	}
 
-	
-	
-	
-
-
-
-	
-
-
-
-
-
-
-
 	public List<OrderAttachmentBO> getAutoPartsScrapPictures() {
 		return autoPartsScrapPictures;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	public void setAutoPartsScrapPictures(
 			List<OrderAttachmentBO> autoPartsScrapPictures) {
 		this.autoPartsScrapPictures = autoPartsScrapPictures;
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	public List<OrderAttachmentBO> getAutoPartsVideo() {
 		return autoPartsVideo;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	public void setAutoPartsVideo(List<OrderAttachmentBO> autoPartsVideo) {
 		this.autoPartsVideo = autoPartsVideo;
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	public BigDecimal getSettledAmount() {
 		return settledAmount;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	public void setSettledAmount(BigDecimal settledAmount) {
 		this.settledAmount = settledAmount;
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	public Date getReceiveTime() {
 		return receiveTime;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	public void setReceiveTime(Date receiveTime) {
 		this.receiveTime = receiveTime;
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	public Integer getPartsCaregoryId() {
 		return partsCaregoryId;
 	}
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
 
 	public String getQrPic() {
 		return this.getId();
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	public void setQrPic(String qrPic) {
 		this.qrPic = qrPic;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	public void setPartsCaregoryId(Integer partsCaregoryId) {
 		this.partsCaregoryId = partsCaregoryId;
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	public String getPartsCaregoryName() {
 		return partsCaregoryName;
 	}
 
-
-
-
-
-
-
 	public void setPartsCaregoryName(String partsCaregoryName) {
 		this.partsCaregoryName = partsCaregoryName;
 	}
-
-
-
-
-
-
 
 	public void setPicture(String picture) {
 		this.picture = picture;
@@ -355,61 +154,17 @@ public class CarScrapOrderAutopartsBO extends  CarScrapOrderAutoparts {
 		this.storageRemark = storageRemark;
 	}
 
-	
-	
-
 	public List<OrderAttachmentBO> getAutoPartsPictures() {
 		return autoPartsPictures;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	public void setAutoPartsPictures(List<OrderAttachmentBO> autoPartsPictures) {
 		this.autoPartsPictures = autoPartsPictures;
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	public List<OrderAttachmentBO> getAutoPartsReceivePictures() {
 		return autoPartsReceivePictures;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 	public void setAutoPartsReceivePictures(
@@ -417,57 +172,15 @@ public class CarScrapOrderAutopartsBO extends  CarScrapOrderAutoparts {
 		this.autoPartsReceivePictures = autoPartsReceivePictures;
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	public List<OrderAttachmentBO> getAutoPartsWarehousingPictures() {
 		return autoPartsWarehousingPictures;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 	public void setAutoPartsWarehousingPictures(
 			List<OrderAttachmentBO> autoPartsWarehousingPictures) {
 		this.autoPartsWarehousingPictures = autoPartsWarehousingPictures;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	public String getPartsTypeName() {
 		return partsTypeName;
 	}
@@ -475,9 +188,5 @@ public class CarScrapOrderAutopartsBO extends  CarScrapOrderAutoparts {
 	public void setPartsTypeName(String partsTypeName) {
 		this.partsTypeName = partsTypeName;
 	}
-	
-	
 
-
- 
 }

@@ -121,7 +121,7 @@ public class DictionaryController {
 	@ResponseBody
 	@ApiOperation(value = "获取车标数据",notes = "获取车标数据")
 	public ResultBean<List<DictionarySystemBO>> queryBrand() throws Exception{
-		return new ResultBean<List<DictionarySystemBO>>(dictionaryService.getAllCarBrand());
+		return new ResultBean<>(dictionaryService.getAllCarBrand());
 	}
 	
 	@RequestMapping(value = "/getCarSystem/{brandId}",method = RequestMethod.GET)
@@ -129,16 +129,14 @@ public class DictionaryController {
 	@ApiOperation(value = "根据车标id获取车系数据",notes = "根据车标id获取车系数据")
 	public ResultBean<List<DictionarySystemBO>> querySystem(@PathVariable("brandId")String brandId) throws Exception{
 		
-		return new ResultBean<List<DictionarySystemBO>>(dictionaryService.getCarSystem(brandId));
+		return new ResultBean<>(dictionaryService.getCarSystem(brandId));
 		
 	}
 	@RequestMapping(value = "/getCarModel/{systemId}",method = RequestMethod.GET)
 	@ResponseBody
 	@ApiOperation(value = "根据车系id获取车型数据",notes = "根据车系id获取车型数据")
 	public ResultBean<List<DictionaryBO>> queryModel(@PathVariable("systemId")String systemId) throws Exception{
-		System.out.println("nrz_list_3"+dictionaryService.getCarModel(systemId));
-		return new ResultBean<List<DictionaryBO>>(dictionaryService.getCarModel(systemId));
-		
+		return new ResultBean<>(dictionaryService.getCarModel(systemId));
 	}
 	
 	

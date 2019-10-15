@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface TbCarPartsCategoryService extends BaseService<TbCarPartsCategory> {
 
-    public PageInfo<TbCarPartsCategory> queryMyPageListByWhere(int page, int rows, TbCarPartsCategory paramter)throws Exception;
+     PageInfo<TbCarPartsCategory> queryMyPageListByWhere(int page, int rows, TbCarPartsCategory paramter)throws Exception;
 
 }

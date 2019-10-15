@@ -28,8 +28,6 @@ public class TbAttachmentExternalController {
 	@RequestMapping(method = RequestMethod.PUT)
 	@ResponseBody
 	public ResultBean<AttachmentBO> saveAttachmentBuniessData(@RequestBody AttachmentVO vo)throws Exception{
-		System.out.println("接收到attachment_getOriginalName:"+vo.getOriginalName());
-		System.out.println("接收到attachment_getStoragePath:"+vo.getStoragePath());
 		AttachmentBO bo = new AttachmentBO();
 		TbAttachment record = new TbAttachment();  //tb_attachment表对象 nrz
 		record.setOriginalName(vo.getOriginalName());

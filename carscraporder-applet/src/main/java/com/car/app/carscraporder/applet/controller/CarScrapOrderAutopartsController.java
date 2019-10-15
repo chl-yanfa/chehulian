@@ -81,7 +81,7 @@ public class CarScrapOrderAutopartsController {
 	@ResponseBody
 	public ResultBean<CarScrapOrderAutopartsDetailBO> getOrderAutopartsDetailById(@PathVariable("id")String id) throws Exception{
 		
-		return  new ResultBean<CarScrapOrderAutopartsDetailBO>(carScrapOrderAutopartsService.getOrderAutopartsDetailById(id));
+		return new ResultBean<>(carScrapOrderAutopartsService.getOrderAutopartsDetailById(id));
 		
 	}
 	
@@ -121,15 +121,6 @@ public class CarScrapOrderAutopartsController {
 		return new ResultBean<Boolean>(carScrapOrderAutopartsService.delete(id,user.getId()));
 		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 
 }

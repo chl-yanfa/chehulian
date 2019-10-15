@@ -5,5 +5,5 @@ import com.github.pagehelper.PageInfo;
 
 public interface TbCarPartsService extends BaseService<TbCarParts>{
 
-    public PageInfo<TbCarParts> queryByIdPageListByWhere(int page, int rows, TbCarParts paramter)throws Exception;
+     PageInfo<TbCarParts> queryByIdPageListByWhere(int page, int rows, TbCarParts paramter)throws Exception;
 }

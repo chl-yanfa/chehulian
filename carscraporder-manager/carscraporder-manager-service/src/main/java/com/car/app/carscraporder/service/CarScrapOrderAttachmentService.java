@@ -42,11 +42,11 @@ public interface CarScrapOrderAttachmentService {
 
     int updateByPrimaryKey(CarScrapOrderAttachment record);
     
-    public List<CarScrapOrderAttachmentBO> getArrachmentByOrderByid(String orderid);
-    public List<OrderAttachmentBO> getArrachmentByOrderIdAndAttachmentType(String orderid,String attachmentType,String buniessType);
-    
-    
-    public Boolean deleteAttachmentByPrimaryKey(Integer id,String operator)throws Exception;
+    List<CarScrapOrderAttachmentBO> getArrachmentByOrderByid(String orderid);
+
+    List<OrderAttachmentBO> getArrachmentByOrderIdAndAttachmentType(String orderid,String attachmentType,String buniessType);
+
+    Boolean deleteAttachmentByPrimaryKey(Integer id,String operator)throws Exception;
     
     
     

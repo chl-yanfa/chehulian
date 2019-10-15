@@ -34,7 +34,7 @@ public class VersionController {
 	@ResponseBody
 	@ApiOperation(value = "根据OC获取版本详情",notes = "根据OC获取版本详情")
 	public ResultBean<VersionBO> getVersion(@RequestParam(value = "oc", required = true) Integer oc) throws Exception{
-		return new ResultBean<VersionBO>(versionService.getVersionInfo(oc));
+		return new ResultBean<>(versionService.getVersionInfo(oc));
 		
 	}
 

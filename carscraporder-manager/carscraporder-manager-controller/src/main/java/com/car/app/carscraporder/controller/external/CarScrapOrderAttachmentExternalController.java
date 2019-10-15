@@ -79,15 +79,7 @@ public class CarScrapOrderAttachmentExternalController {
 				
 				return new ResultBean<Boolean>(tbAttachmentService.update(attachement)==1);
 			}
-			
 		}
-		
-		
-		
-		
 		return new ResultBean<Boolean>(false);
-		
-		
-		
 	}
 }

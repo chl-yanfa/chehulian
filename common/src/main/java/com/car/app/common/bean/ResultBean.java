@@ -1,8 +1,6 @@
 package com.car.app.common.bean;
 
-import java.util.List;
 
-import net.bytebuddy.implementation.bind.annotation.IgnoreForBinding;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 

@@ -658,6 +658,7 @@ public class CarScrapOrderServiceImpl extends BaseServiceImpl<CarScrapOrder> imp
 
 					  if(result>0){
 //						  JPushUtil.sendToRegistrationId(userId,"Hi,业务员-"+(null==username?"未知用户":username)+",该你去取车啦!","车互联-派单消息","Hi,"+(null==username?"未知用户":username)+",领导派你去取车啦!","1");
+						  System.out.println("你好啊，要推送的用户："+username);
 						  JYyPushUtil.sendToRegistrationId(userId,username+"，"+carPush.getNotificationTitle(),carPush.getMsgTitle(),carPush.getMsgContent(),"1");
 
 						  //派单给业务员后推送通知到用户手机,通知用户我方业务员已经出发

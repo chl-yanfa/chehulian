@@ -54,9 +54,7 @@ public class ClientUserExternalController {
 		            }else{
 		            	throw new UserNamePasswordException("用户名密码错误");
 		            }
-		    
 		      }
-		
 	}
 	
 	    @RequestMapping(value = "setPwd/{id}",method = RequestMethod.PUT)

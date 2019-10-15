@@ -55,7 +55,7 @@ public class CarScrapOrderPageBO {
 				'}';
 	}
 
-	private String id;
+	 private String id;
 	 private String orderNo;
 	 @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	 private Date orderTime;

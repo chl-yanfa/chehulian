@@ -28,9 +28,6 @@ public class PaimaiController {
 	@ApiOperation(value = "获取列表", notes = "获取列表")
 	public ResultBean<List<PaimaiBO>> getList() throws Exception {
 		List<PaimaiBO> queryList = paimaiService.queryList();
-		return new ResultBean<List<PaimaiBO>>(queryList);
-
+		return new ResultBean<>(queryList);
 	}
-
-
 }

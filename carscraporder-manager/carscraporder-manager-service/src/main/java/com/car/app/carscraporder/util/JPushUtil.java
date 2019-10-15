@@ -205,8 +205,5 @@ public class JPushUtil {
                 )
                 .build();
     }
-
-
-
 }
 

@@ -10,8 +10,8 @@ import com.github.abel533.mapper.Mapper;
 public interface ClientProblemMapper extends Mapper<ClientProblem>{
 	
 
-	public List<ClientProblemBO>  queryPageList();
+	 List<ClientProblemBO>  queryPageList();
 	
-	public ClientProblemBO queryBOById(String id);
+	 ClientProblemBO queryBOById(String id);
 	
 }

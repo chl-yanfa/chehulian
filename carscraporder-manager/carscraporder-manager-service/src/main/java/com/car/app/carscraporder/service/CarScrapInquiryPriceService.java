@@ -8,7 +8,7 @@ import com.github.pagehelper.PageInfo;
 
 public interface CarScrapInquiryPriceService extends BaseService<CarScrapInquiryPrice>{
 	
-	public Integer save(CarScrapInquiryPriceVO record)throws Exception ;
-	public PageInfo<CarScrapInquiryPriceBO> queryPageListByWhere(Integer page,Integer rows,CarScrapInquiryPricePageVO paramter)throws Exception;
+	 Integer save(CarScrapInquiryPriceVO record)throws Exception ;
+	 PageInfo<CarScrapInquiryPriceBO> queryPageListByWhere(Integer page,Integer rows,CarScrapInquiryPricePageVO paramter)throws Exception;
 
 }

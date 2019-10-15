@@ -1,10 +1,5 @@
 package com.car.app.carscraporder.applet.threadlocal;
 
-
-
-
-
-
 import java.util.Locale;
 
 import org.slf4j.MDC;

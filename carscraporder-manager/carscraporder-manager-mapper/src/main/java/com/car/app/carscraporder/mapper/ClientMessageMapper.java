@@ -10,11 +10,11 @@ import com.github.abel533.mapper.Mapper;
 public interface ClientMessageMapper extends Mapper<ClientMessage>{
 	
 	
-	public Integer queryUnReadTotal(String clientId);
+	 Integer queryUnReadTotal(String clientId);
 
-	public List<ClientMessageBO>  queryPageList();
+	 List<ClientMessageBO>  queryPageList();
 	
-	public ClientMessageBO queryBOById(String id);
+	 ClientMessageBO queryBOById(String id);
 	
-	public int changeIsRead(String id);
+	 int changeIsRead(String id);
 }

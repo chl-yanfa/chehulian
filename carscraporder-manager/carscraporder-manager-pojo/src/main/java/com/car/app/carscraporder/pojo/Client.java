@@ -20,8 +20,8 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @Table(name="sys_client")
 public class Client extends BasePojo{
-	
-	
+
+
 	@Id
     private String id;
 

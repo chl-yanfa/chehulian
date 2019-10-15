@@ -17,8 +17,8 @@ import com.car.app.carscraporder.pojo.CarScrapOrderSettlement;
 public interface CarScrapOrderSettlementService extends BaseService<CarScrapOrderSettlement> {
 	
 	
-	public Integer saveCarScrapOrderSettlement(CarScrapOrderSettlement carScrapOrderSettlement)throws Exception;
+	 Integer saveCarScrapOrderSettlement(CarScrapOrderSettlement carScrapOrderSettlement)throws Exception;
 	
-	public List<CarScrapOrderSettlementBO>  getCarScrapOrderSettlementByOrderId(String orderid);
+	 List<CarScrapOrderSettlementBO>  getCarScrapOrderSettlementByOrderId(String orderid);
 
 }

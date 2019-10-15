@@ -7,8 +7,8 @@ import com.car.app.common.bean.PageResult;
 
 public interface ProblemService {
 	
-	public PageResult<ClientProblemBO> getProblemPageList(Integer page,Integer rows)throws Exception;
+	 PageResult<ClientProblemBO> getProblemPageList(Integer page,Integer rows)throws Exception;
 	
-	public ClientProblemBO getProblemById(String problemId)throws Exception;
+	 ClientProblemBO getProblemById(String problemId)throws Exception;
  
 }

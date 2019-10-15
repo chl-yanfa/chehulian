@@ -72,12 +72,12 @@ public class MessageController {
 		String clientId = user.getId();
 		PageResult<ClientMessageBO> pageData = messageService.getMessagePageList(page, rows, clientId);
 
-		return new ResultBean<PageResult<ClientMessageBO>>(pageData);
+		return new ResultBean<>(pageData);
 
 	}
 
 	/**
-	 * 根据订单id获取订单详情
+	 * 根据id获取消息详情
 	 * @param id
 	 * @return
 	 * @throws Exception

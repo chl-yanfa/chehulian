@@ -8,9 +8,9 @@ import com.github.abel533.mapper.Mapper;
 
 public interface CarScrapOrderSettlementMapper extends Mapper<CarScrapOrderSettlement>{
 	
-	public List<CarScrapOrderSettlementBO>  getCarScrapOrderSettlementByOrderId(String orderid);
+	 List<CarScrapOrderSettlementBO>  getCarScrapOrderSettlementByOrderId(String orderid);
 	
 	
-	public List<CarScrapOrderSettlementBO>  getCarScrapOrderOfOldSettlementByOrderId(String orderid);
+	 List<CarScrapOrderSettlementBO>  getCarScrapOrderOfOldSettlementByOrderId(String orderid);
 
 }

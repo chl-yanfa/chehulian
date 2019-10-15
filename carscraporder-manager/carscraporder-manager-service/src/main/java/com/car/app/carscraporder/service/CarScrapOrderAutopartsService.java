@@ -23,25 +23,18 @@ import com.github.pagehelper.PageInfo;
  *
  */
 public interface CarScrapOrderAutopartsService extends BaseService<CarScrapOrderAutoparts>{
+
+	 CarScrapOrderAutoparts queryById(String id);
 	
+	 CarScrapOrderAutopartsBO  queryBOById(String id)throws Exception;
+
+	 Integer  saveAutoparts(CarScrapOrderAutopartsVO  carScrapOrderAutopartsVO)throws Exception;
 	
+	 CarScrapOrderAutopartsDetailBO  getOrderAutopartsDetailById(String id)throws Exception;
 	
-	
-	
-	public CarScrapOrderAutoparts queryById(String id);
-	
-	public CarScrapOrderAutopartsBO  queryBOById(String id)throws Exception;
-	
-	
-	public Integer  saveAutoparts(CarScrapOrderAutopartsVO  carScrapOrderAutopartsVO)throws Exception;
-	
-	public CarScrapOrderAutopartsDetailBO  getOrderAutopartsDetailById(String id)throws Exception;
-	
-	
-	public  List<CarScrapOrderAutopartsBO> queryListByOrderId(String orderid)throws Exception;
-	
-	
-	public PageInfo<CarScrapOrderPageBO> queryBOPageListByWhere(Integer page,Integer rows, CarScrapOrderKeywordVO paramter)throws Exception;
+	  List<CarScrapOrderAutopartsBO> queryListByOrderId(String orderid)throws Exception;
+
+	 PageInfo<CarScrapOrderPageBO> queryBOPageListByWhere(Integer page,Integer rows, CarScrapOrderKeywordVO paramter)throws Exception;
 	
 	/**
 	 * 获取待分拣和待入库数据
@@ -51,10 +44,10 @@ public interface CarScrapOrderAutopartsService extends BaseService<CarScrapOrder
 	 * @return
 	 * @throws Exception
 	 */
-	public PageInfo<CarScrapOrderPageBO> getSortingParts(Integer page,Integer rows, CarScrapOrderKeywordVO paramter)throws Exception;
+	 PageInfo<CarScrapOrderPageBO> getSortingParts(Integer page,Integer rows, CarScrapOrderKeywordVO paramter)throws Exception;
 	
 	
-	public PageInfo<CarScrapOrderPageBO> queryHistoryBOPageList(Integer page,Integer rows, CarScrapOrderKeywordVO paramter)throws Exception;
+	 PageInfo<CarScrapOrderPageBO> queryHistoryBOPageList(Integer page,Integer rows, CarScrapOrderKeywordVO paramter)throws Exception;
 	/**
 	 * 
 	 * @param id  配件主键
@@ -64,25 +57,21 @@ public interface CarScrapOrderAutopartsService extends BaseService<CarScrapOrder
 	 * @return
 	 * @throws Exception
 	 */
-	public Integer saveOrderAutopartsAuditingRecord(String id,Integer orderStatus,String remark,String operator,CarScrapOrderAutoparts parts)throws Exception;
+	 Integer saveOrderAutopartsAuditingRecord(String id,Integer orderStatus,String remark,String operator,CarScrapOrderAutoparts parts)throws Exception;
+
+	 Integer queryPendingOrder(String agentUserid,Integer partsStauts,List<String> areasids,Boolean isSorting)throws Exception;
 	
+	 String createQRcode(String partsid)throws Exception;
 	
+	 Boolean saveSortingParts(String id,Integer sortingStatus, String operator)throws Exception;
 	
-	public Integer queryPendingOrder(String agentUserid,Integer partsStauts,List<String> areasids,Boolean isSorting)throws Exception;
+	 OrderAttachmentBO importFile(MultipartFile file,String id)throws Exception ;
+
+	 Integer selectCount(CarScrapOrderKeywordVO paramter)throws Exception ;
 	
-	public String createQRcode(String partsid)throws Exception;
+	 boolean removeFile(Integer attachmentId, String operator)throws Exception ;
 	
-	public Boolean saveSortingParts(String id,Integer sortingStatus, String operator)throws Exception;
+	 Integer  updateAutopartsByIdSelective(CarScrapOrderAutoparts record)throws Exception;
 	
-	public OrderAttachmentBO importFile(MultipartFile file,String id)throws Exception ;
-	
-	
-	public Integer selectCount(CarScrapOrderKeywordVO paramter)throws Exception ;
-	
-	
-	public boolean removeFile(Integer attachmentId, String operator)throws Exception ;
-	
-	public Integer  updateAutopartsByIdSelective(CarScrapOrderAutoparts record)throws Exception;
-	
-	public Integer deleteById(String id);
+	 Integer deleteById(String id);
 }

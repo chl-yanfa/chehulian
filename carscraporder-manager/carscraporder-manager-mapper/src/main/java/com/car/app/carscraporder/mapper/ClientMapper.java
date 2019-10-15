@@ -13,20 +13,20 @@ import com.github.abel533.mapper.Mapper;
 
 public interface ClientMapper extends Mapper<Client>{
 	
-	public List<ClientBO> queryClientBOByName(String loginname);
+	List<ClientBO> queryClientBOByName(String loginname);
 	
-	public int insertVerificationCode(Map<String,Object> map);
+	int insertVerificationCode(Map<String,Object> map);
 	
-	public String getValidateCode(Map<String, Object> params);
+	String getValidateCode(Map<String, Object> params);
 	
-	public List<ClientBO> queryClientBOByNameOrPhone(@Param("nameOrPhone") String nameOrPhone);
+	List<ClientBO> queryClientBOByNameOrPhone(@Param("nameOrPhone") String nameOrPhone);
 	
-	public ClientBO getClientById(String id);
+	ClientBO getClientById(String id);
 
-	public List<ClientBO> getClientByPhone(String phone);
+	List<ClientBO> getClientByPhone(String phone);
 	
-	public List<ClientCertificationBO> queryPageUserCertification(ClientVO clientVO);
+	List<ClientCertificationBO> queryPageUserCertification(ClientVO clientVO);
 	
-	public ClientCertificationBO queryUserCertification(String id);
+	ClientCertificationBO queryUserCertification(String id);
 
 }

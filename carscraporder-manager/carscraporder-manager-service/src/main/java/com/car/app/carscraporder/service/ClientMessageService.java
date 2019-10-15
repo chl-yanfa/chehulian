@@ -16,9 +16,9 @@ import com.github.pagehelper.PageInfo;
  */
 public interface ClientMessageService extends BaseService<ClientMessage> {
 	
-	public Integer queryUnReadTotal(String clientId)throws Exception;
-	public PageInfo<ClientMessageBO>  queryPageList(Integer page,Integer rows)throws Exception;
-	public ClientMessageBO queryBOById(String id)throws Exception;
-	public int changeIsread(String id)throws Exception;
+	 Integer queryUnReadTotal(String clientId)throws Exception;
+	 PageInfo<ClientMessageBO>  queryPageList(Integer page,Integer rows)throws Exception;
+	 ClientMessageBO queryBOById(String id)throws Exception;
+	 int changeIsread(String id)throws Exception;
 	
 }

@@ -51,9 +51,7 @@ public class ProblemController {
 			throw new DataException("未登录系统");
 		}
 		PageResult<ClientProblemBO> pageData = problemService.getProblemPageList(page, rows);
-
-		return new ResultBean<PageResult<ClientProblemBO>>(pageData);
-
+		return new ResultBean<>(pageData);
 	}
 
 	/**
