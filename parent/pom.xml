@@ -28,7 +28,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<hibernate.validator>4.3.1.Final</hibernate.validator>
 		<swagger2.version>2.7.0</swagger2.version>
-		<shiro.version>1.2.3</shiro.version>
+		<shiro.version>1.8.0</shiro.version>
 		<shrio-redis.version>2.4.2.1-RELEASE</shrio-redis.version>
 		<redis.version>2.7.2</redis.version>
 		<json-lib>2.4</json-lib>
